@@ -5,7 +5,7 @@ export default function Home() {
         <div>
             <Helmet>
                 <link rel="canonical" href="https://helpmechooseone.com/" />
-                <title>Home • Help Me Choose One</title>
+                <title>Let the Internet help you make a choice • Help Me Choose One</title>
                 <meta name="description" content="This is the Home page meta description." />
             </Helmet>
 
