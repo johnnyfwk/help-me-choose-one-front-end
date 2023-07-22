@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
 export default function Home() {
@@ -11,14 +12,14 @@ export default function Home() {
 
             <header>
                 <h1>Home</h1>
-                <p>This is the header copy for the Home page.</p>
+                <p>Let the Internet help you make a choice</p>
             </header>
 
             <main>
                 <h2>Sub-heading</h2>
-                <p>This is some content on the Home page. This is some content on the Home page. This is some content on the Home page.</p>
-                <p>This is some content on the Home page. This is some content on the Home page. This is some content on the Home page.</p>
-                <p>This is some content on the Home page. This is some content on the Home page. This is some content on the Home page.</p>
+                <Link to="/sign-up">Sign Up</Link>
+                <Link to="/log-in">Log In</Link>
+                <p>This is some text on the home page.</p>
             </main>
         </div>
     )
