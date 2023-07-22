@@ -24,10 +24,20 @@
     --spacing50: 50px;
 }
 
+.error {
+    color: var(--red);
+}
+
+.success {
+    color: var(--lime);
+}
 
 * {
-    margin: 0;
     box-sizing: border-box;
+}
+
+body {
+    margin: 0;
 }
 
 #logo-show-nav-button-and-nav {
