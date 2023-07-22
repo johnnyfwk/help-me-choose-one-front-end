@@ -1,8 +1,8 @@
 import './App.css';
+import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Logo from './components/Logo';
 import ShowNavButton from './components/ShowNavButton';
-import HideNavButton from './components/HideNavButton';
 import Nav from './components/Nav';
 import SignUp from './pages/SignUp';
 import LogIn from './pages/LogIn';
@@ -18,16 +18,17 @@ import Footer from './components/Footer';
 import Error404 from './pages/Error404';
 
 function App() {
+    const [isNavVisible, setIsNavVisible] = useState(false);
+
     return (
         <div className="App">
-            <div id="logo-and-hide-nav-button">
+            <div id="logo-show-nav-button-and-nav">
                 <Logo />
-                <ShowNavButton />
-            </div>
-            
-            <div id="nav-and-hide-nav-button">
-                <HideNavButton />
-                <Nav />
+                <ShowNavButton setIsNavVisible={setIsNavVisible} />
+                <Nav
+                    isNavVisible={isNavVisible}
+                    setIsNavVisible={setIsNavVisible}
+                />
             </div>
             
             <Routes>

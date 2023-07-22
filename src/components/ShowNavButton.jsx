@@ -1,5 +1,9 @@
-export default function ShowNavButton() {
+export default function ShowNavButton({setIsNavVisible}) {
+    function onClickShowNavButton() {
+        setIsNavVisible(true);
+    }
+
     return (
-        <span id="show-nav-button">+</span>
+        <span id="show-nav-button" onClick={onClickShowNavButton}>+</span>
     )
 }

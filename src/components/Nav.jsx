@@ -1,27 +1,37 @@
 import { Link } from "react-router-dom";
 
-export default function Nav() {
+export default function Nav({isNavVisible, setIsNavVisible}) {
     function onClickNavLinks() {
         window.scrollTo(0, 0);
+        setIsNavVisible(false);
+    }
+
+    function onClickHideNavButton() {
+        setIsNavVisible(false);
     }
 
     function onClickLogOutButton() {
-        console.log("click");
+        console.log("Log out button clicked.")
+    }
+
+    const styleNav = {
+        left: isNavVisible ? "0%" : "100%"
     }
 
     return (
-        <nav onClick={onClickNavLinks}>
+        <nav onClick={onClickNavLinks} style={styleNav}>
+            <div id="hide-nav-button" onClick={onClickHideNavButton}>x</div>
             <Link to="/" id="nav-link-home">Home</Link>
-            <Link to="/sign-up" id="sign-up-link">Sign Up</Link>
-            <Link to="/log-in" id="log-in-link">Log In</Link>
-            <span id="log-out-button" onClick={onClickLogOutButton}>Log Out</span>
             <Link to="/create-post">Create Post</Link>
             <Link to="/profile">Profile</Link>
-            <Link to="/about">About</Link>
-            <Link to="/contact">Contact</Link>
-            <Link to="/terms-and-conditions">Terms & Conditions</Link>
-            <Link to="/privacy-policy">Privacy Policy</Link>
-            <Link to="/disclaimer">Disclaimer</Link>
+            <Link to="/about" id="nav-link-about">About</Link>
+            <Link to="/contact" id="nav-link-contact">Contact</Link>
+            <Link to="/terms-and-conditions" id="nav-link-terms-and-conditions">Terms & Conditions</Link>
+            <Link to="/privacy-policy" id="nav-link-privacy-policy">Privacy Policy</Link>
+            <Link to="/disclaimer" id="nav-link-disclaimer">Disclaimer</Link>
+            <Link to="/sign-up" id="sign-up-link">Sign Up</Link>
+            <Link to="/log-in" id="log-in-link">Log In</Link>
+            <div id="log-out-button" onClick={onClickLogOutButton}>Log Out</div>
         </nav>
     )
 }
