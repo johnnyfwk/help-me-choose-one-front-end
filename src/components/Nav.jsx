@@ -1,6 +1,10 @@
+import { useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
 import { Link } from "react-router-dom";
 
 export default function Nav({isNavVisible, setIsNavVisible}) {
+    const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
+
     function onClickNavLinks() {
         window.scrollTo(0, 0);
         setIsNavVisible(false);
@@ -11,7 +15,7 @@ export default function Nav({isNavVisible, setIsNavVisible}) {
     }
 
     function onClickLogOutButton() {
-        console.log("Log out button clicked.")
+        setUserLoggedIn({});
     }
 
     const styleNav = {
@@ -23,7 +27,7 @@ export default function Nav({isNavVisible, setIsNavVisible}) {
             <div id="hide-nav-button" onClick={onClickHideNavButton}>x</div>
             <Link to="/" id="nav-link-home">Home</Link>
             <Link to="/create-post">Create Post</Link>
-            <Link to="/profile">Profile</Link>
+            <Link to="/profile">My Profile</Link>
             <Link to="/about" id="nav-link-about">About</Link>
             <Link to="/contact" id="nav-link-contact">Contact</Link>
             <Link to="/terms-and-conditions" id="nav-link-terms-and-conditions">Terms & Conditions</Link>
