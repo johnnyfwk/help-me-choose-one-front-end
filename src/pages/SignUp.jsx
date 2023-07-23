@@ -6,6 +6,7 @@ import UsernameInput from "../components/UsernameInput";
 import PasswordInput from "../components/PasswordInput";
 import AvatarInput from "../components/AvatarInput";
 import * as api from "../api";
+import * as utils from "../utils";
 
 export default function SignUp() {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
@@ -15,7 +16,7 @@ export default function SignUp() {
     const [isFetchingUsersSuccessful, setIsFetchingUsersSuccessful] = useState(null);
 
     const [usernameInput, setUsernameInput] = useState("");
-    const [registeredUsernames, setRegisteredUsernames] = useState([])
+    const [registeredUsernames, setRegisteredUsernames] = useState([]);
     const [isUsernameAvailable, setIsUsernameAvailable] = useState(null);
     const [isUsernameValid, setIsUsernameValid] = useState(null);
     const [isUsernameFamilyFriendly, setIsUsernameFamilyFriendly] = useState(null);
@@ -41,10 +42,10 @@ export default function SignUp() {
         setIsFetchingUsersSuccessful(null);
         api.getUsers()
             .then((users) => {
-                const takenUsernamesLowercase = users.map((user) => {
+                const registeredUsernamesLowercase = users.map((user) => {
                     return user.username.toLowerCase();
                 })
-                setRegisteredUsernames(takenUsernamesLowercase);
+                setRegisteredUsernames(registeredUsernamesLowercase);
                 setIsLoading(false);
                 setIsFetchingUsersSuccessful(true);
             })
@@ -53,6 +54,35 @@ export default function SignUp() {
                 setIsFetchingUsersSuccessful(false);
             })
     }, [])
+
+    useEffect(() => {
+        setIsUsernameValid(null);
+        setIsUsernameAvailable(null);
+        setIsUsernameFamilyFriendly(null);
+        if (usernameInput.length === 0) {
+            setIsUsernameValid(null);
+            setIsUsernameAvailable(null);
+            setIsUsernameFamilyFriendly(null);
+        }
+        else if (!utils.isFamilyFriendly(usernameInput)) {
+            setIsUsernameFamilyFriendly(false);
+        }
+        else if (!/^[a-zA-Z]+[0-9]*$/.test(usernameInput)) {
+            setIsUsernameValid(false);
+        }
+        else if (registeredUsernames.includes(usernameInput.toLowerCase())) {
+            setIsUsernameAvailable(false);
+        }
+        else {
+            setIsUsernameValid(true);
+            setIsUsernameAvailable(true);
+            setIsUsernameFamilyFriendly(true);
+        }
+    }, [usernameInput])
+
+    useEffect(() => {
+        setIsPasswordValid(utils.isPasswordValid(passwordInput));
+    }, [passwordInput])
 
     function onClickSignUpButton() {
         setIsAccountCreationSuccessful(null);
@@ -99,10 +129,6 @@ export default function SignUp() {
                         <UsernameInput
                             usernameInput={usernameInput}
                             setUsernameInput={setUsernameInput}
-                            setIsUsernameAvailable={setIsUsernameAvailable}
-                            setIsUsernameValid={setIsUsernameValid}
-                            setIsUsernameFamilyFriendly={setIsUsernameFamilyFriendly}
-                            registeredUsernames={registeredUsernames}
                         />
                         {!usernameInput || isUsernameAvailable === null
                             ? null
@@ -123,8 +149,6 @@ export default function SignUp() {
                     <PasswordInput
                         passwordInput={passwordInput}
                         setPasswordInput={setPasswordInput}
-                        setIsPasswordValid={setIsPasswordValid}
-                        isPasswordValid={isPasswordValid}
                     />
                     {isPasswordValid === null || isPasswordValid === true
                         ? null

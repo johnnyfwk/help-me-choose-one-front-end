@@ -1,6 +1,88 @@
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import UsernameInput from "../components/UsernameInput";
+import PasswordInput from "../components/PasswordInput";
+import * as api from "../api";
 
 export default function LogIn() {
+    const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
+    console.log(userLoggedIn, "<------ userLoggedIn");
+
+    const [isLoading, setIsLoading] = useState(true);
+    const [isFetchingUsersSuccessful, setIsFetchingUsersSuccessful] = useState(null);
+
+    const [usernameInput, setUsernameInput] = useState("");
+    const [passwordInput, setPasswordInput] = useState("");
+
+    const [registeredUsers, setRegisteredUsers] = useState([]);
+
+    const [isUsernameInputInDatabase, setIsUsernameInputInDatabase] = useState(null);
+    const [isPasswordCorrect, setIsPasswordCorrect] = useState(null);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (Object.keys(userLoggedIn).length > 0) {
+            navigate("/");
+        }
+    }, []);
+
+    useEffect(() => {
+        setIsLoading(true);
+        setIsFetchingUsersSuccessful(null);
+        api.getUsers()
+            .then((users) => {
+                setIsLoading(false);
+                setIsFetchingUsersSuccessful(true);
+                setRegisteredUsers(users);
+            })
+            .catch((error) => {
+                setIsLoading(false);
+                setIsFetchingUsersSuccessful(false);
+            })
+    }, [])
+
+    useEffect(() => {
+        setIsUsernameInputInDatabase(null);
+    }, [usernameInput])
+
+    useEffect(() => {
+        setIsPasswordCorrect(null);
+    }, [passwordInput])
+
+    function onClickLogInButton() {
+        setIsUsernameInputInDatabase(null);
+        setIsPasswordCorrect(null);
+        const userInfo = registeredUsers.filter((user) => {
+            return user.username.toLowerCase() === usernameInput.toLowerCase();
+        })
+        if (userInfo.length === 0) {
+            setIsUsernameInputInDatabase(false);
+        }
+        else if (userInfo.length > 0 && userInfo[0].password !== passwordInput) {
+            setIsUsernameInputInDatabase(true);
+            setIsPasswordCorrect(false);
+        }
+        else {
+            setUserLoggedIn(userInfo[0]);
+            navigate("/");
+        }
+    }
+
+    if (isLoading) {
+        return (
+            <p>Page is loading...</p>
+        )
+    }
+
+    if (isFetchingUsersSuccessful === false) {
+        return (
+            <p className="error">Page could not be loaded.</p>
+        )
+    }
+
     return (
         <div>
             <Helmet>
@@ -15,10 +97,32 @@ export default function LogIn() {
             </header>
 
             <main>
-                <h2>Sub-heading</h2>
-                <p>This is some content on the Log In page. This is some content on the Log In page. This is some content on the Log In page.</p>
-                <p>This is some content on the Log In page. This is some content on the Log In page. This is some content on the Log In page.</p>
-                <p>This is some content on the Log In page. This is some content on the Log In page. This is some content on the Log In page.</p>
+                <UsernameInput 
+                    usernameInput={usernameInput}
+                    setUsernameInput={setUsernameInput}
+                />
+                {isUsernameInputInDatabase === null || isUsernameInputInDatabase === true
+                    ? null
+                    : <span className="error">Username does not exist</span>
+                }
+
+                <PasswordInput
+                    passwordInput={passwordInput}
+                    setPasswordInput={setPasswordInput}
+                />
+                {isPasswordCorrect === null || isPasswordCorrect === true
+                    ? null
+                    : <span className="error">Password is incorrect</span>
+                }
+
+                <button
+                    type="button"
+                    onClick={onClickLogInButton}
+                    disabled={
+                        !usernameInput ||
+                        !passwordInput
+                    }
+                >Log In</button>
             </main>
         </div>
     )

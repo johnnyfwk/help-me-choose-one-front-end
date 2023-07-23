@@ -1,6 +1,7 @@
 import './App.css';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { UserContext } from './contexts/UserContext';
 import Logo from './components/Logo';
 import ShowNavButton from './components/ShowNavButton';
 import Nav from './components/Nav';
@@ -18,7 +19,14 @@ import Footer from './components/Footer';
 import Error404 from './pages/Error404';
 
 function App() {
+    const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
+
     const [isNavVisible, setIsNavVisible] = useState(false);
+    const [isLoggingOutMessageVisible, setIsLoggingOutMessageVisible] = useState(false);
+
+    function onClickLogOutButton() {
+        setUserLoggedIn({});
+    }
 
     return (
         <div className="App">
@@ -28,6 +36,7 @@ function App() {
                 <Nav
                     isNavVisible={isNavVisible}
                     setIsNavVisible={setIsNavVisible}
+                    onClickLogOutButton={onClickLogOutButton}
                 />
             </div>
             

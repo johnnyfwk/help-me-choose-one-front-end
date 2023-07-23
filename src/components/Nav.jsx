@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { Link } from "react-router-dom";
 
-export default function Nav({isNavVisible, setIsNavVisible}) {
+export default function Nav({isNavVisible, setIsNavVisible, onClickLogOutButton}) {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
 
     function onClickNavLinks() {
@@ -14,9 +14,9 @@ export default function Nav({isNavVisible, setIsNavVisible}) {
         setIsNavVisible(false);
     }
 
-    function onClickLogOutButton() {
-        setUserLoggedIn({});
-    }
+    // function onClickLogOutButton() {
+    //     setUserLoggedIn({});
+    // }
 
     const styleNav = {
         left: isNavVisible ? "0%" : "100%"

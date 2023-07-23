@@ -5,6 +5,7 @@ import { Helmet } from "react-helmet";
 
 export default function Home() {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
+    console.log(userLoggedIn, "<------ userLoggedIn");
 
     const navigate = useNavigate();
 
