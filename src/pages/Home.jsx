@@ -5,7 +5,6 @@ import { Helmet } from "react-helmet";
 
 export default function Home() {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
-    console.log(userLoggedIn, "<------ userLoggedIn");
 
     const navigate = useNavigate();
 
@@ -33,8 +32,6 @@ export default function Home() {
 
             <main>
                 <h2>Sub-heading</h2>
-                <Link to="/sign-up">Sign Up</Link>
-                <Link to="/log-in">Log In</Link>
                 <p>This is some text on the home page.</p>
             </main>
         </div>

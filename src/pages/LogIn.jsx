@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import UsernameInput from "../components/UsernameInput";
 import PasswordInput from "../components/PasswordInput";
@@ -94,6 +94,7 @@ export default function LogIn() {
             <header>
                 <h1>Log In</h1>
                 <p>This is the header copy for the Log In page.</p>
+                <p>Don't have an account? <Link to="/sign-up">Sign up</Link>.</p>
             </header>
 
             <main>
