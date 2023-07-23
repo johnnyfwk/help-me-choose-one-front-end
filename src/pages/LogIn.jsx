@@ -8,7 +8,6 @@ import * as api from "../api";
 
 export default function LogIn() {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
-    console.log(userLoggedIn, "<------ userLoggedIn");
 
     const [isLoading, setIsLoading] = useState(true);
     const [isFetchingUsersSuccessful, setIsFetchingUsersSuccessful] = useState(null);
@@ -16,7 +15,7 @@ export default function LogIn() {
     const [usernameInput, setUsernameInput] = useState("");
     const [passwordInput, setPasswordInput] = useState("");
 
-    const [registeredUsers, setRegisteredUsers] = useState([]);
+    const [users, setUsers] = useState([]);
 
     const [isUsernameInputInDatabase, setIsUsernameInputInDatabase] = useState(null);
     const [isPasswordCorrect, setIsPasswordCorrect] = useState(null);
@@ -33,10 +32,10 @@ export default function LogIn() {
         setIsLoading(true);
         setIsFetchingUsersSuccessful(null);
         api.getUsers()
-            .then((users) => {
+            .then((response) => {
                 setIsLoading(false);
                 setIsFetchingUsersSuccessful(true);
-                setRegisteredUsers(users);
+                setUsers(response);
             })
             .catch((error) => {
                 setIsLoading(false);
@@ -55,7 +54,7 @@ export default function LogIn() {
     function onClickLogInButton() {
         setIsUsernameInputInDatabase(null);
         setIsPasswordCorrect(null);
-        const userInfo = registeredUsers.filter((user) => {
+        const userInfo = users.filter((user) => {
             return user.username.toLowerCase() === usernameInput.toLowerCase();
         })
         if (userInfo.length === 0) {

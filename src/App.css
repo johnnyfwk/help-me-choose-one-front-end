@@ -40,6 +40,10 @@ body {
     margin: 0;
 }
 
+img {
+    width: 100%;
+}
+
 #logo-show-nav-button-and-nav {
     background: var(--light-grey);
     display: flex;
@@ -76,8 +80,12 @@ nav {
     transition: left 0.2s;
 }
 
-#menu {
+.load-more-button {
     background: var(--cyan);
+    padding: var(--spacing20) var(--spacing30);
+    border-radius: 10rem;
+    cursor: pointer;
+    font-weight: bold;
 }
 
 #sign-up-link {
@@ -91,6 +99,20 @@ nav {
 #log-out-button {
     background: var(--red);
     cursor: pointer;
+}
+
+.post-card-container {
+    display: grid;
+    gap: var(--spacing20);
+}
+
+.post-card {
+    background: var(--orange);
+}
+
+.post-card img {
+    border: 1px solid black;
+    max-width: 50px;
 }
 
 footer {

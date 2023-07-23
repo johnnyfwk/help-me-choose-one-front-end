@@ -24,6 +24,8 @@ function App() {
     const [isNavVisible, setIsNavVisible] = useState(false);
     const [isLoggingOutMessageVisible, setIsLoggingOutMessageVisible] = useState(false);
 
+    const numberOfItemsToDisplayAndIncrement = 20;
+
     function onClickLogOutButton() {
         setUserLoggedIn({});
     }
@@ -41,7 +43,7 @@ function App() {
             </div>
             
             <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<Home numberOfItemsToDisplayAndIncrement={numberOfItemsToDisplayAndIncrement} />} />
                 <Route path="/sign-up" element={<SignUp />} />
                 <Route path="/log-in" element={<LogIn />} />
                 <Route path="/create-post" element={<CreatePost />} />

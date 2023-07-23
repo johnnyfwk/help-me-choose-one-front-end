@@ -12,6 +12,14 @@ export function getUsers() {
             return response.data.users;
         })
 }
+
+export function getPosts() {
+    return baseURL
+        .get("/posts")
+        .then((response) => {
+            return response.data.posts;
+        })
+}
 // GET requests
 
 // POST requests

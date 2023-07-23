@@ -21,3 +21,40 @@ export function isFamilyFriendly(string) {
 export function isAvatarUrlValid(avatarUrl) {
     return /([a-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif))/i.test(avatarUrl);
 }
+
+export function convertTitleToUrl(title) {
+    return title
+        .replaceAll(" ", "-")
+        .replaceAll("?", "")
+        .replaceAll("!", "")
+        .replaceAll("@", "")
+        .replaceAll("#", "")
+        .replaceAll("£", "")
+        .replaceAll("$", "")
+        .replaceAll("€", "")
+        .replaceAll("¥", "")
+        .replaceAll("%", "")
+        .replaceAll("^", "")
+        .replaceAll("&", "")
+        .replaceAll("*", "")
+        .replaceAll("(", "")
+        .replaceAll(")", "")
+        .replaceAll("+", "")
+        .replaceAll("=", "")
+        .replaceAll("\\", "")
+        .replaceAll("/", "")
+        .replaceAll("[", "")
+        .replaceAll("]", "")
+        .replaceAll("{", "")
+        .replaceAll("}", "")
+        .replaceAll(";", "")
+        .replaceAll(":", "")
+        .replaceAll(".", "")
+        .replaceAll("'", "")
+        .replaceAll("\"", "")
+        .replaceAll(",", "")
+        .replaceAll("<", "")
+        .replaceAll(">", "")
+        .replaceAll("|", "")
+        .toLowerCase();
+}
