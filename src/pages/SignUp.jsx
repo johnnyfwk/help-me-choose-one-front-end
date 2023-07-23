@@ -10,7 +10,6 @@ import * as utils from "../utils";
 
 export default function SignUp() {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
-    console.log(userLoggedIn, "<------ userLoggedIn");
 
     const [isLoading, setIsLoading] = useState(true);
     const [isFetchingUsersSuccessful, setIsFetchingUsersSuccessful] = useState(null);
@@ -41,8 +40,8 @@ export default function SignUp() {
         setIsLoading(true);
         setIsFetchingUsersSuccessful(null);
         api.getUsers()
-            .then((users) => {
-                const registeredUsernamesLowercase = users.map((user) => {
+            .then((response) => {
+                const registeredUsernamesLowercase = response.map((user) => {
                     return user.username.toLowerCase();
                 })
                 setRegisteredUsernames(registeredUsernamesLowercase);
