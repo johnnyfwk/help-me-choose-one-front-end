@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { UserContext } from "../contexts/UserContext";
 import UsernameInput from "../components/UsernameInput";
@@ -121,6 +121,7 @@ export default function SignUp() {
             <header>
                 <h1>Sign Up</h1>
                 <p>Create an account so you can post questions and let the Internet help you make a choice.</p>
+                <p>Already have an account? <Link to="/log-in">Log in</Link>.</p>
             </header>
 
             <main>
