@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import PasswordInput from "../components/PasswordInput";
 import * as api from "../api";
+import * as utils from "../utils";
 
 export default function SignUp() {
     const [usernameInput, setUsernameInput] = useState("");
@@ -13,6 +14,7 @@ export default function SignUp() {
     const [registeredUsernames, setRegisteredUsernames] = useState([])
     const [isUsernameAvailable, setIsUsernameAvailable] = useState(null);
     const [isUsernameValid, setIsUsernameValid] = useState(null);
+    const [isUsernameFamilyFriendly, setIsUsernameFamilyFriendly] = useState(null);
 
     const [isPasswordValid, setIsPasswordValid] = useState(null);
 
@@ -39,13 +41,27 @@ export default function SignUp() {
         if (event.target.value.length === 0) {
             setIsUsernameValid(null);
             setIsUsernameAvailable(null);
+            setIsUsernameFamilyFriendly(null);
         }
-        else if (/^[a-zA-Z]+[0-9]*$/.test(event.target.value)) {
-            setIsUsernameValid(true);
-            setIsUsernameAvailable(!registeredUsernames.includes(event.target.value.toLowerCase()));
-        } else {
+        else if (!utils.isFamilyFriendly(event.target.value)) {
+            setIsUsernameValid(null);
+            setIsUsernameAvailable(null);
+            setIsUsernameFamilyFriendly(false);
+        }
+        else if (!/^[a-zA-Z]+[0-9]*$/.test(event.target.value)) {
             setIsUsernameValid(false);
             setIsUsernameAvailable(null);
+            setIsUsernameFamilyFriendly(null);
+        }
+        else if (registeredUsernames.includes(event.target.value.toLowerCase())) {
+            setIsUsernameValid(null);
+            setIsUsernameAvailable(false);
+            setIsUsernameFamilyFriendly(null);
+        }
+        else {
+            setIsUsernameValid(true);
+            setIsUsernameAvailable(true);
+            setIsUsernameFamilyFriendly(true);
         }
     }
 
@@ -95,11 +111,15 @@ export default function SignUp() {
                             ? null
                             : isUsernameAvailable
                                 ? <span className="success">Username is available</span>
-                                : <span className="error">Username is unavailable</span>
+                                : <span className="error">Username is not available</span>
                         }
                         {isUsernameValid === null || isUsernameValid === true
                             ? null
                             : <span className="error">Username can only contain letters and numbers and must start with a letter.</span>
+                        }
+                        {isUsernameFamilyFriendly === null || isUsernameFamilyFriendly === true
+                            ? null
+                            : <span className="error">Please create a family-friendly username</span>
                         }
                     </div>
                     
@@ -113,8 +133,7 @@ export default function SignUp() {
                     <button
                         type="button"
                         onClick={onClickSignUpButton}
-                        disabled={!usernameInput || !passwordInput || !isUsernameAvailable || !isUsernameValid || !isPasswordValid
-                    }
+                        disabled={!usernameInput || !passwordInput || !isUsernameAvailable || !isUsernameValid || !isPasswordValid || !isUsernameFamilyFriendly}
                     >Sign Up</button>
                 </form>
             </main>
