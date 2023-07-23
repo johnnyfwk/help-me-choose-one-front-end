@@ -1,32 +1,50 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import { UserContext } from "../contexts/UserContext";
+import UsernameInput from "../components/UsernameInput";
 import PasswordInput from "../components/PasswordInput";
+import AvatarInput from "../components/AvatarInput";
 import * as api from "../api";
-import * as utils from "../utils";
 
 export default function SignUp() {
-    const [usernameInput, setUsernameInput] = useState("");
-    const [passwordInput, setPasswordInput] = useState("");
+    const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
+    console.log(userLoggedIn, "<------ userLoggedIn");
 
     const [isLoading, setIsLoading] = useState(true);
     const [isFetchingUsersSuccessful, setIsFetchingUsersSuccessful] = useState(null);
 
+    const [usernameInput, setUsernameInput] = useState("");
     const [registeredUsernames, setRegisteredUsernames] = useState([])
     const [isUsernameAvailable, setIsUsernameAvailable] = useState(null);
     const [isUsernameValid, setIsUsernameValid] = useState(null);
     const [isUsernameFamilyFriendly, setIsUsernameFamilyFriendly] = useState(null);
 
+    const [passwordInput, setPasswordInput] = useState("");
     const [isPasswordValid, setIsPasswordValid] = useState(null);
+
+    const [avatarUrlInput, setAvatarUrlInput] = useState("");
+    const [isAvatarUrlValid, setIsAvatarUrlValid] = useState(true);
+
+    const [isAccountCreationSuccessful, setIsAccountCreationSuccessful] = useState(null);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (Object.keys(userLoggedIn).length > 0) {
+            navigate("/");
+        }
+    }, []);
 
     useEffect(() => {
         setIsLoading(true);
         setIsFetchingUsersSuccessful(null);
         api.getUsers()
             .then((users) => {
-                const takenUsernames = users.map((user) => {
+                const takenUsernamesLowercase = users.map((user) => {
                     return user.username.toLowerCase();
                 })
-                setRegisteredUsernames(takenUsernames);
+                setRegisteredUsernames(takenUsernamesLowercase);
                 setIsLoading(false);
                 setIsFetchingUsersSuccessful(true);
             })
@@ -36,38 +54,18 @@ export default function SignUp() {
             })
     }, [])
 
-    function handleUsernameInput(event) {
-        setUsernameInput(event.target.value);
-        if (event.target.value.length === 0) {
-            setIsUsernameValid(null);
-            setIsUsernameAvailable(null);
-            setIsUsernameFamilyFriendly(null);
-        }
-        else if (!utils.isFamilyFriendly(event.target.value)) {
-            setIsUsernameValid(null);
-            setIsUsernameAvailable(null);
-            setIsUsernameFamilyFriendly(false);
-        }
-        else if (!/^[a-zA-Z]+[0-9]*$/.test(event.target.value)) {
-            setIsUsernameValid(false);
-            setIsUsernameAvailable(null);
-            setIsUsernameFamilyFriendly(null);
-        }
-        else if (registeredUsernames.includes(event.target.value.toLowerCase())) {
-            setIsUsernameValid(null);
-            setIsUsernameAvailable(false);
-            setIsUsernameFamilyFriendly(null);
-        }
-        else {
-            setIsUsernameValid(true);
-            setIsUsernameAvailable(true);
-            setIsUsernameFamilyFriendly(true);
-        }
-    }
-
     function onClickSignUpButton() {
-        console.log("usernameInput:", usernameInput);
-        console.log("passwordInput:", passwordInput);
+        setIsAccountCreationSuccessful(null);
+        api.addUser(usernameInput, passwordInput, avatarUrlInput ? avatarUrlInput : "default-avatar.webp", new Date())
+            .then((response) => {
+                setIsAccountCreationSuccessful(true);
+                setUserLoggedIn(response);
+                navigate("/");
+            })
+            .catch((error) => {
+                console.log(error);
+                setIsAccountCreationSuccessful(false);
+            })
     }
 
     if (isLoading) {
@@ -98,15 +96,14 @@ export default function SignUp() {
             <main>
                 <form>
                     <div>
-                        <label htmlFor="username">Username:</label>
-                        <input
-                            type="text"
-                            id="username"
-                            name="username"
-                            value={usernameInput}
-                            onChange={handleUsernameInput}
-                            maxLength="30"
-                        ></input>
+                        <UsernameInput
+                            usernameInput={usernameInput}
+                            setUsernameInput={setUsernameInput}
+                            setIsUsernameAvailable={setIsUsernameAvailable}
+                            setIsUsernameValid={setIsUsernameValid}
+                            setIsUsernameFamilyFriendly={setIsUsernameFamilyFriendly}
+                            registeredUsernames={registeredUsernames}
+                        />
                         {!usernameInput || isUsernameAvailable === null
                             ? null
                             : isUsernameAvailable
@@ -129,12 +126,41 @@ export default function SignUp() {
                         setIsPasswordValid={setIsPasswordValid}
                         isPasswordValid={isPasswordValid}
                     />
+                    {isPasswordValid === null || isPasswordValid === true
+                        ? null
+                        : <span className="error">Password can not contain spaces</span>    
+                    }
+
+                    <AvatarInput
+                        avatarUrlInput={avatarUrlInput}
+                        setAvatarUrlInput={setAvatarUrlInput}
+                        setIsAvatarUrlValid={setIsAvatarUrlValid}
+                    />
+                    {isAvatarUrlValid === null || isAvatarUrlValid === true
+                        ? null
+                        : <span className="error">Please enter a valid image URL</span>
+                    }
 
                     <button
                         type="button"
                         onClick={onClickSignUpButton}
-                        disabled={!usernameInput || !passwordInput || !isUsernameAvailable || !isUsernameValid || !isPasswordValid || !isUsernameFamilyFriendly}
+                        disabled={
+                            !usernameInput ||
+                            !passwordInput ||
+                            !isUsernameAvailable ||
+                            !isUsernameValid ||
+                            !isPasswordValid ||
+                            !isUsernameFamilyFriendly ||
+                            !isAvatarUrlValid
+                        }
                     >Sign Up</button>
+
+                    {isAccountCreationSuccessful === null
+                        ? null
+                        : isAccountCreationSuccessful === true
+                            ? <span className="success">Account has been created successfully!</span>
+                            : <span className="error">Account could not be created</span>
+                    }
                 </form>
             </main>
         </div>

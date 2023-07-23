@@ -1,6 +1,6 @@
 import * as utils from "../utils";
 
-export default function PasswordInput({passwordInput, setPasswordInput, setIsPasswordValid, isPasswordValid}) {
+export default function PasswordInput({passwordInput, setPasswordInput, setIsPasswordValid}) {
     function handlePasswordInput(event) {
         setPasswordInput(event.target.value);
         setIsPasswordValid(utils.isPasswordValid(event.target.value));
@@ -10,16 +10,12 @@ export default function PasswordInput({passwordInput, setPasswordInput, setIsPas
         <div>
             <label htmlFor="password">Password:</label>
             <input
-                type="text"
+                type="password"
                 id="password"
                 name="password"
                 value={passwordInput}
                 onChange={handlePasswordInput}
             ></input>
-            {isPasswordValid === null || isPasswordValid === true
-                ? null
-                : <span className="error">Password can not contain spaces.</span>    
-            }
         </div>
     )
 }

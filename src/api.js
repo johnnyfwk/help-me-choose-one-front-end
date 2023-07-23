@@ -13,3 +13,13 @@ export function getUsers() {
         })
 }
 // GET requests
+
+// POST requests
+export function addUser(username, password, avatar_url, join_date) {
+    return baseURL
+        .post("/users", {username, password, avatar_url, join_date})
+        .then((response) => {
+            return response.data.user;
+        })
+}
+// POST requests

@@ -1,7 +1,19 @@
-import { Link } from "react-router-dom";
+import { useEffect, useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
+import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
 export default function Home() {
+    const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (Object.keys(userLoggedIn).length > 0) {
+            navigate("/");
+        }
+    }, []);
+
     return (
         <div>
             <Helmet>
@@ -11,7 +23,10 @@ export default function Home() {
             </Helmet>
 
             <header>
-                <h1>Home</h1>
+                {Object.keys(userLoggedIn).length === 0
+                    ? <h1>Welcome Guest</h1>
+                    : <h1>Welcome {userLoggedIn.username}</h1>
+                }
                 <p>Let the Internet help you make a choice</p>
             </header>
 

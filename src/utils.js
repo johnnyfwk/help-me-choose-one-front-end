@@ -17,3 +17,7 @@ export function isFamilyFriendly(string) {
         return true;
     } 
 }
+
+export function isAvatarUrlValid(avatarUrl) {
+    return /([a-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif))/i.test(avatarUrl);
+}
