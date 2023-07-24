@@ -19,12 +19,26 @@ export function isFamilyFriendly(string) {
 }
 
 export function isAvatarUrlValid(avatarUrl) {
-    return /([a-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif))/i.test(avatarUrl);
+    return /([a-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif|bmp|webp|svg))/i.test(avatarUrl);
+}
+
+export function convertUrlsToUserFriendlyHeadings(url) {
+    const arrayOfCapitalisedWords = url.split("-").map((word) => {
+        if (word === "and") {
+            return "&";
+        }
+        else {
+            return word[0].toUpperCase() + word.slice(1);
+        }
+    })
+    const userFriendlyHeadings = arrayOfCapitalisedWords.join(" ");
+    return userFriendlyHeadings;
 }
 
 export function convertTitleToUrl(title) {
     return title
         .replaceAll(" ", "-")
+        .replaceAll("&", "and")
         .replaceAll("?", "")
         .replaceAll("!", "")
         .replaceAll("@", "")
@@ -35,7 +49,6 @@ export function convertTitleToUrl(title) {
         .replaceAll("¥", "")
         .replaceAll("%", "")
         .replaceAll("^", "")
-        .replaceAll("&", "")
         .replaceAll("*", "")
         .replaceAll("(", "")
         .replaceAll(")", "")

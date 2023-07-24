@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 export default function Nav({isNavVisible, setIsNavVisible, onClickLogOutButton}) {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
-    console.log(userLoggedIn, "<------ userLoggedIn");
 
     function onClickNavLinks() {
         window.scrollTo(0, 0);

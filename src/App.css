@@ -81,7 +81,7 @@ nav {
 }
 
 .load-more-button {
-    background: var(--cyan);
+    background: var(--lime);
     padding: var(--spacing20) var(--spacing30);
     border-radius: 10rem;
     cursor: pointer;
