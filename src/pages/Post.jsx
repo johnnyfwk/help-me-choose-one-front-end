@@ -29,15 +29,18 @@ export default function Post({isVotesVisible, setIsVotesVisible}) {
                 setIsFetchingPostSuccessful(true);
                 setPost(response);
                 const voters = [];
-                response.options_and_votes.forEach((option) => {
-                    option.votesFromUserIds.forEach((voterId) => {
-                        voters.push(voterId);
+                if (response.options_and_votes.length > 0) {
+                    response.options_and_votes.forEach((option) => {
+                        option.votesFromUserIds.forEach((voterId) => {
+                            voters.push(voterId);
+                        })
                     })
-                })
-                setVoterIds(voters);
+                    setVoterIds(voters);
+                }
                 if (voters.includes(userLoggedIn.user_id)) {
-                    console.log("User has already voted on this post.")
                     setHasLoggedInUserAlreadyVoted(true);
+                } else {
+                    setHasLoggedInUserAlreadyVoted(false);
                 }
             })
             .catch((error) => {
@@ -116,7 +119,7 @@ export default function Post({isVotesVisible, setIsVotesVisible}) {
                                         {isVotesVisible
                                             ?   <div className="post-option-votes-and-percentage">
                                                 <div>{option.votesFromUserIds.length} votes</div>
-                                                <div>({Math.round((option.votesFromUserIds.length * 100) / voterIds.length)}%)</div>
+                                                <div>({voterIds.length > 0 ? Math.round((option.votesFromUserIds.length * 100) / voterIds.length) : 0}%)</div>
                                             </div>
                                             : null
                                         }
@@ -125,14 +128,13 @@ export default function Post({isVotesVisible, setIsVotesVisible}) {
                                     {isVotesVisible
                                         ? <div
                                             className="post-option-percentage-bar"
-                                            data-percentage={Math.round((option.votesFromUserIds.length * 100) / voterIds.length)}
-                                            style={stylePostOptionPercentageBar(Math.round((option.votesFromUserIds.length * 100) / voterIds.length))}
+                                            data-percentage={voterIds.length > 0 ? Math.round((option.votesFromUserIds.length * 100) / voterIds.length) : 0}
+                                            style={stylePostOptionPercentageBar(voterIds.length > 0 ? Math.round((option.votesFromUserIds.length * 100) / voterIds.length) : 0)}
                                         >
                                             <span>*</span>
                                         </div>
                                         : null
                                     }
-                                    
                                 </div>
                             )
                         })}
@@ -150,10 +152,6 @@ export default function Post({isVotesVisible, setIsVotesVisible}) {
                                 >Vote</button>
                             </div>   
                     }
-
-                    <div>
-                        
-                    </div>
                 </form>
 
                 <div>{new Date(post.post_date).toLocaleDateString()}</div>

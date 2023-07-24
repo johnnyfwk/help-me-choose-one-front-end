@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import { Helmet } from "react-helmet";
 import * as api from "../api";
@@ -24,12 +24,6 @@ export default function Home({numberOfItemsToDisplayAndIncrement}) {
     const [itemsToDisplay, setItemsToDisplay] = useState([]);
 
     const navigate = useNavigate();
-
-    useEffect(() => {
-        if (Object.keys(userLoggedIn).length > 0) {
-            navigate("/");
-        }
-    }, []);
 
     useEffect(() => {
         setIsLoading(true);

@@ -35,6 +35,10 @@ export function convertUrlsToUserFriendlyHeadings(url) {
     return userFriendlyHeadings;
 }
 
+export function convertCategoryToUrl(category) {
+    return category.replaceAll("&", "and").replaceAll(" ", "-").replaceAll(",", "").toLowerCase();
+}
+
 export function convertTitleToUrl(title) {
     return title
         .replaceAll(" ", "-")
