@@ -9,6 +9,7 @@ import SignUp from './pages/SignUp';
 import LogIn from './pages/LogIn';
 import Profile from './pages/Profile';
 import Home from './pages/Home';
+import Post from './pages/Post';
 import CreatePost from './pages/CreatePost';
 import About from './pages/About';
 import Contact from './pages/Contact';
@@ -22,6 +23,7 @@ function App() {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
 
     const [isNavVisible, setIsNavVisible] = useState(false);
+    const [isVotesVisible, setIsVotesVisible] = useState(false);
 
     const numberOfItemsToDisplayAndIncrement = 20;
 
@@ -39,12 +41,12 @@ function App() {
                     setIsNavVisible={setIsNavVisible}
                     onClickLogOutButton={onClickLogOutButton}
                 />
-            </div>
-            
+            </div>            
             <Routes>
                 <Route path="/" element={<Home numberOfItemsToDisplayAndIncrement={numberOfItemsToDisplayAndIncrement} />} />
                 <Route path="/sign-up" element={<SignUp />} />
                 <Route path="/log-in" element={<LogIn />} />
+                <Route path="/post/:post_id_and_title" element={<Post isVotesVisible={isVotesVisible} setIsVotesVisible={setIsVotesVisible} />} />
                 <Route path="/create-post" element={<CreatePost />} />
                 <Route path="/profile/" element={<Profile />} />
                 <Route path="/profile/:user_id" element={<Profile />} />
