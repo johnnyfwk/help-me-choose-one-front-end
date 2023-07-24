@@ -38,7 +38,7 @@ export default function CategoryInput({categoryInput, setCategoryInput, setIsPos
                 <option value="Outdoor">Outdoor</option>
                 <option value="Pets">Pets</option>
                 <option value="Property & Land">Property & Land</option>
-                <option value="Restaurants, Takeaways & Cafes">Restaurants, Takeaways & Cafes</option>
+                <option value="Restaurants, Takeaways & Cafes">Restaurants & Coffee Shops</option>
                 <option value="Shopping">Shopping</option>
                 <option value="Sports & Activities">Sports & Activities</option>
                 <option value="Toys & Games">Toys & Games</option>
