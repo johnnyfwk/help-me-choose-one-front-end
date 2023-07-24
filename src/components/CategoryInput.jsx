@@ -1,8 +1,14 @@
-export default function CategoryInput() {
+export default function CategoryInput({categoryInput, setCategoryInput, setIsPostCreationSuccessful}) {
+    function handleCategoryInput(event) {
+        setCategoryInput(event.target.value);
+        setIsPostCreationSuccessful(null);
+    }
+
     return (
         <div>
             <label htmlFor="categories">Categories:</label>
-            <select>
+            <select id="categories" value={categoryInput} onChange={handleCategoryInput}>
+                <option defaultValue>Select a Category</option>
                 <option value="Accommodation">Accommodation</option>
                 <option value="Arts & Draft">Arts & Draft</option>
                 <option value="Bags & Luggage">Bags & Luggage</option>

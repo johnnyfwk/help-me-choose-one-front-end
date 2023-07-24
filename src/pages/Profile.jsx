@@ -1,6 +1,19 @@
+import { useEffect, useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
 export default function Profile() {
+    const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (Object.keys(userLoggedIn).length === 0) {
+            navigate("/log-in");
+        }
+    }, [userLoggedIn]);
+
     return (
         <div>
             <Helmet>

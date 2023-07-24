@@ -51,6 +51,7 @@ img {
     justify-content: space-between;
     position: sticky;
     top: 0;
+    z-index: 1;
 }
 
 #logo {
@@ -70,7 +71,7 @@ img {
 }
 
 nav {
-    background: var(--orange);
+    background: var(--cyan);
     position: fixed;
     display: grid;
     width: 100%;
@@ -101,6 +102,17 @@ nav {
     cursor: pointer;
 }
 
+#logged-out-message {
+    background: var(--lime);
+    position: fixed;
+    bottom: -100%;
+    left: 0%;
+    width: 100%;
+    text-align: center;
+    padding: var(--spacing50);
+    transition: bottom 0.2s;
+}
+
 .post-card-container {
     display: grid;
     gap: var(--spacing20);
@@ -125,19 +137,11 @@ nav {
     gap: var(--spacing20);
 }
 
-.post-option {
-    /* background: var(--light-grey); */
-    /* display: grid; */
-    z-index: -1;
-}
-
 .post-option-radio-input-and-label {
-    /* background: red; */
     font-weight: bold;
 }
 
 .post-option-votes-and-percentage {
-    /* background: yellow; */
     display: flex;
     flex-wrap: wrap;
     gap: var(--spacing5)

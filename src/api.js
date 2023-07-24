@@ -46,4 +46,12 @@ export function addUser(username, password, avatar_url, join_date) {
             return response.data.user;
         })
 }
+
+export function createPost(post_date, post_updated, title, description, category, options_and_votes, post_owner_id) {
+    return baseURL
+        .post("/posts", {post_date, post_updated, title, description, category, options_and_votes, post_owner_id})
+        .then((response) => {
+            return response.data.post;
+        })
+}
 // POST requests

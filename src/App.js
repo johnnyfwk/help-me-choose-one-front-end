@@ -24,11 +24,18 @@ function App() {
 
     const [isNavVisible, setIsNavVisible] = useState(false);
     const [isVotesVisible, setIsVotesVisible] = useState(false);
+    const [isLoggedOutMessageVisible, setIsLoggedOutMessageVisible] = useState(false);
 
     const numberOfItemsToDisplayAndIncrement = 20;
 
     function onClickLogOutButton() {
         setUserLoggedIn({});
+        setIsLoggedOutMessageVisible(true);
+        setTimeout(() => setIsLoggedOutMessageVisible(false), 3000);
+    }
+
+    const styleLoggedOutMessage = {
+        bottom: isLoggedOutMessageVisible ? "0%" : "-100%"
     }
 
     return (
@@ -58,6 +65,7 @@ function App() {
                 <Route path="*" element={<Error404 />} />
             </Routes>
             <Footer />
+            <div id="logged-out-message" style={styleLoggedOutMessage}>You have logged out.</div>
         </div>
     );
 }
