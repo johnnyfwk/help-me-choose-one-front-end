@@ -9,7 +9,7 @@ export default function PostCard({post}) {
 
     return (
         <Link to={`/post/${post.post_id}-${utils.convertTitleToUrl(post.title)}`} className="post-card" loading="lazy">
-            <img src={require(`../assets/images/avatars/${post.avatar_url}`)} />
+            <img src={require(`../assets/images/avatars/${post.avatar_url}`)} alt="Avatar" />
             <div>{post.username}</div>
             <h2>{post.title}</h2>
             <p>{post.description}</p>

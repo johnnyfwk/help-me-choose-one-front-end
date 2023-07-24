@@ -13,7 +13,6 @@ export function getUsers() {
         })
 }
 
-
 export function getPosts() {
     return baseURL
         .get("/posts")
@@ -22,9 +21,17 @@ export function getPosts() {
         })
 }
 
+export function getPostById(post_id) {
+    return baseURL
+        .get(`/posts/${post_id}`)
+        .then((response) => {
+            return response.data.post;
+        })
+}
+
 export function getPostsByCategory(category) {
     return baseURL
-        .get(`/posts/${category}`)
+        .get(`/posts/category/${category}`)
         .then((response) => {
             return response.data.posts;
         })

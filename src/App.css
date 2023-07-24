@@ -115,6 +115,42 @@ nav {
     max-width: 50px;
 }
 
+#post-owners-avatar {
+    border: 1px solid black;
+    max-width: 100px;
+}
+
+#post-options {
+    display: grid;
+    gap: var(--spacing20);
+}
+
+.post-option {
+    /* background: var(--light-grey); */
+    /* display: grid; */
+    z-index: -1;
+}
+
+.post-option-radio-input-and-label {
+    /* background: red; */
+    font-weight: bold;
+}
+
+.post-option-votes-and-percentage {
+    /* background: yellow; */
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing5)
+}
+
+.post-option-percentage-bar {
+    background: orange;
+}
+
+.post-option-percentage-bar > span {
+    opacity: 0;
+}
+
 footer {
     background: var(--grey);
 }
