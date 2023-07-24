@@ -125,26 +125,24 @@ export default function SignUp() {
 
             <main>
                 <form>
-                    <div>
-                        <UsernameInput
-                            usernameInput={usernameInput}
-                            setUsernameInput={setUsernameInput}
-                        />
-                        {!usernameInput || isUsernameAvailable === null
-                            ? null
-                            : isUsernameAvailable
-                                ? <span className="success">Username is available</span>
-                                : <span className="error">Username is not available</span>
-                        }
-                        {isUsernameValid === null || isUsernameValid === true
-                            ? null
-                            : <span className="error">Username can only contain letters and numbers and must start with a letter.</span>
-                        }
-                        {isUsernameFamilyFriendly === null || isUsernameFamilyFriendly === true
-                            ? null
-                            : <span className="error">Please create a family-friendly username</span>
-                        }
-                    </div>
+                    <UsernameInput
+                        usernameInput={usernameInput}
+                        setUsernameInput={setUsernameInput}
+                    />
+                    {!usernameInput || isUsernameAvailable === null
+                        ? null
+                        : isUsernameAvailable
+                            ? <span className="success">Username is available</span>
+                            : <span className="error">Username is not available</span>
+                    }
+                    {isUsernameValid === null || isUsernameValid === true
+                        ? null
+                        : <span className="error">Username can only contain letters and numbers and must start with a letter.</span>
+                    }
+                    {isUsernameFamilyFriendly === null || isUsernameFamilyFriendly === true
+                        ? null
+                        : <span className="error">Please create a family-friendly username</span>
+                    }
                     
                     <PasswordInput
                         passwordInput={passwordInput}

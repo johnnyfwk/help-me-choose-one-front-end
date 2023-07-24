@@ -13,9 +13,18 @@ export function getUsers() {
         })
 }
 
+
 export function getPosts() {
     return baseURL
         .get("/posts")
+        .then((response) => {
+            return response.data.posts;
+        })
+}
+
+export function getPostsByCategory(category) {
+    return baseURL
+        .get(`/posts/${category}`)
         .then((response) => {
             return response.data.posts;
         })

@@ -22,7 +22,6 @@ function App() {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
 
     const [isNavVisible, setIsNavVisible] = useState(false);
-    const [isLoggingOutMessageVisible, setIsLoggingOutMessageVisible] = useState(false);
 
     const numberOfItemsToDisplayAndIncrement = 20;
 

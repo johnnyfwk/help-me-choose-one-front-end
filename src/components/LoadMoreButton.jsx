@@ -1,7 +1,7 @@
-export default function LoadMoreButton({numberOfItemsToDisplayAndIncrement, setNumberOfItemsToDisplay, posts, numberOfItemsToDisplay}) {
+export default function LoadMoreButton({numberOfItemsToDisplayAndIncrement, setNumberOfItemsToDisplay, posts, numberOfItemsToDisplay, itemsToDisplay}) {
     function onClickLoadMoreButton() {
-        setNumberOfItemsToDisplay((currentNumberOfItemsTodisplay) => {
-            return currentNumberOfItemsTodisplay + numberOfItemsToDisplayAndIncrement;
+        setNumberOfItemsToDisplay((currentNumberOfItemsToDisplay) => {
+            return currentNumberOfItemsToDisplay + numberOfItemsToDisplayAndIncrement;
         })
     }
 
