@@ -8,7 +8,7 @@ import AvatarInput from "../components/AvatarInput";
 import * as api from "../api";
 import * as utils from "../utils";
 
-export default function SignUp() {
+export default function SignUp({setIsAccountCreatedMessageVisible, setIsAccountNotCreatedMessageVisible}) {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
 
     const [isLoading, setIsLoading] = useState(true);
@@ -89,10 +89,14 @@ export default function SignUp() {
             .then((response) => {
                 setIsAccountCreationSuccessful(true);
                 setUserLoggedIn(response);
+                setIsAccountCreatedMessageVisible(true);
+                setTimeout(() => setIsAccountCreatedMessageVisible(false), 3000);
                 navigate("/");
             })
             .catch((error) => {
                 setIsAccountCreationSuccessful(false);
+                setIsAccountNotCreatedMessageVisible(true);
+                setTimeout(() => setIsAccountNotCreatedMessageVisible(false), 3000);
             })
     }
 
@@ -175,13 +179,6 @@ export default function SignUp() {
                             !isAvatarUrlValid
                         }
                     >Sign Up</button>
-
-                    {isAccountCreationSuccessful === null
-                        ? null
-                        : isAccountCreationSuccessful === true
-                            ? <span className="success">Account has been created successfully!</span>
-                            : <span className="error">Account could not be created</span>
-                    }
                 </form>
             </main>
         </div>

@@ -102,6 +102,8 @@ nav {
     cursor: pointer;
 }
 
+#account-created-message,
+#account-not-created-message,
 #logged-out-message,
 #vote-added-message,
 #vote-not-added-message,
@@ -119,12 +121,14 @@ nav {
     transition: bottom 0.2s;
 }
 
+#account-created-message,
 #logged-out-message,
 #vote-added-message,
 #post-created-message {
     background: var(--lime);
 }
 
+#account-not-created-message,
 #vote-not-added-message,
 #post-not-created-message {
     background: var(--red);

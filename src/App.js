@@ -24,6 +24,8 @@ function App() {
 
     const [isNavVisible, setIsNavVisible] = useState(false);
     const [isVotesVisible, setIsVotesVisible] = useState(false);
+    const [isAccountCreatedMessageVisible, setIsAccountCreatedMessageVisible] = useState(false);
+    const [isAccountNotCreatedMessageVisible, setIsAccountNotCreatedMessageVisible] = useState(false);
     const [isLoggedOutMessageVisible, setIsLoggedOutMessageVisible] = useState(false);
     const [isVoteAddedMessageVisible, setIsVoteAddedMessageVisible] = useState(false);
     const [isVoteNotAddedMessageVisible, setIsVoteNotAddedMessageVisible] = useState(false);
@@ -36,6 +38,14 @@ function App() {
         setUserLoggedIn({});
         setIsLoggedOutMessageVisible(true);
         setTimeout(() => setIsLoggedOutMessageVisible(false), 3000);
+    }
+
+    const styleAccountCreatedMessage = {
+        bottom: isAccountCreatedMessageVisible ? "0%" : "-100%"
+    }
+
+    const styleAccountNotCreatedMessage = {
+        bottom: isAccountNotCreatedMessageVisible ? "0%" : "-100%"
     }
 
     const styleLoggedOutMessage = {
@@ -71,7 +81,14 @@ function App() {
             </div>            
             <Routes>
                 <Route path="/" element={<Home numberOfItemsToDisplayAndIncrement={numberOfItemsToDisplayAndIncrement} />} />
-                <Route path="/sign-up" element={<SignUp />} />
+                <Route
+                    path="/sign-up"
+                    element={
+                        <SignUp
+                            setIsAccountCreatedMessageVisible={setIsAccountCreatedMessageVisible}
+                            setIsAccountNotCreatedMessageVisible={setIsAccountNotCreatedMessageVisible}
+                        />
+                    } />
                 <Route path="/log-in" element={<LogIn />} />
                 <Route
                     path="/post/:post_id_and_title"
@@ -101,6 +118,8 @@ function App() {
             </Routes>
             <Footer />
 
+            <div id="account-created-message" style={styleAccountCreatedMessage}>Account has been created</div>
+            <div id="account-not-created-message" style={styleAccountNotCreatedMessage}>Account could not be created</div>
             <div id="logged-out-message" style={styleLoggedOutMessage}>You have logged out</div>
             <div id="vote-added-message" style={styleVoteAddedMessage}>Your vote bas been added</div>
             <div id="vote-not-added-message" style={styleVoteNotAddedMessage}>Your vote could not be added</div>
