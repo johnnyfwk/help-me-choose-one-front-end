@@ -102,15 +102,32 @@ nav {
     cursor: pointer;
 }
 
-#logged-out-message {
-    background: var(--lime);
+#logged-out-message,
+#vote-added-message,
+#vote-not-added-message,
+#post-created-message,
+#post-not-created-message {
     position: fixed;
     bottom: -100%;
     left: 0%;
     width: 100%;
-    text-align: center;
-    padding: var(--spacing50);
+    height: 100px;
+    display: grid;
+    align-content: center;
+    justify-content: center;
+    font-weight: bold;
     transition: bottom 0.2s;
+}
+
+#logged-out-message,
+#vote-added-message,
+#post-created-message {
+    background: var(--lime);
+}
+
+#vote-not-added-message,
+#post-not-created-message {
+    background: var(--red);
 }
 
 .post-card-container {
@@ -130,6 +147,10 @@ nav {
 #post-owners-avatar {
     border: 1px solid black;
     max-width: 100px;
+}
+
+.post-avatar {
+    max-width: 200px;
 }
 
 #post-options {

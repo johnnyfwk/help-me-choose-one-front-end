@@ -54,4 +54,12 @@ export function createPost(post_date, post_updated, title, description, category
             return response.data.post;
         })
 }
+
+export function addVote(post_updated, title, description, category, options_and_votes, post_id) {
+    return baseURL
+        .patch(`/posts/${post_id}`, {post_updated, title, description, category, options_and_votes})
+        .then((response) => {
+            return response.data.post;
+        })
+}
 // POST requests

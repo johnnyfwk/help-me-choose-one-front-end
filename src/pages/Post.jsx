@@ -4,7 +4,7 @@ import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import * as api from "../api";
 
-export default function Post({isVotesVisible, setIsVotesVisible}) {
+export default function Post({isVotesVisible, setIsVotesVisible, setIsVoteAddedMessageVisible, setIsVoteNotAddedMessageVisible}) {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
     const {post_id_and_title} = useParams();
     const postId = parseInt(post_id_and_title.slice(0, post_id_and_title.indexOf("-")));
@@ -19,10 +19,13 @@ export default function Post({isVotesVisible, setIsVotesVisible}) {
     const [voterIds, setVoterIds] = useState([]);
     const [hasLoggedInUserAlreadyVoted, setHasLoggedInUserAlreadyVoted] = useState(null);
 
+    const [isVoteAddedSuccessfully, setIsVoteAddedSuccessfully] = useState(null);
+
     useEffect(() => {
         setIsLoading(true);
         setIsFetchingPostSuccessful(null);
         setHasLoggedInUserAlreadyVoted(null);
+        setIsVoteAddedSuccessfully(null);
         api.getPostById(postId)
             .then((response) => {
                 setIsLoading(false);
@@ -48,7 +51,7 @@ export default function Post({isVotesVisible, setIsVotesVisible}) {
                 setIsFetchingPostSuccessful(false);
                 setHasLoggedInUserAlreadyVoted(null);
             })
-    }, [post_id_and_title])
+    }, [post_id_and_title, isVoteAddedSuccessfully])
 
     if (isLoading) {
         return (
@@ -67,7 +70,33 @@ export default function Post({isVotesVisible, setIsVotesVisible}) {
     }
 
     function onClickVoteButton() {
-        console.log(optionInput);
+        let updatedOptionsAndVotes = [];
+        post.options_and_votes.forEach((option) => {
+            const newOption = {};
+            newOption.option = option.option;
+            newOption.optionImage = option.optionImage;
+            if (option.option === optionInput) {
+                newOption.votesFromUserIds = [...option.votesFromUserIds, userLoggedIn.user_id];
+            }
+            else {
+                newOption.votesFromUserIds = [...option.votesFromUserIds];
+            }
+            updatedOptionsAndVotes.push(newOption);
+        })
+
+        setIsVoteAddedMessageVisible(false);
+        setIsVoteNotAddedMessageVisible(false);
+        api.addVote(new Date(), post.title, post.description, post.category, updatedOptionsAndVotes, postId)
+            .then((response) => {
+                setIsVoteAddedSuccessfully(true);
+                setIsVoteAddedMessageVisible(true);
+                setTimeout(() => setIsVoteAddedMessageVisible(false), 3000);
+            })
+            .catch((error) => {
+                setIsVoteAddedSuccessfully(false);
+                setIsVoteNotAddedMessageVisible(true);
+                setTimeout(() => setIsVoteNotAddedMessageVisible(false), 3000);
+            })
     }
 
     function onClickShowVotesButton() {
@@ -78,7 +107,7 @@ export default function Post({isVotesVisible, setIsVotesVisible}) {
 
     const stylePostOption = {
         position: "relative"
-    }
+    };
 
     const stylePostOptionPercentageBar = (percentage) => ({
         width: `${percentage}%`,
@@ -97,7 +126,10 @@ export default function Post({isVotesVisible, setIsVotesVisible}) {
             </header>
 
             <main>
-                <img src={require(`../assets/images/avatars/${post.avatar_url}`)} alt="Avatar" id="post-owners-avatar" />
+                {post.avatar_url === "default-avatar.webp"
+                    ? <img src={require(`../assets/images/avatars/${post.avatar_url}`)} alt="Avatar" className="post-avatar" />
+                    : <img src={post.avatar_url} alt="Avatar" className="post-avatar" />
+                }
                 <div>{post.username}</div>
                 <p>{post.description}</p>
 

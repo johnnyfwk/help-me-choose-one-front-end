@@ -25,6 +25,10 @@ function App() {
     const [isNavVisible, setIsNavVisible] = useState(false);
     const [isVotesVisible, setIsVotesVisible] = useState(false);
     const [isLoggedOutMessageVisible, setIsLoggedOutMessageVisible] = useState(false);
+    const [isVoteAddedMessageVisible, setIsVoteAddedMessageVisible] = useState(false);
+    const [isVoteNotAddedMessageVisible, setIsVoteNotAddedMessageVisible] = useState(false);
+    const [isPostCreatedMessageVisible, setIsPostCreatedMessageVisible] = useState(false);
+    const [isPostNotCreatedMessageVisible, setIsPostNotCreatedMessageVisible] = useState(false);
 
     const numberOfItemsToDisplayAndIncrement = 20;
 
@@ -36,6 +40,22 @@ function App() {
 
     const styleLoggedOutMessage = {
         bottom: isLoggedOutMessageVisible ? "0%" : "-100%"
+    }
+
+    const styleVoteAddedMessage = {
+        bottom: isVoteAddedMessageVisible ? "0%" : "-100%"
+    };
+
+    const styleVoteNotAddedMessage = {
+        bottom: isVoteNotAddedMessageVisible ? "0%" : "-100%"
+    };
+
+    const stylePostCreatedMessage = {
+        bottom: isPostCreatedMessageVisible ? "0%" : "-100%"
+    }
+
+    const stylePostNotCreatedMessage = {
+        bottom: isPostNotCreatedMessageVisible ? "0%" : "-100%"
     }
 
     return (
@@ -53,8 +73,23 @@ function App() {
                 <Route path="/" element={<Home numberOfItemsToDisplayAndIncrement={numberOfItemsToDisplayAndIncrement} />} />
                 <Route path="/sign-up" element={<SignUp />} />
                 <Route path="/log-in" element={<LogIn />} />
-                <Route path="/post/:post_id_and_title" element={<Post isVotesVisible={isVotesVisible} setIsVotesVisible={setIsVotesVisible} />} />
-                <Route path="/create-post" element={<CreatePost />} />
+                <Route
+                    path="/post/:post_id_and_title"
+                    element={
+                        <Post
+                            isVotesVisible={isVotesVisible}
+                            setIsVotesVisible={setIsVotesVisible}
+                            setIsVoteAddedMessageVisible={setIsVoteAddedMessageVisible}
+                            setIsVoteNotAddedMessageVisible={setIsVoteNotAddedMessageVisible}
+                        />
+                    } />
+                <Route
+                    path="/create-post"
+                    element={
+                        <CreatePost
+                            setIsPostCreatedMessageVisible={setIsPostCreatedMessageVisible}
+                            setIsPostNotCreatedMessageVisible={setIsPostNotCreatedMessageVisible} />
+                    } />
                 <Route path="/profile/" element={<Profile />} />
                 <Route path="/profile/:user_id" element={<Profile />} />
                 <Route path="/about" element={<About />} />
@@ -65,7 +100,12 @@ function App() {
                 <Route path="*" element={<Error404 />} />
             </Routes>
             <Footer />
-            <div id="logged-out-message" style={styleLoggedOutMessage}>You have logged out.</div>
+
+            <div id="logged-out-message" style={styleLoggedOutMessage}>You have logged out</div>
+            <div id="vote-added-message" style={styleVoteAddedMessage}>Your vote bas been added</div>
+            <div id="vote-not-added-message" style={styleVoteNotAddedMessage}>Your vote could not be added</div>
+            <div id="post-created-message" style={stylePostCreatedMessage}>Your post has been created</div>
+            <div id="post-not-created-message" style={stylePostNotCreatedMessage}>Your post could not be created</div>
         </div>
     );
 }
