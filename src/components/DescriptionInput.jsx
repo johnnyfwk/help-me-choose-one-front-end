@@ -1,9 +1,8 @@
-export default function DescriptionInput({descriptionInput, setDescriptionInput, setIsPostCreationSuccessful}) {
+export default function DescriptionInput({descriptionInput, setDescriptionInput}) {
     const descriptionInputMaxLength = 1000;
 
     function handleDescriptionInput(event) {
         setDescriptionInput(event.target.value);
-        setIsPostCreationSuccessful(null);
     }
 
     return (

@@ -32,6 +32,8 @@ function App() {
     const [isVoteNotAddedMessageVisible, setIsVoteNotAddedMessageVisible] = useState(false);
     const [isPostCreatedMessageVisible, setIsPostCreatedMessageVisible] = useState(false);
     const [isPostNotCreatedMessageVisible, setIsPostNotCreatedMessageVisible] = useState(false);
+    const [isPostUpdatedMessageVisible, setIsPostUpdatedMessageVisible] = useState(false);
+    const [isPostNotUpdatedMessageVisible, setIsPostNotUpdatedMessageVisible] = useState(false);
 
     const numberOfItemsToDisplayAndIncrement = 20;
 
@@ -73,6 +75,14 @@ function App() {
         bottom: isPostNotCreatedMessageVisible ? "0%" : "-100%"
     }
 
+    const stylePostUpdatedMessage = {
+        bottom: isPostUpdatedMessageVisible ? "0%" : "-100%"
+    }
+
+    const stylePostNotUpdatedMessage = {
+        bottom: isPostNotUpdatedMessageVisible ? "0%" : "-100%"
+    }
+
     return (
         <div className="App">
             <div id="logo-show-nav-button-and-nav">
@@ -103,6 +113,8 @@ function App() {
                             setIsVotesVisible={setIsVotesVisible}
                             setIsVoteAddedMessageVisible={setIsVoteAddedMessageVisible}
                             setIsVoteNotAddedMessageVisible={setIsVoteNotAddedMessageVisible}
+                            setIsPostUpdatedMessageVisible={setIsPostUpdatedMessageVisible}
+                            setIsPostNotUpdatedMessageVisible={setIsPostNotUpdatedMessageVisible}
                         />
                     } />
                 <Route
@@ -131,6 +143,9 @@ function App() {
             <div id="vote-not-added-message" style={styleVoteNotAddedMessage}>Your vote could not be added</div>
             <div id="post-created-message" style={stylePostCreatedMessage}>Your post has been created</div>
             <div id="post-not-created-message" style={stylePostNotCreatedMessage}>Your post could not be created</div>
+
+            <div id="post-updated-message" style={stylePostUpdatedMessage}>Your post has been updated</div>
+            <div id="post-not-updated-message" style={stylePostNotUpdatedMessage}>Your post could not be updated</div>
         </div>
     );
 }

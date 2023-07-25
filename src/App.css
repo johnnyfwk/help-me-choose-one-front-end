@@ -24,14 +24,6 @@
     --spacing50: 50px;
 }
 
-.error {
-    color: var(--red);
-}
-
-.success {
-    color: var(--lime);
-}
-
 * {
     box-sizing: border-box;
 }
@@ -44,6 +36,16 @@ img {
     width: 100%;
     display: block;
 }
+
+.error {
+    color: var(--red);
+}
+
+.success {
+    color: var(--lime);
+}
+
+
 
 #logo-show-nav-button-and-nav {
     background: var(--light-grey);
@@ -110,7 +112,9 @@ nav {
 #vote-added-message,
 #vote-not-added-message,
 #post-created-message,
-#post-not-created-message {
+#post-not-created-message,
+#post-updated-message,
+#post-not-updated-message {
     position: fixed;
     bottom: -100%;
     left: 0%;
@@ -127,13 +131,15 @@ nav {
 #logged-in-message,
 #logged-out-message,
 #vote-added-message,
-#post-created-message {
+#post-created-message,
+#post-updated-message {
     background: var(--lime);
 }
 
 #account-not-created-message,
 #vote-not-added-message,
-#post-not-created-message {
+#post-not-created-message,
+#post-not-updated-message {
     background: var(--red);
 }
 
@@ -184,7 +190,7 @@ nav {
 }
 
 .comments {
-    background: var(--green);
+    /* background: var(--green); */
     display: grid;
     gap: var(--spacing20);
 }
@@ -195,6 +201,22 @@ nav {
 
 .comment-card img {
     max-width: 50px;
+}
+
+#edit-post {
+    background: var(--light-grey);
+    position: fixed;
+    z-index: 2;
+    top: 0%;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    align-content: start;
+}
+
+#edit-post input,
+#edit-post textarea {
+    width: 100%;
 }
 
 footer {

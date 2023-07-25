@@ -1,7 +1,6 @@
-export default function TitleInput({titleInput, setTitleInput, setIsPostCreationSuccessful}) {
+export default function TitleInput({titleInput, setTitleInput}) {
     function handleTitleInput(event) {
         setTitleInput(event.target.value);
-        setIsPostCreationSuccessful(null);
     }
 
     return (

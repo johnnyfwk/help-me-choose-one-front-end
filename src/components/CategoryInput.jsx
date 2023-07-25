@@ -1,7 +1,6 @@
-export default function CategoryInput({categoryInput, setCategoryInput, setIsPostCreationSuccessful}) {
+export default function CategoryInput({categoryInput, setCategoryInput}) {
     function handleCategoryInput(event) {
         setCategoryInput(event.target.value);
-        setIsPostCreationSuccessful(null);
     }
 
     return (

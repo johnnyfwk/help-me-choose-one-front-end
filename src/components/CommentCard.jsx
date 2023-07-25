@@ -1,5 +1,4 @@
 export default function CommentCard({comment}) {
-    console.log(comment)
     return (
         <div className="comment-card">
             {comment.avatar_url === "default-avatar.webp"
