@@ -4,8 +4,20 @@ import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import * as api from "../api";
 import CommentCard from "../components/CommentCard";
+import TitleInput from "../components/TitleInput";
+import DescriptionInput from "../components/DescriptionInput";
+import OptionsInput from "../components/OptionsInput";
+import CategoryInput from "../components/CategoryInput";
+import * as utils from "../utils";
 
-export default function Post({isVotesVisible, setIsVotesVisible, setIsVoteAddedMessageVisible, setIsVoteNotAddedMessageVisible}) {
+export default function Post({
+    isVotesVisible,
+    setIsVotesVisible,
+    setIsVoteAddedMessageVisible,
+    setIsVoteNotAddedMessageVisible,
+    setIsPostUpdatedMessageVisible,
+    setIsPostNotUpdatedMessageVisible
+}) {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
     const {post_id_and_title} = useParams();
     const postId = parseInt(post_id_and_title.slice(0, post_id_and_title.indexOf("-")));
@@ -26,11 +38,28 @@ export default function Post({isVotesVisible, setIsVotesVisible, setIsVoteAddedM
     const [isCommentsLoading, setIsCommentsLoading] = useState(true);
     const [isFetchingCommentsSuccessful, setIsFetchingCommentsSuccessful] = useState(null);
 
+    const [isPostEditable, setIsPostEditable] = useState(false);
+    const [editTitleInput, setEditTitleInput] = useState("");
+    const [editCategoryInput, setEditCategoryInput] = useState("");
+    const [editDescriptionInput, setEditDescriptionInput] = useState("");
+    const [editOptionInputs, setEditOptionInputs] = useState({
+        option1Input: "",
+        option2Input: "",
+        option3Input: "",
+        option4Input: "",
+        option5Input: ""
+    });
+    const [editOptionsHasDuplicates, setEditOptionsHasDuplicates] = useState(null);
+    const [isNumberOfOptionsLessThanTwo, setIsNumberOfOptionsLessThanTwo] = useState(null);
+
+    const [isPostUpdatedSuccessfully, setIsPostUpdatedSuccessfully] = useState(null);
+
     useEffect(() => {
         setIsLoading(true);
         setIsFetchingPostSuccessful(null);
         setHasLoggedInUserAlreadyVoted(null);
         setIsVoteAddedSuccessfully(null);
+        setIsPostEditable(false);
         api.getPostById(postId)
             .then((response) => {
                 setIsLoading(false);
@@ -56,7 +85,7 @@ export default function Post({isVotesVisible, setIsVotesVisible, setIsVoteAddedM
                 setIsFetchingPostSuccessful(false);
                 setHasLoggedInUserAlreadyVoted(null);
             })
-    }, [post_id_and_title, isVoteAddedSuccessfully])
+    }, [post_id_and_title, isVoteAddedSuccessfully, isPostUpdatedSuccessfully])
 
     useEffect(() => {
         setIsCommentsLoading(true);
@@ -106,8 +135,9 @@ export default function Post({isVotesVisible, setIsVotesVisible, setIsVoteAddedM
 
         setIsVoteAddedMessageVisible(false);
         setIsVoteNotAddedMessageVisible(false);
-        api.addVote(new Date(), post.title, post.description, post.category, updatedOptionsAndVotes, postId)
+        api.updatePost(new Date(), post.title, post.description, post.category, updatedOptionsAndVotes, postId)
             .then((response) => {
+                console.log(response)
                 setIsVoteAddedSuccessfully(true);
                 setIsVoteAddedMessageVisible(true);
                 setTimeout(() => setIsVoteAddedMessageVisible(false), 3000);
@@ -125,6 +155,78 @@ export default function Post({isVotesVisible, setIsVotesVisible, setIsVoteAddedM
         })
     }
 
+    function onClickEditPost() {
+        setIsPostEditable((currentIsPostEditable) => {
+            return !currentIsPostEditable;
+        });
+        setEditTitleInput(post.title);
+        setEditCategoryInput(utils.convertUrlsToUserFriendlyHeadings(post.category));
+        setEditDescriptionInput(post.description);
+        const currentOptions = {
+            option1Input: post.options_and_votes[0] ? post.options_and_votes[0].option : "",
+            option2Input: post.options_and_votes[1] ? post.options_and_votes[1].option : "",
+            option3Input: post.options_and_votes[2] ? post.options_and_votes[2].option : "",
+            option4Input: post.options_and_votes[3] ? post.options_and_votes[3].option : "",
+            option5Input: post.options_and_votes[4] ? post.options_and_votes[4].option : "",
+        }
+        setEditOptionInputs(currentOptions);
+    }
+
+    function onClickUpdatePostButton() {
+        const options = Object.values(editOptionInputs).filter((option) => option);
+        const optionsMinusSpaces = options.map((option) => option.trim());
+        const optionsInLowercase = optionsMinusSpaces.map((option) => option.toLowerCase());
+        const optionsContainsDuplicates = optionsInLowercase.some((value, index) => {
+            return optionsInLowercase.indexOf(value, index + 1) !== -1;
+        });
+
+        if (optionsContainsDuplicates) {
+            setEditOptionsHasDuplicates(optionsContainsDuplicates);
+        }
+        else if (options.length < 2) {
+            setIsNumberOfOptionsLessThanTwo(options.length < 2);
+        }
+        else {
+            // console.log(post, "<--------- post")
+            console.log(editTitleInput, "<---------- editTitleInput");
+            console.log(editDescriptionInput, "<---------- editDescriptionInput");
+            console.log(utils.convertCategoryToUrl(editCategoryInput), "<-------- editCategoryInput")
+            // console.log(optionsMinusSpaces, "<-------- optionsMinusSpaces");
+            // console.log(editOptionInputs, "<---------- editOptionInputs");
+            
+            const optionsAndVotes = optionsMinusSpaces.map((option) => {
+                const optionAndVotes = post.options_and_votes.filter((singleOption) => singleOption.option.toLowerCase() === option.toLowerCase())
+                const votesForOption = optionAndVotes.length > 0 ? optionAndVotes[0].votesFromUserIds : [];
+                return {
+                    "option": option,
+                    "optionImage": "",
+                    "votesFromUserIds": votesForOption
+                }
+            })
+            console.log(optionsAndVotes, "<--------- optionsAndVotes")
+
+            setIsPostUpdatedSuccessfully(null);
+            api.updatePost(new Date(), editTitleInput, editDescriptionInput, utils.convertCategoryToUrl(editCategoryInput), optionsAndVotes, postId)
+                .then((response) => {
+                    setIsPostUpdatedSuccessfully(true);
+                    setIsPostUpdatedMessageVisible(true);
+                    setIsPostEditable(false);
+                    setTimeout(() => setIsPostUpdatedMessageVisible(false), 3000);
+                })
+                .catch((error) => {
+                    setIsPostUpdatedSuccessfully(false);
+                    setIsPostNotUpdatedMessageVisible(true);
+                    setTimeout(() => setIsPostNotUpdatedMessageVisible(false), 3000);
+                })
+        }
+    }
+
+    function onClickCancelEditPostButton() {
+        setIsPostEditable(false);
+        setIsNumberOfOptionsLessThanTwo(null);
+        setEditOptionsHasDuplicates(null);
+    }
+
     const stylePostOption = {
         position: "relative"
     };
@@ -132,6 +234,10 @@ export default function Post({isVotesVisible, setIsVotesVisible, setIsVoteAddedM
     const stylePostOptionPercentageBar = (percentage) => ({
         width: `${percentage}%`,
     });
+
+    const styleEditPost = {
+        display: isPostEditable ? "grid" : "none"
+    }
 
     return (
         <div>
@@ -143,6 +249,9 @@ export default function Post({isVotesVisible, setIsVotesVisible, setIsVoteAddedM
 
             <header>
                 <h1>{post.title}</h1>
+                <div>{utils.convertUrlsToUserFriendlyHeadings(post.category)}</div>
+                <div>{new Date(post.post_date).toLocaleDateString()}</div>
+                <div>{new Date(post.post_date).toLocaleTimeString()}</div>
             </header>
 
             <main>
@@ -206,8 +315,61 @@ export default function Post({isVotesVisible, setIsVotesVisible, setIsVoteAddedM
                     }
                 </form>
 
-                <div>{new Date(post.post_date).toLocaleDateString()}</div>
-                <div>{new Date(post.post_date).toLocaleTimeString()}</div>
+                {userLoggedIn.user_id === post.post_owner_id
+                    ? <button onClick={onClickEditPost}>Edit Post</button>
+                    : null
+                }
+
+                <div id="edit-post" style={styleEditPost}>
+                    <h2>Edit Post</h2>
+
+                    {editOptionsHasDuplicates === null || editOptionsHasDuplicates === false
+                        ? null
+                        : <p className="error">You have entered duplicate options</p>
+                    }
+
+                    {isNumberOfOptionsLessThanTwo
+                        ? <p className="error">Please enter at least two options</p>
+                        : null
+                    }
+
+                    <TitleInput
+                        titleInput={editTitleInput}
+                        setTitleInput={setEditTitleInput}
+                    />
+
+                    <CategoryInput
+                        categoryInput={editCategoryInput}
+                        setCategoryInput={setEditCategoryInput}
+                    />
+
+                    <DescriptionInput
+                        descriptionInput={editDescriptionInput}
+                        setDescriptionInput={setEditDescriptionInput}
+                    />
+
+                    <OptionsInput
+                        optionInputs={editOptionInputs}
+                        setOptionInputs={setEditOptionInputs}
+                        setOptionsHasDuplicates={setEditOptionsHasDuplicates}
+                    />
+
+                    <div>
+                        <button onClick={onClickCancelEditPostButton}>Cancel</button>
+                        <button
+                            onClick={onClickUpdatePostButton}
+                            disabled={
+                                !editTitleInput ||
+                                !editDescriptionInput ||
+                                editCategoryInput === "Select a Category"
+                            }
+                        >Update</button>
+                    </div>
+                </div>
+                
+
+
+
 
                 <h2>Comments</h2>
                 

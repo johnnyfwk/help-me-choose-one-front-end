@@ -1,13 +1,11 @@
 export default function OptionsInput({
     optionInputs,
     setOptionInputs,
-    setIsPostCreationSuccessful,
     setOptionsHasDuplicates
 }) {
     const optionInputMaxLength = 100;
 
     function handleOptionInput(event) {
-        setIsPostCreationSuccessful(null);
         setOptionsHasDuplicates(null);
         const { name, value } = event.target;
         setOptionInputs((prevValues) => {
@@ -47,7 +45,6 @@ export default function OptionsInput({
                     value={option2Input}
                     onChange={handleOptionInput}
                     maxLength={optionInputMaxLength}
-                    disabled={!option1Input}
                 ></input>
                 <span>{option2Input.length} / {optionInputMaxLength}</span>
             </div>
@@ -61,7 +58,6 @@ export default function OptionsInput({
                     value={option3Input}
                     onChange={handleOptionInput}
                     maxLength={optionInputMaxLength}
-                    disabled={!option2Input}
                 ></input>
                 <span>{option3Input.length} / {optionInputMaxLength}</span>
             </div>
@@ -75,7 +71,6 @@ export default function OptionsInput({
                     value={option4Input}
                     onChange={handleOptionInput}
                     maxLength={optionInputMaxLength}
-                    disabled={!option3Input}
                 ></input>
                 <span>{option4Input.length} / {optionInputMaxLength}</span>
             </div>
@@ -89,7 +84,6 @@ export default function OptionsInput({
                     value={option5Input}
                     onChange={handleOptionInput}
                     maxLength={optionInputMaxLength}
-                    disabled={!option4Input}
                 ></input>
                 <span>{option5Input.length} / {optionInputMaxLength}</span>
             </div>

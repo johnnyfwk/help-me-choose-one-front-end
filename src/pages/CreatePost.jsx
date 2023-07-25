@@ -15,11 +15,6 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
     const [titleInput, setTitleInput] = useState("");
     const [descriptionInput, setDescriptionInput] = useState("");
     const [categoryInput, setCategoryInput] = useState("");
-
-    const [isPostCreationSuccessful, setIsPostCreationSuccessful] = useState(null);
-
-    const [optionsHasDuplicates, setOptionsHasDuplicates] = useState(null);
-
     const [optionInputs, setOptionInputs] = useState({
         option1Input: "",
         option2Input: "",
@@ -27,6 +22,9 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
         option4Input: "",
         option5Input: ""
     });
+    const [optionsHasDuplicates, setOptionsHasDuplicates] = useState(null);
+
+    const [isPostCreationSuccessful, setIsPostCreationSuccessful] = useState(null);
 
     const isSubmitDisabled = Object.values(optionInputs).filter(Boolean).length < 2;
 
@@ -85,7 +83,7 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
 
             <header>
                 <h1>CreatePost</h1>
-                <p>This is the header copy for the Create Post page.</p>
+                <p>Enter at least two options.</p>
             </header>
 
             <main>
@@ -97,25 +95,21 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
                     <TitleInput
                         titleInput={titleInput}
                         setTitleInput={setTitleInput}
-                        setIsPostCreationSuccessful={setIsPostCreationSuccessful}
                     />
 
                     <CategoryInput
                         categoryInput={categoryInput}
                         setCategoryInput={setCategoryInput}
-                        setIsPostCreationSuccessful={setIsPostCreationSuccessful}
                     />
 
                     <DescriptionInput
                         descriptionInput={descriptionInput}
                         setDescriptionInput={setDescriptionInput}
-                        setIsPostCreationSuccessful={setIsPostCreationSuccessful}
                     />
 
                     <OptionsInput
                         optionInputs={optionInputs}
                         setOptionInputs={setOptionInputs}
-                        setIsPostCreationSuccessful={setIsPostCreationSuccessful}
                         setOptionsHasDuplicates={setOptionsHasDuplicates}
                     />
                     
