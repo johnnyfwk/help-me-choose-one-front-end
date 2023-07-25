@@ -9,7 +9,7 @@ import OptionsInput from "../components/OptionsInput";
 import * as utils from "../utils";
 import * as api from "../api";
 
-export default function CreatePost() {
+export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNotCreatedMessageVisible}) {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
 
     const [titleInput, setTitleInput] = useState("");
@@ -50,10 +50,14 @@ export default function CreatePost() {
         api.createPost(new Date(), new Date(), titleInput, descriptionInput, utils.convertCategoryToUrl(categoryInput), optionsAndVotes, userLoggedIn.user_id)
             .then((response) => {
                 setIsPostCreationSuccessful(true);
-                setTimeout(() => navigate("/"), 3000);
+                setIsPostCreatedMessageVisible(true);
+                setTimeout(() => setIsPostCreatedMessageVisible(false), 3000);
+                navigate("/");
             })
             .catch((error) => {
                 setIsPostCreationSuccessful(false);
+                setIsPostNotCreatedMessageVisible(true);
+                setTimeout(() => setIsPostNotCreatedMessageVisible(false), 3000);
             })
     }
 
@@ -71,12 +75,6 @@ export default function CreatePost() {
             </header>
 
             <main>
-                {isPostCreationSuccessful === null
-                    ? null
-                    : isPostCreationSuccessful === true
-                        ? <div className="success">Post has been created. You will be redirected to the home page.</div>
-                        : <div className="error">Post could not be created.</div>
-                }
                 <form>
                     <TitleInput
                         titleInput={titleInput}
