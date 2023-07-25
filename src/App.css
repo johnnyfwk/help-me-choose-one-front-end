@@ -104,6 +104,7 @@ nav {
 
 #account-created-message,
 #account-not-created-message,
+#logged-in-message,
 #logged-out-message,
 #vote-added-message,
 #vote-not-added-message,
@@ -122,6 +123,7 @@ nav {
 }
 
 #account-created-message,
+#logged-in-message,
 #logged-out-message,
 #vote-added-message,
 #post-created-message {

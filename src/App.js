@@ -26,6 +26,7 @@ function App() {
     const [isVotesVisible, setIsVotesVisible] = useState(false);
     const [isAccountCreatedMessageVisible, setIsAccountCreatedMessageVisible] = useState(false);
     const [isAccountNotCreatedMessageVisible, setIsAccountNotCreatedMessageVisible] = useState(false);
+    const [isLoggedInMessageVisible, setIsLoggedInMessageVisible] = useState(false);
     const [isLoggedOutMessageVisible, setIsLoggedOutMessageVisible] = useState(false);
     const [isVoteAddedMessageVisible, setIsVoteAddedMessageVisible] = useState(false);
     const [isVoteNotAddedMessageVisible, setIsVoteNotAddedMessageVisible] = useState(false);
@@ -46,6 +47,10 @@ function App() {
 
     const styleAccountNotCreatedMessage = {
         bottom: isAccountNotCreatedMessageVisible ? "0%" : "-100%"
+    }
+
+    const styleLoggedInMessage = {
+        bottom: isLoggedInMessageVisible ? "0%" : "-100%"
     }
 
     const styleLoggedOutMessage = {
@@ -89,7 +94,7 @@ function App() {
                             setIsAccountNotCreatedMessageVisible={setIsAccountNotCreatedMessageVisible}
                         />
                     } />
-                <Route path="/log-in" element={<LogIn />} />
+                <Route path="/log-in" element={<LogIn setIsLoggedInMessageVisible={setIsLoggedInMessageVisible} />} />
                 <Route
                     path="/post/:post_id_and_title"
                     element={
@@ -120,6 +125,7 @@ function App() {
 
             <div id="account-created-message" style={styleAccountCreatedMessage}>Account has been created</div>
             <div id="account-not-created-message" style={styleAccountNotCreatedMessage}>Account could not be created</div>
+            <div id="logged-in-message" style={styleLoggedInMessage}>You have logged in</div>
             <div id="logged-out-message" style={styleLoggedOutMessage}>You have logged out</div>
             <div id="vote-added-message" style={styleVoteAddedMessage}>Your vote bas been added</div>
             <div id="vote-not-added-message" style={styleVoteNotAddedMessage}>Your vote could not be added</div>

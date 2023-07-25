@@ -6,7 +6,7 @@ import UsernameInput from "../components/UsernameInput";
 import PasswordInput from "../components/PasswordInput";
 import * as api from "../api";
 
-export default function LogIn() {
+export default function LogIn({setIsLoggedInMessageVisible}) {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
 
     const [isLoading, setIsLoading] = useState(true);
@@ -66,6 +66,8 @@ export default function LogIn() {
         }
         else {
             setUserLoggedIn(userInfo[0]);
+            setIsLoggedInMessageVisible(true);
+            setTimeout(() => setIsLoggedInMessageVisible(false), 3000);
             navigate("/");
         }
     }

@@ -18,6 +18,8 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
 
     const [isPostCreationSuccessful, setIsPostCreationSuccessful] = useState(null);
 
+    const [optionsHasDuplicates, setOptionsHasDuplicates] = useState(null);
+
     const [optionInputs, setOptionInputs] = useState({
         option1Input: "",
         option2Input: "",
@@ -37,28 +39,40 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
     }, [userLoggedIn]);
 
     function onClickCreatePostButton() {
+        setOptionsHasDuplicates(null);
         const options = Object.values(optionInputs).filter((option) => option);
-        const optionsAndVotes = options.map((option) => {
-            return {
-                "option": option,
-                "optionImage": "",
-                "votesFromUserIds": []
-            }
-        })
+        const optionsMinusSpaces = options.map((option) => option.trim());
+        const optionsInLowercase = optionsMinusSpaces.map((option) => option.toLowerCase());
+        const optionsContainsDuplicates = optionsInLowercase.some((value, index) => {
+            return optionsInLowercase.indexOf(value, index + 1) !== -1;
+        });
 
-        setIsPostCreationSuccessful(null);
-        api.createPost(new Date(), new Date(), titleInput, descriptionInput, utils.convertCategoryToUrl(categoryInput), optionsAndVotes, userLoggedIn.user_id)
-            .then((response) => {
-                setIsPostCreationSuccessful(true);
-                setIsPostCreatedMessageVisible(true);
-                setTimeout(() => setIsPostCreatedMessageVisible(false), 3000);
-                navigate("/");
+        if (optionsContainsDuplicates) {
+            setOptionsHasDuplicates(true);
+        }
+        else {
+            setOptionsHasDuplicates(false);
+            const optionsAndVotes = optionsMinusSpaces.map((option) => {
+                return {
+                    "option": option,
+                    "optionImage": "",
+                    "votesFromUserIds": []
+                }
             })
-            .catch((error) => {
-                setIsPostCreationSuccessful(false);
-                setIsPostNotCreatedMessageVisible(true);
-                setTimeout(() => setIsPostNotCreatedMessageVisible(false), 3000);
-            })
+            setIsPostCreationSuccessful(null);
+            api.createPost(new Date(), new Date(), titleInput, descriptionInput, utils.convertCategoryToUrl(categoryInput), optionsAndVotes, userLoggedIn.user_id)
+                .then((response) => {
+                    setIsPostCreationSuccessful(true);
+                    setIsPostCreatedMessageVisible(true);
+                    setTimeout(() => setIsPostCreatedMessageVisible(false), 3000);
+                    navigate("/");
+                })
+                .catch((error) => {
+                    setIsPostCreationSuccessful(false);
+                    setIsPostNotCreatedMessageVisible(true);
+                    setTimeout(() => setIsPostNotCreatedMessageVisible(false), 3000);
+                })
+        }
     }
 
     return (
@@ -75,6 +89,10 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
             </header>
 
             <main>
+                {optionsHasDuplicates === null || optionsHasDuplicates === false
+                    ? null
+                    : <div className="error">You have entered duplicate options</div>
+                }
                 <form>
                     <TitleInput
                         titleInput={titleInput}
@@ -98,6 +116,7 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
                         optionInputs={optionInputs}
                         setOptionInputs={setOptionInputs}
                         setIsPostCreationSuccessful={setIsPostCreationSuccessful}
+                        setOptionsHasDuplicates={setOptionsHasDuplicates}
                     />
                     
                     <button

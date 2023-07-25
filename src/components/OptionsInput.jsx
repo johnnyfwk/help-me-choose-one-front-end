@@ -1,12 +1,14 @@
 export default function OptionsInput({
     optionInputs,
     setOptionInputs,
-    setIsPostCreationSuccessful
+    setIsPostCreationSuccessful,
+    setOptionsHasDuplicates
 }) {
     const optionInputMaxLength = 100;
 
     function handleOptionInput(event) {
         setIsPostCreationSuccessful(null);
+        setOptionsHasDuplicates(null);
         const { name, value } = event.target;
         setOptionInputs((prevValues) => {
             return ({ ...prevValues, [name]: value })
