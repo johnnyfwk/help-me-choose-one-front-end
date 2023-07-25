@@ -3,6 +3,7 @@ import { UserContext } from "../contexts/UserContext";
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import * as api from "../api";
+import CommentCard from "../components/CommentCard";
 
 export default function Post({isVotesVisible, setIsVotesVisible, setIsVoteAddedMessageVisible, setIsVoteNotAddedMessageVisible}) {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
@@ -20,6 +21,10 @@ export default function Post({isVotesVisible, setIsVotesVisible, setIsVoteAddedM
     const [hasLoggedInUserAlreadyVoted, setHasLoggedInUserAlreadyVoted] = useState(null);
 
     const [isVoteAddedSuccessfully, setIsVoteAddedSuccessfully] = useState(null);
+
+    const [comments, setComments] = useState([]);
+    const [isCommentsLoading, setIsCommentsLoading] = useState(true);
+    const [isFetchingCommentsSuccessful, setIsFetchingCommentsSuccessful] = useState(null);
 
     useEffect(() => {
         setIsLoading(true);
@@ -52,6 +57,21 @@ export default function Post({isVotesVisible, setIsVotesVisible, setIsVoteAddedM
                 setHasLoggedInUserAlreadyVoted(null);
             })
     }, [post_id_and_title, isVoteAddedSuccessfully])
+
+    useEffect(() => {
+        setIsCommentsLoading(true);
+        setIsFetchingCommentsSuccessful(null);
+        api.getCommentsByPostId(postId)
+            .then((response) => {
+                setIsCommentsLoading(false);
+                setIsFetchingCommentsSuccessful(true);
+                setComments(response);
+            })
+            .catch((error) => {
+                setIsCommentsLoading(false);
+                setIsFetchingCommentsSuccessful(false);
+            })
+    }, [post_id_and_title])
 
     if (isLoading) {
         return (
@@ -190,6 +210,24 @@ export default function Post({isVotesVisible, setIsVotesVisible, setIsVoteAddedM
                 <div>{new Date(post.post_date).toLocaleTimeString()}</div>
 
                 <h2>Comments</h2>
+                
+                {isCommentsLoading
+                    ? <p>Loading comments...</p>
+                    : null
+                }
+
+                {isFetchingCommentsSuccessful === null
+                    ? null
+                    : isFetchingCommentsSuccessful === false
+                        ? <p className="error">Comments could not be loaded</p>
+                        : comments.length === 0
+                            ? <div>Be the first to comment on this post.</div>
+                            : <div className="comments">
+                            {comments.map((comment) => {
+                                return <CommentCard key={comment.comment_id} comment={comment} />
+                            })}
+                        </div>
+                }
             </main>
         </div>
     )
