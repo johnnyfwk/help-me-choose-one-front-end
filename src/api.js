@@ -29,6 +29,14 @@ export function getPostById(post_id) {
         })
 }
 
+export function getCommentsByPostId(post_id) {
+    return baseURL
+        .get(`/posts/${post_id}/comments`)
+        .then((response) => {
+            return response.data.comments;
+        })
+}
+
 export function getPostsByCategory(category) {
     return baseURL
         .get(`/posts/category/${category}`)

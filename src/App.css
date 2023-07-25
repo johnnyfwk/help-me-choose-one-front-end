@@ -42,6 +42,7 @@ body {
 
 img {
     width: 100%;
+    display: block;
 }
 
 #logo-show-nav-button-and-nav {
@@ -156,7 +157,7 @@ nav {
 }
 
 .post-avatar {
-    max-width: 200px;
+    max-width: 100px;
 }
 
 #post-options {
@@ -180,6 +181,20 @@ nav {
 
 .post-option-percentage-bar > span {
     opacity: 0;
+}
+
+.comments {
+    background: var(--green);
+    display: grid;
+    gap: var(--spacing20);
+}
+
+.comment-card {
+    background: var(--light-grey);
+}
+
+.comment-card img {
+    max-width: 50px;
 }
 
 footer {
