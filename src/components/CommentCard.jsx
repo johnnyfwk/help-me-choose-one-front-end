@@ -9,6 +9,10 @@ export default function CommentCard({comment, userLoggedIn, setIsCommentUpdatedS
     const [isCommentEditable, setIsCommentEditable] = useState(false);
     const [editCommentInput, setEditCommentInput] = useState("");
 
+    const [userIdsOfCommentLikes, setUserIdsOfCommentLikes] = useState(comment.comment_likes_from_user_ids);
+
+    const [upToDateComment, setUpToDateComment] = useState({});
+
     function onClickCommentOptionsButton() {
         setIsCommentOptionsBoxVisible((currentIsCommentOptionsBoxVisible) => {
             return !currentIsCommentOptionsBoxVisible;
@@ -31,6 +35,39 @@ export default function CommentCard({comment, userLoggedIn, setIsCommentUpdatedS
 
     function onClickCancelEditCommentButton() {
         setIsCommentEditable(false);
+    }
+
+    function onClickLikeComment() {
+        let localLikes = [...userIdsOfCommentLikes];
+        if (userIdsOfCommentLikes.includes(userLoggedIn.user_id)) {
+            localLikes.splice(localLikes.indexOf(userLoggedIn.user_id), 1);
+        }
+        else {
+            localLikes.push(userLoggedIn.user_id);
+        }
+        setUserIdsOfCommentLikes(localLikes);
+
+        api.getCommentById(comment.comment_id)
+            .then((response) => {
+                let updatedLikes = response.comment_likes_from_user_ids;
+                if (!localLikes.includes(userLoggedIn.user_id)) {
+                    if (updatedLikes.includes(userLoggedIn.user_id)) {
+                        updatedLikes.splice(updatedLikes.indexOf(userLoggedIn.user_id), 1);
+                    }
+                }
+                else {
+                    if (!updatedLikes.includes(userLoggedIn.user_id)) {
+                        updatedLikes.push(userLoggedIn.user_id);
+                    }
+                }
+                return api.updateComment(new Date(), comment.comment, updatedLikes, comment.comment_id)
+            })
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
     }
 
     function onClickUpdateCommentButton() {
@@ -112,7 +149,14 @@ export default function CommentCard({comment, userLoggedIn, setIsCommentUpdatedS
                 : <p>{comment.comment}</p>
             }
             
-            <div>Likes: {comment.comment_likes_from_user_ids.length}</div>
+            <div>
+                <button
+                    className="like-button"
+                    onClick={onClickLikeComment}
+                    disabled={Object.keys(userLoggedIn).length === 0}
+                >&#10084;&#65039;</button>
+                <span>{userIdsOfCommentLikes.length}</span>
+            </div>
             {userLoggedIn.user_id === comment.comment_owner_id
                 ? <div>
                     <div className="comment-options-button" onClick={onClickCommentOptionsButton}>
