@@ -6,6 +6,8 @@ export function isPasswordValid(password) {
 export function isFamilyFriendly(string) {
     const inappropriateWords = [
         "nigger",
+        "fuck",
+        "cunt"
     ];
 
     const lowercaseString = string.toLowerCase();

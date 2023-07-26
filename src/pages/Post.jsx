@@ -223,12 +223,19 @@ export default function Post({
 
     function onClickPostCommentButton() {
         setIsCommentPostedSuccessfully(null);
+        console.log(new Date())
+        console.log(post.title, "<-------- post title")
+        console.log(post.description, "<-------- post description")
+        console.log(post.category, "<-------- post category")
+        console.log(post.options_and_votes, "<-------- options and votes")
+        console.log(postId, "<-------- post ID")
         api.postComment(new Date(), new Date(), commentInput, [], post.post_id, userLoggedIn.user_id)
             .then((response) => {
                 setIsCommentPostedSuccessfully(true);
                 setIsCommentPostedMessageVisible(true);
                 setCommentInput("");
                 setTimeout(() => setIsCommentPostedMessageVisible(false), 3000);
+                return api.updatePost(new Date(), post.title, post.description, post.category, post.options_and_votes, postId)
             })
             .catch((error) => {
                 setIsCommentPostedSuccessfully(false);
