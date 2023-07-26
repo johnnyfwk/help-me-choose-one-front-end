@@ -1,4 +1,6 @@
 export default function TitleInput({titleInput, setTitleInput}) {
+    const titleMaxLength = 100;
+
     function handleTitleInput(event) {
         setTitleInput(event.target.value);
     }
@@ -12,8 +14,9 @@ export default function TitleInput({titleInput, setTitleInput}) {
                 name="title"
                 value={titleInput}
                 onChange={handleTitleInput}
-                maxLength="50"
+                maxLength={titleMaxLength}
             ></input>
+            <div>{titleInput} / {titleMaxLength}</div>
         </div>
     )
 }

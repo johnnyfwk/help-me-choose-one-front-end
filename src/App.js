@@ -34,6 +34,8 @@ function App() {
     const [isPostNotCreatedMessageVisible, setIsPostNotCreatedMessageVisible] = useState(false);
     const [isPostUpdatedMessageVisible, setIsPostUpdatedMessageVisible] = useState(false);
     const [isPostNotUpdatedMessageVisible, setIsPostNotUpdatedMessageVisible] = useState(false);
+    const [isCommentPostedMessageVisible, setIsCommentPostedMessageVisible] = useState(false);
+    const [isCommentNotPostedMessageVisible, setIsCommentNotPostedMessageVisible] = useState(false);
 
     const numberOfItemsToDisplayAndIncrement = 20;
 
@@ -83,6 +85,14 @@ function App() {
         bottom: isPostNotUpdatedMessageVisible ? "0%" : "-100%"
     }
 
+    const styleCommentPostedMessage = {
+        bottom: isCommentPostedMessageVisible ? "0%" : "-100%"
+    }
+
+    const styleCommentNotPostedMessage = {
+        bottom: isCommentNotPostedMessageVisible ? "0%" : "-100%"
+    }
+
     return (
         <div className="App">
             <div id="logo-show-nav-button-and-nav">
@@ -111,10 +121,15 @@ function App() {
                         <Post
                             isVotesVisible={isVotesVisible}
                             setIsVotesVisible={setIsVotesVisible}
+                            isVoteAddedMessageVisible={isVoteAddedMessageVisible}
                             setIsVoteAddedMessageVisible={setIsVoteAddedMessageVisible}
                             setIsVoteNotAddedMessageVisible={setIsVoteNotAddedMessageVisible}
+                            isPostUpdatedMessageVisible={isPostUpdatedMessageVisible}
                             setIsPostUpdatedMessageVisible={setIsPostUpdatedMessageVisible}
                             setIsPostNotUpdatedMessageVisible={setIsPostNotUpdatedMessageVisible}
+                            isCommentPostedMessageVisible={isCommentPostedMessageVisible}
+                            setIsCommentPostedMessageVisible={setIsCommentPostedMessageVisible}
+                            setIsCommentNotPostedMessageVisible={setIsCommentNotPostedMessageVisible}
                         />
                     } />
                 <Route
@@ -143,9 +158,11 @@ function App() {
             <div id="vote-not-added-message" style={styleVoteNotAddedMessage}>Your vote could not be added</div>
             <div id="post-created-message" style={stylePostCreatedMessage}>Your post has been created</div>
             <div id="post-not-created-message" style={stylePostNotCreatedMessage}>Your post could not be created</div>
-
             <div id="post-updated-message" style={stylePostUpdatedMessage}>Your post has been updated</div>
             <div id="post-not-updated-message" style={stylePostNotUpdatedMessage}>Your post could not be updated</div>
+
+            <div id="comment-posted-message" style={styleCommentPostedMessage}>Your comment has been posted</div>
+            <div id="comment-not-posted-message" style={styleCommentNotPostedMessage}>Your post could not be posted</div>
         </div>
     );
 }

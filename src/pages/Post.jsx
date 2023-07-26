@@ -8,15 +8,21 @@ import TitleInput from "../components/TitleInput";
 import DescriptionInput from "../components/DescriptionInput";
 import OptionsInput from "../components/OptionsInput";
 import CategoryInput from "../components/CategoryInput";
+import CommentInput from "../components/CommentInput";
 import * as utils from "../utils";
 
 export default function Post({
     isVotesVisible,
     setIsVotesVisible,
+    isVoteAddedMessageVisible,
     setIsVoteAddedMessageVisible,
     setIsVoteNotAddedMessageVisible,
+    isPostUpdatedMessageVisible,
     setIsPostUpdatedMessageVisible,
-    setIsPostNotUpdatedMessageVisible
+    setIsPostNotUpdatedMessageVisible,
+    isCommentPostedMessageVisible,
+    setIsCommentPostedMessageVisible,
+    setIsCommentNotPostedMessageVisible
 }) {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
     const {post_id_and_title} = useParams();
@@ -31,8 +37,6 @@ export default function Post({
 
     const [voterIds, setVoterIds] = useState([]);
     const [hasLoggedInUserAlreadyVoted, setHasLoggedInUserAlreadyVoted] = useState(null);
-
-    const [isVoteAddedSuccessfully, setIsVoteAddedSuccessfully] = useState(null);
 
     const [comments, setComments] = useState([]);
     const [isCommentsLoading, setIsCommentsLoading] = useState(true);
@@ -52,13 +56,12 @@ export default function Post({
     const [editOptionsHasDuplicates, setEditOptionsHasDuplicates] = useState(null);
     const [isNumberOfOptionsLessThanTwo, setIsNumberOfOptionsLessThanTwo] = useState(null);
 
-    const [isPostUpdatedSuccessfully, setIsPostUpdatedSuccessfully] = useState(null);
+    const [commentInput, setCommentInput] = useState("");
 
     useEffect(() => {
         setIsLoading(true);
         setIsFetchingPostSuccessful(null);
         setHasLoggedInUserAlreadyVoted(null);
-        setIsVoteAddedSuccessfully(null);
         setIsPostEditable(false);
         api.getPostById(postId)
             .then((response) => {
@@ -85,7 +88,7 @@ export default function Post({
                 setIsFetchingPostSuccessful(false);
                 setHasLoggedInUserAlreadyVoted(null);
             })
-    }, [post_id_and_title, isVoteAddedSuccessfully, isPostUpdatedSuccessfully])
+    }, [post_id_and_title, isVoteAddedMessageVisible, isPostUpdatedMessageVisible, isCommentPostedMessageVisible])
 
     useEffect(() => {
         setIsCommentsLoading(true);
@@ -100,7 +103,7 @@ export default function Post({
                 setIsCommentsLoading(false);
                 setIsFetchingCommentsSuccessful(false);
             })
-    }, [post_id_and_title])
+    }, [post_id_and_title, isVoteAddedMessageVisible, isPostUpdatedMessageVisible, isCommentPostedMessageVisible])
 
     if (isLoading) {
         return (
@@ -137,13 +140,10 @@ export default function Post({
         setIsVoteNotAddedMessageVisible(false);
         api.updatePost(new Date(), post.title, post.description, post.category, updatedOptionsAndVotes, postId)
             .then((response) => {
-                console.log(response)
-                setIsVoteAddedSuccessfully(true);
                 setIsVoteAddedMessageVisible(true);
                 setTimeout(() => setIsVoteAddedMessageVisible(false), 3000);
             })
             .catch((error) => {
-                setIsVoteAddedSuccessfully(false);
                 setIsVoteNotAddedMessageVisible(true);
                 setTimeout(() => setIsVoteNotAddedMessageVisible(false), 3000);
             })
@@ -186,14 +186,7 @@ export default function Post({
         else if (options.length < 2) {
             setIsNumberOfOptionsLessThanTwo(options.length < 2);
         }
-        else {
-            // console.log(post, "<--------- post")
-            console.log(editTitleInput, "<---------- editTitleInput");
-            console.log(editDescriptionInput, "<---------- editDescriptionInput");
-            console.log(utils.convertCategoryToUrl(editCategoryInput), "<-------- editCategoryInput")
-            // console.log(optionsMinusSpaces, "<-------- optionsMinusSpaces");
-            // console.log(editOptionInputs, "<---------- editOptionInputs");
-            
+        else {           
             const optionsAndVotes = optionsMinusSpaces.map((option) => {
                 const optionAndVotes = post.options_and_votes.filter((singleOption) => singleOption.option.toLowerCase() === option.toLowerCase())
                 const votesForOption = optionAndVotes.length > 0 ? optionAndVotes[0].votesFromUserIds : [];
@@ -203,18 +196,14 @@ export default function Post({
                     "votesFromUserIds": votesForOption
                 }
             })
-            console.log(optionsAndVotes, "<--------- optionsAndVotes")
 
-            setIsPostUpdatedSuccessfully(null);
             api.updatePost(new Date(), editTitleInput, editDescriptionInput, utils.convertCategoryToUrl(editCategoryInput), optionsAndVotes, postId)
                 .then((response) => {
-                    setIsPostUpdatedSuccessfully(true);
                     setIsPostUpdatedMessageVisible(true);
                     setIsPostEditable(false);
                     setTimeout(() => setIsPostUpdatedMessageVisible(false), 3000);
                 })
                 .catch((error) => {
-                    setIsPostUpdatedSuccessfully(false);
                     setIsPostNotUpdatedMessageVisible(true);
                     setTimeout(() => setIsPostNotUpdatedMessageVisible(false), 3000);
                 })
@@ -225,6 +214,18 @@ export default function Post({
         setIsPostEditable(false);
         setIsNumberOfOptionsLessThanTwo(null);
         setEditOptionsHasDuplicates(null);
+    }
+
+    function onClickPostCommentButton() {
+        api.postComment(new Date(), new Date(), commentInput, [], post.post_id, userLoggedIn.user_id)
+            .then((response) => {
+                setIsCommentPostedMessageVisible(true);
+                setTimeout(() => setIsCommentPostedMessageVisible(false), 3000);
+            })
+            .catch((error) => {
+                setIsCommentNotPostedMessageVisible(true);
+                setTimeout(() => setIsCommentNotPostedMessageVisible(false), 3000);
+            })
     }
 
     const stylePostOption = {
@@ -255,141 +256,165 @@ export default function Post({
             </header>
 
             <main>
-                {post.avatar_url === "default-avatar.webp"
-                    ? <img src={require(`../assets/images/avatars/${post.avatar_url}`)} alt="Avatar" className="post-avatar" />
-                    : <img src={post.avatar_url} alt="Avatar" className="post-avatar" />
-                }
-                <div>{post.username}</div>
-                <p>{post.description}</p>
+                <section>
+                    {post.avatar_url === "default-avatar.webp"
+                        ? <img src={require(`../assets/images/avatars/${post.avatar_url}`)} alt="Avatar" className="post-avatar" />
+                        : <img src={post.avatar_url} alt="Avatar" className="post-avatar" />
+                    }
+                    <div>{post.username}</div>
+                    <p>{post.description}</p>
 
-                <button type="button" onClick={onClickShowVotesButton}>{isVotesVisible ? "Hide Votes" : "Show Votes"}</button>
-                
-                <form id="post-options-form">
-                    <div id="post-options">
-                        {post.options_and_votes.map((option) => {
-                            return (
-                                <div key={option.option} className="post-option" style={stylePostOption}>
-                                    <div>
-                                        <div className="post-option-radio-input-and-label">
-                                            {Object.keys(userLoggedIn).length === 0 || hasLoggedInUserAlreadyVoted
-                                                ? null
-                                                : <input type="radio" id={option.option} name="option" value={option.option} onChange={handleOptionInput} />
+                    <button type="button" onClick={onClickShowVotesButton}>{isVotesVisible ? "Hide Votes" : "Show Votes"}</button>
+                    
+                    <form id="post-options-form">
+                        <div id="post-options">
+                            {post.options_and_votes.map((option) => {
+                                return (
+                                    <div key={option.option} className="post-option" style={stylePostOption}>
+                                        <div>
+                                            <div className="post-option-radio-input-and-label">
+                                                {Object.keys(userLoggedIn).length === 0 || hasLoggedInUserAlreadyVoted
+                                                    ? null
+                                                    : <input type="radio" id={option.option} name="option" value={option.option} onChange={handleOptionInput} />
+                                                }
+                                                <label htmlFor={option.option}>{option.option}</label>
+                                            </div>
+                                            {isVotesVisible
+                                                ?   <div className="post-option-votes-and-percentage">
+                                                    <div>{option.votesFromUserIds.length} votes</div>
+                                                    <div>({voterIds.length > 0 ? Math.round((option.votesFromUserIds.length * 100) / voterIds.length) : 0}%)</div>
+                                                </div>
+                                                : null
                                             }
-                                            <label htmlFor={option.option}>{option.option}</label>
                                         </div>
+                                        
                                         {isVotesVisible
-                                            ?   <div className="post-option-votes-and-percentage">
-                                                <div>{option.votesFromUserIds.length} votes</div>
-                                                <div>({voterIds.length > 0 ? Math.round((option.votesFromUserIds.length * 100) / voterIds.length) : 0}%)</div>
+                                            ? <div
+                                                className="post-option-percentage-bar"
+                                                data-percentage={voterIds.length > 0 ? Math.round((option.votesFromUserIds.length * 100) / voterIds.length) : 0}
+                                                style={stylePostOptionPercentageBar(voterIds.length > 0 ? Math.round((option.votesFromUserIds.length * 100) / voterIds.length) : 0)}
+                                            >
+                                                <span>*</span>
                                             </div>
                                             : null
                                         }
                                     </div>
-                                    
-                                    {isVotesVisible
-                                        ? <div
-                                            className="post-option-percentage-bar"
-                                            data-percentage={voterIds.length > 0 ? Math.round((option.votesFromUserIds.length * 100) / voterIds.length) : 0}
-                                            style={stylePostOptionPercentageBar(voterIds.length > 0 ? Math.round((option.votesFromUserIds.length * 100) / voterIds.length) : 0)}
-                                        >
-                                            <span>*</span>
-                                        </div>
-                                        : null
-                                    }
-                                </div>
-                            )
-                        })}
-                    </div>
-                    
-                    {Object.keys(userLoggedIn).length === 0
-                        ? <p><Link to="/log-in">Log in</Link> to vote</p>
-                        : hasLoggedInUserAlreadyVoted
-                            ? <div>You have already voted on this post.</div>
-                            : <div>
-                                <button
-                                    type="button"
-                                    onClick={onClickVoteButton}
-                                    disabled={!optionInput}
-                                >Vote</button>
-                            </div>   
-                    }
-                </form>
+                                )
+                            })}
+                        </div>
+                        
+                        {Object.keys(userLoggedIn).length === 0
+                            ? <p><Link to="/log-in">Log in</Link> to vote</p>
+                            : hasLoggedInUserAlreadyVoted
+                                ? <div>You have already voted on this post.</div>
+                                : <div>
+                                    <button
+                                        type="button"
+                                        onClick={onClickVoteButton}
+                                        disabled={!optionInput}
+                                    >Vote</button>
+                                </div>   
+                        }
+                    </form>
 
-                {userLoggedIn.user_id === post.post_owner_id
-                    ? <button onClick={onClickEditPost}>Edit Post</button>
-                    : null
-                }
-
-                <div id="edit-post" style={styleEditPost}>
-                    <h2>Edit Post</h2>
-
-                    {editOptionsHasDuplicates === null || editOptionsHasDuplicates === false
-                        ? null
-                        : <p className="error">You have entered duplicate options</p>
-                    }
-
-                    {isNumberOfOptionsLessThanTwo
-                        ? <p className="error">Please enter at least two options</p>
+                    {userLoggedIn.user_id === post.post_owner_id
+                        ? <button onClick={onClickEditPost}>Edit Post</button>
                         : null
                     }
 
-                    <TitleInput
-                        titleInput={editTitleInput}
-                        setTitleInput={setEditTitleInput}
-                    />
+                    <div id="edit-post" style={styleEditPost}>
+                        <h2>Edit Post</h2>
 
-                    <CategoryInput
-                        categoryInput={editCategoryInput}
-                        setCategoryInput={setEditCategoryInput}
-                    />
+                        {editOptionsHasDuplicates === null || editOptionsHasDuplicates === false
+                            ? null
+                            : <p className="error">You have entered duplicate options</p>
+                        }
 
-                    <DescriptionInput
-                        descriptionInput={editDescriptionInput}
-                        setDescriptionInput={setEditDescriptionInput}
-                    />
+                        {isNumberOfOptionsLessThanTwo
+                            ? <p className="error">Please enter at least two options</p>
+                            : null
+                        }
 
-                    <OptionsInput
-                        optionInputs={editOptionInputs}
-                        setOptionInputs={setEditOptionInputs}
-                        setOptionsHasDuplicates={setEditOptionsHasDuplicates}
-                    />
+                        <TitleInput
+                            titleInput={editTitleInput}
+                            setTitleInput={setEditTitleInput}
+                        />
 
-                    <div>
-                        <button onClick={onClickCancelEditPostButton}>Cancel</button>
-                        <button
-                            onClick={onClickUpdatePostButton}
-                            disabled={
-                                !editTitleInput ||
-                                !editDescriptionInput ||
-                                editCategoryInput === "Select a Category"
-                            }
-                        >Update</button>
-                    </div>
-                </div>
-                
+                        <CategoryInput
+                            categoryInput={editCategoryInput}
+                            setCategoryInput={setEditCategoryInput}
+                        />
 
+                        <DescriptionInput
+                            descriptionInput={editDescriptionInput}
+                            setDescriptionInput={setEditDescriptionInput}
+                        />
 
+                        <OptionsInput
+                            optionInputs={editOptionInputs}
+                            setOptionInputs={setEditOptionInputs}
+                            setOptionsHasDuplicates={setEditOptionsHasDuplicates}
+                        />
 
-
-                <h2>Comments</h2>
-                
-                {isCommentsLoading
-                    ? <p>Loading comments...</p>
-                    : null
-                }
-
-                {isFetchingCommentsSuccessful === null
-                    ? null
-                    : isFetchingCommentsSuccessful === false
-                        ? <p className="error">Comments could not be loaded</p>
-                        : comments.length === 0
-                            ? <div>Be the first to comment on this post.</div>
-                            : <div className="comments">
-                            {comments.map((comment) => {
-                                return <CommentCard key={comment.comment_id} comment={comment} />
-                            })}
+                        <div>
+                            <button
+                                type="button"
+                                onClick={onClickCancelEditPostButton}
+                            >Cancel</button>
+                            <button
+                                type="button"
+                                onClick={onClickUpdatePostButton}
+                                disabled={
+                                    !editTitleInput ||
+                                    !editDescriptionInput ||
+                                    editCategoryInput === "Select a Category"
+                                }
+                            >Update</button>
                         </div>
-                }
+                    </div>
+                </section>
+                
+                <section>
+                    <h2>Post a Comment</h2>
+                    <form>
+                        {userLoggedIn.user_id
+                            ? <div>
+                                <CommentInput
+                                commentInput={commentInput}
+                                setCommentInput={setCommentInput}
+                            />
+                            <button
+                                type="button"
+                                onClick={onClickPostCommentButton}
+                                disabled={!commentInput}
+                            >Post Comment</button>
+                            </div>
+                            : <p><Link to="/log-in">Log in</Link> to post a comment</p>
+                        }
+                    </form>
+                </section>
+
+                <section>
+                    <h2>Comments</h2>
+                    
+                    {isCommentsLoading
+                        ? <p>Loading comments...</p>
+                        : null
+                    }
+
+                    {isFetchingCommentsSuccessful === null
+                        ? null
+                        : isFetchingCommentsSuccessful === false
+                            ? <p className="error">Comments could not be loaded</p>
+                            : comments.length === 0
+                                ? <div>Be the first to comment on this post.</div>
+                                : <div className="comments">
+                                {comments.map((comment) => {
+                                    return <CommentCard key={comment.comment_id} comment={comment} />
+                                })}
+                            </div>
+                    }
+                </section>
             </main>
         </div>
     )
