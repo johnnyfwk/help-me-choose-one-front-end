@@ -45,7 +45,9 @@ img {
     color: var(--lime);
 }
 
-
+textarea {
+    width: 100%;
+}
 
 #logo-show-nav-button-and-nav {
     background: var(--light-grey);
@@ -114,7 +116,9 @@ nav {
 #post-created-message,
 #post-not-created-message,
 #post-updated-message,
-#post-not-updated-message {
+#post-not-updated-message,
+#comment-posted-message,
+#comment-not-posted-message {
     position: fixed;
     bottom: -100%;
     left: 0%;
@@ -125,6 +129,7 @@ nav {
     justify-content: center;
     font-weight: bold;
     transition: bottom 0.2s;
+    z-index: 2;
 }
 
 #account-created-message,
@@ -132,14 +137,16 @@ nav {
 #logged-out-message,
 #vote-added-message,
 #post-created-message,
-#post-updated-message {
+#post-updated-message,
+#comment-posted-message {
     background: var(--lime);
 }
 
 #account-not-created-message,
 #vote-not-added-message,
 #post-not-created-message,
-#post-not-updated-message {
+#post-not-updated-message,
+#comment-not-posted-message {
     background: var(--red);
 }
 

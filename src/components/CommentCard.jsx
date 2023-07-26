@@ -1,9 +1,15 @@
 export default function CommentCard({comment}) {
     return (
-        <div className="comment-card">
+        <div className="comment-card" loading="lazy">
             {comment.avatar_url === "default-avatar.webp"
-                ? <img src={require(`../assets/images/avatars/${comment.avatar_url}`)} alt="Avatar" />
-                : <img src={comment.avatar_url} alt="Avatar" />
+                ? <img
+                    src={require(`../assets/images/avatars/${comment.avatar_url}`)}
+                    alt="Avatar"
+                />
+                : <img
+                    src={comment.avatar_url}
+                    alt="Avatar"
+                />
             }
             <div>{comment.username}</div>
             <div>{new Date(comment.comment_date).toLocaleDateString()}</div>

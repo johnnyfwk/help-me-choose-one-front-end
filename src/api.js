@@ -62,6 +62,14 @@ export function createPost(post_date, post_updated, title, description, category
             return response.data.post;
         })
 }
+
+export function postComment(comment_date, comment_updated, comment, comment_likes_from_user_ids, comment_post_id, comment_owner_id) {
+    return baseURL
+        .post("/comments", {comment_date, comment_updated, comment, comment_likes_from_user_ids, comment_post_id, comment_owner_id})
+        .then((response) => {
+            return response.data.comment;
+        })
+}
 // POST requests
 
 // PATCH requests

@@ -1,5 +1,5 @@
 export default function DescriptionInput({descriptionInput, setDescriptionInput}) {
-    const descriptionInputMaxLength = 1000;
+    const descriptionInputMaxLength = 5000;
 
     function handleDescriptionInput(event) {
         setDescriptionInput(event.target.value);
@@ -15,7 +15,7 @@ export default function DescriptionInput({descriptionInput, setDescriptionInput}
                 onChange={handleDescriptionInput}
                 maxLength={descriptionInputMaxLength}
             ></textarea>
-            <span>{descriptionInput.length} / {descriptionInputMaxLength}</span>
+            <div>{descriptionInput.length} / {descriptionInputMaxLength}</div>
         </div>
     )
 }
