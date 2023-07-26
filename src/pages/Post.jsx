@@ -106,18 +106,6 @@ export default function Post({
             })
     }, [post_id_and_title, isVoteAddedSuccessfully, isPostUpdatedSuccessfully, isCommentPostedSuccessfully, isCommentUpdatedSuccessfully])
 
-    if (isLoading) {
-        return (
-            <p>Page is loading...</p>
-        )
-    }
-
-    if (isFetchingPostSuccessful === false) {
-        return (
-            <p className="error">Page could not be loaded.</p>
-        )
-    }
-
     function handleOptionInput(event) {
         setOptionInput(event.target.value);
     }
@@ -223,12 +211,6 @@ export default function Post({
 
     function onClickPostCommentButton() {
         setIsCommentPostedSuccessfully(null);
-        console.log(new Date())
-        console.log(post.title, "<-------- post title")
-        console.log(post.description, "<-------- post description")
-        console.log(post.category, "<-------- post category")
-        console.log(post.options_and_votes, "<-------- options and votes")
-        console.log(postId, "<-------- post ID")
         api.postComment(new Date(), new Date(), commentInput, [], post.post_id, userLoggedIn.user_id)
             .then((response) => {
                 setIsCommentPostedSuccessfully(true);
@@ -256,6 +238,18 @@ export default function Post({
         display: isPostEditable ? "grid" : "none"
     }
 
+    if (isLoading) {
+        return (
+            <p>Page is loading...</p>
+        )
+    }
+
+    if (isFetchingPostSuccessful === false) {
+        return (
+            <p className="error">Page could not be loaded.</p>
+        )
+    }
+
     return (
         <div>
             <Helmet>
@@ -273,11 +267,35 @@ export default function Post({
 
             <main>
                 <section>
-                    {post.avatar_url === "default-avatar.webp"
-                        ? <img src={require(`../assets/images/avatars/${post.avatar_url}`)} alt="Avatar" className="post-avatar" />
-                        : <img src={post.avatar_url} alt="Avatar" className="post-avatar" />
+                    {Object.keys(userLoggedIn).length === 0
+                        ? <div>
+                            <img
+                                src={
+                                    post.avatar_url === "default-avatar.webp"
+                                        ? require(`../assets/images/avatars/${post.avatar_url}`)
+                                        : post.avatar_url
+                                }
+                                alt="Avatar"
+                                className="post-avatar"
+                            />
+                            <div>{post.username}</div>
+                        </div>
+                        : <div>
+                            <Link to={`/users/${post.post_owner_id}`}>
+                                <img
+                                    src={
+                                        post.avatar_url === "default-avatar.webp"
+                                            ? require(`../assets/images/avatars/${post.avatar_url}`)
+                                            : post.avatar_url
+                                    }
+                                    alt="Avatar"
+                                    className="post-avatar"
+                                />
+                            </Link>
+                            <Link to={`/users/${post.post_owner_id}`}>{post.username}</Link>
+                        </div>
                     }
-                    <div>{post.username}</div>
+                    
                     <p>{post.description}</p>
 
                     <button type="button" onClick={onClickShowVotesButton}>{isVotesVisible ? "Hide Votes" : "Show Votes"}</button>
