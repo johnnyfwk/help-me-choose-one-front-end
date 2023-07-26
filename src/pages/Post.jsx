@@ -14,13 +14,10 @@ import * as utils from "../utils";
 export default function Post({
     isVotesVisible,
     setIsVotesVisible,
-    isVoteAddedMessageVisible,
     setIsVoteAddedMessageVisible,
     setIsVoteNotAddedMessageVisible,
-    isPostUpdatedMessageVisible,
     setIsPostUpdatedMessageVisible,
     setIsPostNotUpdatedMessageVisible,
-    isCommentPostedMessageVisible,
     setIsCommentPostedMessageVisible,
     setIsCommentNotPostedMessageVisible
 }) {
@@ -37,6 +34,7 @@ export default function Post({
 
     const [voterIds, setVoterIds] = useState([]);
     const [hasLoggedInUserAlreadyVoted, setHasLoggedInUserAlreadyVoted] = useState(null);
+    const [isVoteAddedSuccessfully, setIsVoteAddedSuccessfully] = useState(null);
 
     const [comments, setComments] = useState([]);
     const [isCommentsLoading, setIsCommentsLoading] = useState(true);
@@ -55,8 +53,11 @@ export default function Post({
     });
     const [editOptionsHasDuplicates, setEditOptionsHasDuplicates] = useState(null);
     const [isNumberOfOptionsLessThanTwo, setIsNumberOfOptionsLessThanTwo] = useState(null);
+    const [isPostUpdatedSuccessfully, setIsPostUpdatedSuccessfully] = useState(null);
 
     const [commentInput, setCommentInput] = useState("");
+    const [isCommentPostedSuccessfully, setIsCommentPostedSuccessfully] = useState(null);
+    const [isCommentUpdatedSuccessfully, setIsCommentUpdatedSuccessfully] = useState(null);
 
     useEffect(() => {
         setIsLoading(true);
@@ -88,7 +89,7 @@ export default function Post({
                 setIsFetchingPostSuccessful(false);
                 setHasLoggedInUserAlreadyVoted(null);
             })
-    }, [post_id_and_title, isVoteAddedMessageVisible, isPostUpdatedMessageVisible, isCommentPostedMessageVisible])
+    }, [post_id_and_title, isVoteAddedSuccessfully, isPostUpdatedSuccessfully, isCommentPostedSuccessfully, isCommentUpdatedSuccessfully])
 
     useEffect(() => {
         setIsCommentsLoading(true);
@@ -103,7 +104,7 @@ export default function Post({
                 setIsCommentsLoading(false);
                 setIsFetchingCommentsSuccessful(false);
             })
-    }, [post_id_and_title, isVoteAddedMessageVisible, isPostUpdatedMessageVisible, isCommentPostedMessageVisible])
+    }, [post_id_and_title, isVoteAddedSuccessfully, isPostUpdatedSuccessfully, isCommentPostedSuccessfully, isCommentUpdatedSuccessfully])
 
     if (isLoading) {
         return (
@@ -136,14 +137,15 @@ export default function Post({
             updatedOptionsAndVotes.push(newOption);
         })
 
-        setIsVoteAddedMessageVisible(false);
-        setIsVoteNotAddedMessageVisible(false);
+        setIsVoteAddedSuccessfully(null);
         api.updatePost(new Date(), post.title, post.description, post.category, updatedOptionsAndVotes, postId)
             .then((response) => {
+                setIsVoteAddedSuccessfully(true);
                 setIsVoteAddedMessageVisible(true);
                 setTimeout(() => setIsVoteAddedMessageVisible(false), 3000);
             })
             .catch((error) => {
+                setIsVoteAddedSuccessfully(false);
                 setIsVoteNotAddedMessageVisible(true);
                 setTimeout(() => setIsVoteNotAddedMessageVisible(false), 3000);
             })
@@ -197,13 +199,16 @@ export default function Post({
                 }
             })
 
+            setIsPostUpdatedSuccessfully(null);
             api.updatePost(new Date(), editTitleInput, editDescriptionInput, utils.convertCategoryToUrl(editCategoryInput), optionsAndVotes, postId)
                 .then((response) => {
+                    setIsPostUpdatedSuccessfully(true);
                     setIsPostUpdatedMessageVisible(true);
                     setIsPostEditable(false);
                     setTimeout(() => setIsPostUpdatedMessageVisible(false), 3000);
                 })
                 .catch((error) => {
+                    setIsPostUpdatedSuccessfully(false);
                     setIsPostNotUpdatedMessageVisible(true);
                     setTimeout(() => setIsPostNotUpdatedMessageVisible(false), 3000);
                 })
@@ -217,12 +222,16 @@ export default function Post({
     }
 
     function onClickPostCommentButton() {
+        setIsCommentPostedSuccessfully(null);
         api.postComment(new Date(), new Date(), commentInput, [], post.post_id, userLoggedIn.user_id)
             .then((response) => {
+                setIsCommentPostedSuccessfully(true);
                 setIsCommentPostedMessageVisible(true);
+                setCommentInput("");
                 setTimeout(() => setIsCommentPostedMessageVisible(false), 3000);
             })
             .catch((error) => {
+                setIsCommentPostedSuccessfully(false);
                 setIsCommentNotPostedMessageVisible(true);
                 setTimeout(() => setIsCommentNotPostedMessageVisible(false), 3000);
             })
@@ -410,7 +419,12 @@ export default function Post({
                                 ? <div>Be the first to comment on this post.</div>
                                 : <div className="comments">
                                 {comments.map((comment) => {
-                                    return <CommentCard key={comment.comment_id} comment={comment} />
+                                    return <CommentCard
+                                        key={comment.comment_id}
+                                        comment={comment}
+                                        userLoggedIn={userLoggedIn}
+                                        setIsCommentUpdatedSuccessfully={setIsCommentUpdatedSuccessfully}
+                                    />
                                 })}
                             </div>
                     }

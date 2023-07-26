@@ -197,7 +197,6 @@ nav {
 }
 
 .comments {
-    /* background: var(--green); */
     display: grid;
     gap: var(--spacing20);
 }
@@ -208,6 +207,30 @@ nav {
 
 .comment-card img {
     max-width: 50px;
+}
+
+.comment-options-button {
+    background: var(--orange);
+    display: grid;
+    gap: 2px;
+    cursor: pointer;
+}
+
+.comment-options-button > div {
+    background: var(--black);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+}
+
+#comment-options-box {
+    background: var(--cyan);
+    cursor: pointer;
+    text-align: right;
+    position: fixed;
+    bottom: -100%;
+    width: 100%;
+    transition: bottom 0.2s;
 }
 
 #edit-post {

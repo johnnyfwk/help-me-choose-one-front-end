@@ -9,7 +9,8 @@ export default function CommentInput({commentInput, setCommentInput}) {
         <div>
             <textarea
                 id="comment"
-                name={commentInput}
+                name="comment"
+                value={commentInput}
                 onChange={handleCommentInput}
                 maxLength={commentMaxLength}
             ></textarea>
