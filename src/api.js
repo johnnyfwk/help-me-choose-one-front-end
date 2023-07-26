@@ -80,4 +80,12 @@ export function updatePost(post_updated, title, description, category, options_a
             return response.data.post;
         })
 }
+
+export function updateComment(comment_updated, comment, comment_likes_from_user_ids, comment_id) {
+    return baseURL
+        .patch(`/comments/${comment_id}`, {comment_updated, comment, comment_likes_from_user_ids})
+        .then((response) => {
+            return response.data.comment;
+        })
+}
 // PATCH requests

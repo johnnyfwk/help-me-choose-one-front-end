@@ -121,13 +121,10 @@ function App() {
                         <Post
                             isVotesVisible={isVotesVisible}
                             setIsVotesVisible={setIsVotesVisible}
-                            isVoteAddedMessageVisible={isVoteAddedMessageVisible}
                             setIsVoteAddedMessageVisible={setIsVoteAddedMessageVisible}
                             setIsVoteNotAddedMessageVisible={setIsVoteNotAddedMessageVisible}
-                            isPostUpdatedMessageVisible={isPostUpdatedMessageVisible}
                             setIsPostUpdatedMessageVisible={setIsPostUpdatedMessageVisible}
                             setIsPostNotUpdatedMessageVisible={setIsPostNotUpdatedMessageVisible}
-                            isCommentPostedMessageVisible={isCommentPostedMessageVisible}
                             setIsCommentPostedMessageVisible={setIsCommentPostedMessageVisible}
                             setIsCommentNotPostedMessageVisible={setIsCommentNotPostedMessageVisible}
                         />
@@ -160,7 +157,6 @@ function App() {
             <div id="post-not-created-message" style={stylePostNotCreatedMessage}>Your post could not be created</div>
             <div id="post-updated-message" style={stylePostUpdatedMessage}>Your post has been updated</div>
             <div id="post-not-updated-message" style={stylePostNotUpdatedMessage}>Your post could not be updated</div>
-
             <div id="comment-posted-message" style={styleCommentPostedMessage}>Your comment has been posted</div>
             <div id="comment-not-posted-message" style={styleCommentNotPostedMessage}>Your post could not be posted</div>
         </div>
