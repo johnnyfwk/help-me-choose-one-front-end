@@ -237,6 +237,12 @@ nav {
     transition: bottom 0.2s;
 }
 
+.like-button {
+    /* background: var(--grey); */
+    border: 0;
+    cursor: pointer;
+}
+
 #edit-post {
     background: var(--light-grey);
     position: fixed;
