@@ -60,6 +60,14 @@ export function getPostsByUserId(user_id) {
             return response.data.posts;
         })
 }
+
+export function getCommentsByUserId(user_id) {
+    return baseURL
+        .get(`/users/${user_id}/comments`)
+        .then((response) => {
+            return response.data.comments;
+        })
+}
 // GET requests
 
 // POST requests

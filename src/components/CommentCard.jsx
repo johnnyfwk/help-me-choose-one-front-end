@@ -2,8 +2,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import CommentInput from "./CommentInput";
 import * as api from "../api";
+import * as utils from "../utils";
 
-export default function CommentCard({comment, userLoggedIn, setIsCommentUpdatedSuccessfully}) {
+export default function CommentCard({comment, userLoggedIn, setIsCommentUpdatedSuccessfully, setIsCommentUpdatedMessageVisible, setIsCommentNotUpdatedMessageVisible}) {
     const [isCommentOptionsBoxVisible, setIsCommentOptionsBoxVisible] = useState(false);
     const [isCommentEditable, setIsCommentEditable] = useState(false);
     const [editCommentInput, setEditCommentInput] = useState("");
@@ -33,19 +34,18 @@ export default function CommentCard({comment, userLoggedIn, setIsCommentUpdatedS
     }
 
     function onClickUpdateCommentButton() {
-        console.log(comment, "<-------- comment")
-        console.log(new Date())
-        console.log(editCommentInput, "<-------- editCommentInput")
-        console.log(comment.comment_id, "<-------- comment.comment_id")
         setIsCommentUpdatedSuccessfully(null);
+        setIsCommentUpdatedMessageVisible(null);
         api.updateComment(new Date(), editCommentInput, comment.comment_likes_from_user_ids, comment.comment_id)
             .then((response) => {
-                console.log(response);
                 setIsCommentUpdatedSuccessfully(true);
+                setIsCommentUpdatedMessageVisible(true);
+                setTimeout(() => setIsCommentUpdatedMessageVisible(false), 3000);
             })
             .catch((error) => {
-                console.log(error);
                 setIsCommentUpdatedSuccessfully(false);
+                setIsCommentNotUpdatedMessageVisible(true);
+                setTimeout(() => setIsCommentNotUpdatedMessageVisible(false), 3000);
             })
     }
 
@@ -53,21 +53,8 @@ export default function CommentCard({comment, userLoggedIn, setIsCommentUpdatedS
         bottom: isCommentOptionsBoxVisible ? "0%" : "-100%"
     }
 
-    console.log(comment)
-
     return (
         <div className="comment-card" loading="lazy">
-            {/* {comment.avatar_url === "default-avatar.webp"
-                ? <img
-                    src={require(`../assets/images/avatars/${comment.avatar_url}`)}
-                    alt="Avatar"
-                />
-                : <img
-                    src={comment.avatar_url}
-                    alt="Avatar"
-                />
-            } */}
-
             {Object.keys(userLoggedIn).length === 0
                 ? <div>
                     <img src={
@@ -81,7 +68,7 @@ export default function CommentCard({comment, userLoggedIn, setIsCommentUpdatedS
                     <div>{comment.username}</div>
                 </div>                
                 : <div>
-                    <Link to={`/users/${comment.comment_owner_id}`}>
+                    <Link to={`/user/${comment.comment_owner_id}`}>
                         <img
                             src={
                                 comment.avatar_url === "default-avatar.webp"
@@ -92,12 +79,17 @@ export default function CommentCard({comment, userLoggedIn, setIsCommentUpdatedS
                             className="post-avatar"
                         />
                     </Link>
-                    <Link to={`/users/${comment.comment_owner_id}`}>{comment.username}</Link>
+                    <Link to={`/user/${comment.comment_owner_id}`}>{comment.username}</Link>
                 </div>
             }
 
             <div>{new Date(comment.comment_date).toLocaleDateString()}</div>
             <div>{new Date(comment.comment_date).toLocaleTimeString()}</div>
+            
+            {window.location.href.includes("/user")
+                ? <Link to={`/post/${comment.comment_post_id}-${utils.convertTitleToUrl(comment.title)}`}><h2>{comment.title}</h2></Link>
+                : null
+            }
             
             {isCommentEditable
                 ? <div>
@@ -136,7 +128,6 @@ export default function CommentCard({comment, userLoggedIn, setIsCommentUpdatedS
                 </div>
                 : null
             }
-            
         </div>
     )
 }

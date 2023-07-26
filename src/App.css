@@ -118,7 +118,9 @@ nav {
 #post-updated-message,
 #post-not-updated-message,
 #comment-posted-message,
-#comment-not-posted-message {
+#comment-not-posted-message,
+#comment-updated-message,
+#comment-not-updated-message {
     position: fixed;
     bottom: -100%;
     left: 0%;
@@ -138,7 +140,8 @@ nav {
 #vote-added-message,
 #post-created-message,
 #post-updated-message,
-#comment-posted-message {
+#comment-posted-message,
+#comment-updated-message {
     background: var(--lime);
 }
 
@@ -146,7 +149,8 @@ nav {
 #vote-not-added-message,
 #post-not-created-message,
 #post-not-updated-message,
-#comment-not-posted-message {
+#comment-not-posted-message,
+#comment-not-updated-message {
     background: var(--red);
 }
 
@@ -251,6 +255,13 @@ nav {
 
 #profile-image {
     max-width: 300px;
+}
+
+#profile-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    cursor: pointer;
 }
 
 footer {

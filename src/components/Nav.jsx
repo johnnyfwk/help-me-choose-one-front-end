@@ -27,7 +27,7 @@ export default function Nav({isNavVisible, setIsNavVisible, onClickLogOutButton}
                 ? null
                 : <>
                     <Link to="/create-post">Create Post</Link>
-                    <Link to="/profile">My Profile</Link>
+                    <Link to={`/user/${userLoggedIn.user_id}`}>My Profile</Link>
                 </>
             }
             <Link to="/about" id="nav-link-about">About</Link>

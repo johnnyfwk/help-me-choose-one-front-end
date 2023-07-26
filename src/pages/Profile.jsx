@@ -4,8 +4,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import * as api from "../api";
 import PostCard from "../components/PostCard";
+import CommentCard from "../components/CommentCard";
 
-export default function Profile() {
+export default function Profile({setIsCommentUpdatedMessageVisible, setIsCommentNotUpdatedMessageVisible}) {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
     const { user_id } = useParams();
 
@@ -14,9 +15,17 @@ export default function Profile() {
 
     const [user, setUser] = useState({});
     const [posts, setPosts] = useState([]);
+    const [comments, setComments] = useState([]);
 
     const [isPostsLoading, setIsPostsLoading] = useState(true);
     const [isFetchingPostsSuccessful, setIsFetchingPostsSuccessful] = useState(null);
+
+    const [isCommentsLoading, setIsCommentsLoading] = useState(true);
+    const [isFetchingCommentsSuccessful, setIsFetchingCommentsSuccessful] = useState(null);
+
+    const [visibleTab, setVisibleTab] = useState("posts");
+
+    const [isCommentUpdatedSuccessfully, setIsCommentUpdatedSuccessfully] = useState(null);
 
     const navigate = useNavigate();
 
@@ -39,7 +48,7 @@ export default function Profile() {
                 setIsLoading(false);
                 setIsFetchingUserSuccessful(false);
             })
-    }, [user_id])
+    }, [user_id, isCommentUpdatedSuccessfully])
 
     useEffect(() => {
         setIsPostsLoading(true);
@@ -54,7 +63,30 @@ export default function Profile() {
                 setIsPostsLoading(false);
                 setIsFetchingPostsSuccessful(false)
             })
-    }, [user_id])
+    }, [user_id, isCommentUpdatedSuccessfully])
+
+    useEffect(() => {
+        setIsCommentsLoading(true);
+        setIsFetchingCommentsSuccessful(null);
+        api.getCommentsByUserId(user_id)
+            .then((response) => {
+                setIsCommentsLoading(false);
+                setIsFetchingCommentsSuccessful(true);
+                setComments(response)
+            })
+            .catch((error) => {
+                setIsCommentsLoading(false);
+                setIsFetchingCommentsSuccessful(false);
+            })
+    }, [user_id, isCommentUpdatedSuccessfully])
+
+    function onClickProfilePostsTab() {
+        setVisibleTab("posts");
+    }
+
+    function onClickProfileCommentsTab() {
+        setVisibleTab("comments");
+    }
 
     if (isLoading) {
         return (
@@ -67,8 +99,6 @@ export default function Profile() {
             <p className="error">Page could not be loaded.</p>
         )
     }
-
-    console.log(posts)
 
     return (
         <div>
@@ -92,23 +122,54 @@ export default function Profile() {
             </header>
 
             <main>
-                <h2>Posts</h2>
-                {isPostsLoading
-                    ? <p>Loading posts...</p>
-                    : null
-                }
-
-                {isFetchingPostsSuccessful === null
-                    ? null
-                    : isFetchingPostsSuccessful === false
-                        ? <p className="error">Posts could not be loaded</p>
-                        : posts.length === 0
-                            ? <p>{user.username} has not created any posts.</p>
-                            : <div className="post-card-container">
-                                {posts.map((post) => {
-                                    return <PostCard key={post.post_id} post={post} />;
-                                })}
-                            </div>
+                <div id="profile-tabs">
+                    <h2 id="profile-posts-tab" onClick={onClickProfilePostsTab}>Posts</h2>
+                    {userLoggedIn.user_id !== user.user_id
+                        ? null
+                        : <div>
+                            <h2 id="profile-comments-tab" onClick={onClickProfileCommentsTab}>Comments</h2>
+                        </div>
+                    }
+                </div>
+                
+                {visibleTab === "posts"
+                    ? <div>
+                        {isPostsLoading
+                            ? <div>Loading posts...</div>
+                            : null
+                        }
+                        {isFetchingPostsSuccessful
+                            ? null
+                            : <div className="error">Posts could not be loaded</div>
+                        }
+                        <div className="post-card-container">
+                            {posts.map((post) => {
+                                return <PostCard key={post.post_id} post={post} />;
+                            })}
+                        </div>
+                      </div>
+                    : <div>
+                        {isCommentsLoading
+                            ? <div>Loading comments...</div>
+                            : null
+                        }
+                        {isFetchingCommentsSuccessful
+                            ? null
+                            : <div className="error">Comments could not be loaded</div>
+                        }
+                        <div className="comments">
+                            {comments.map((comment) => {
+                                return <CommentCard
+                                    key={comment.comment_id}
+                                    comment={comment}
+                                    userLoggedIn={userLoggedIn}
+                                    setIsCommentUpdatedSuccessfully={setIsCommentUpdatedSuccessfully}
+                                    setIsCommentUpdatedMessageVisible={setIsCommentUpdatedMessageVisible}
+                                    setIsCommentNotUpdatedMessageVisible={setIsCommentNotUpdatedMessageVisible}
+                                />
+                            })}
+                        </div>
+                      </div>
                 }
             </main>
         </div>
