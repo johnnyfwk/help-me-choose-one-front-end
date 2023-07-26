@@ -36,6 +36,8 @@ function App() {
     const [isPostNotUpdatedMessageVisible, setIsPostNotUpdatedMessageVisible] = useState(false);
     const [isCommentPostedMessageVisible, setIsCommentPostedMessageVisible] = useState(false);
     const [isCommentNotPostedMessageVisible, setIsCommentNotPostedMessageVisible] = useState(false);
+    const [isCommentUpdatedMessageVisible, setIsCommentUpdatedMessageVisible] = useState(false);
+    const [isCommentNotUpdatedMessageVisible, setIsCommentNotUpdatedMessageVisible] = useState(false);
 
     const numberOfItemsToDisplayAndIncrement = 20;
 
@@ -93,6 +95,14 @@ function App() {
         bottom: isCommentNotPostedMessageVisible ? "0%" : "-100%"
     }
 
+    const styleCommentUpdatedMessage = {
+        bottom: isCommentUpdatedMessageVisible ? "0%" : "-100%"
+    }
+
+    const styleCommentNotUpdatedMessage = {
+        bottom: isCommentNotUpdatedMessageVisible ? "0%" : "-100%"
+    }
+
     return (
         <div className="App">
             <div id="logo-show-nav-button-and-nav">
@@ -127,6 +137,8 @@ function App() {
                             setIsPostNotUpdatedMessageVisible={setIsPostNotUpdatedMessageVisible}
                             setIsCommentPostedMessageVisible={setIsCommentPostedMessageVisible}
                             setIsCommentNotPostedMessageVisible={setIsCommentNotPostedMessageVisible}
+                            setIsCommentUpdatedMessageVisible={setIsCommentUpdatedMessageVisible}
+                            setIsCommentNotUpdatedMessageVisible={setIsCommentNotUpdatedMessageVisible}
                         />
                     } />
                 <Route
@@ -136,7 +148,15 @@ function App() {
                             setIsPostCreatedMessageVisible={setIsPostCreatedMessageVisible}
                             setIsPostNotCreatedMessageVisible={setIsPostNotCreatedMessageVisible} />
                     } />
-                <Route path="/users/:user_id" element={<Profile />} />
+                <Route
+                    path="/user/:user_id"
+                    element={
+                        <Profile
+                            setIsCommentUpdatedMessageVisible={setIsCommentUpdatedMessageVisible}
+                            setIsCommentNotUpdatedMessageVisible={setIsCommentNotUpdatedMessageVisible}
+                        />
+                    }
+                />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
@@ -158,6 +178,8 @@ function App() {
             <div id="post-not-updated-message" style={stylePostNotUpdatedMessage}>Your post could not be updated</div>
             <div id="comment-posted-message" style={styleCommentPostedMessage}>Your comment has been posted</div>
             <div id="comment-not-posted-message" style={styleCommentNotPostedMessage}>Your post could not be posted</div>
+            <div id="comment-updated-message" style={styleCommentUpdatedMessage}>Your comment has been updated</div>
+            <div id="comment-not-updated-message" style={styleCommentNotUpdatedMessage}>Your post could not be updated</div>
         </div>
     );
 }

@@ -19,7 +19,9 @@ export default function Post({
     setIsPostUpdatedMessageVisible,
     setIsPostNotUpdatedMessageVisible,
     setIsCommentPostedMessageVisible,
-    setIsCommentNotPostedMessageVisible
+    setIsCommentNotPostedMessageVisible,
+    setIsCommentUpdatedMessageVisible,
+    setIsCommentNotUpdatedMessageVisible
 }) {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
     const {post_id_and_title} = useParams();
@@ -281,7 +283,7 @@ export default function Post({
                             <div>{post.username}</div>
                         </div>
                         : <div>
-                            <Link to={`/users/${post.post_owner_id}`}>
+                            <Link to={`/user/${post.post_owner_id}`}>
                                 <img
                                     src={
                                         post.avatar_url === "default-avatar.webp"
@@ -292,7 +294,7 @@ export default function Post({
                                     className="post-avatar"
                                 />
                             </Link>
-                            <Link to={`/users/${post.post_owner_id}`}>{post.username}</Link>
+                            <Link to={`/user/${post.post_owner_id}`}>{post.username}</Link>
                         </div>
                     }
                     
@@ -443,15 +445,17 @@ export default function Post({
                             : comments.length === 0
                                 ? <div>Be the first to comment on this post.</div>
                                 : <div className="comments">
-                                {comments.map((comment) => {
-                                    return <CommentCard
-                                        key={comment.comment_id}
-                                        comment={comment}
-                                        userLoggedIn={userLoggedIn}
-                                        setIsCommentUpdatedSuccessfully={setIsCommentUpdatedSuccessfully}
-                                    />
-                                })}
-                            </div>
+                                    {comments.map((comment) => {
+                                        return <CommentCard
+                                            key={comment.comment_id}
+                                            comment={comment}
+                                            userLoggedIn={userLoggedIn}
+                                            setIsCommentUpdatedSuccessfully={setIsCommentUpdatedSuccessfully}
+                                            setIsCommentUpdatedMessageVisible={setIsCommentUpdatedMessageVisible}
+                                            setIsCommentNotUpdatedMessageVisible={setIsCommentNotUpdatedMessageVisible}
+                                        />
+                                    })}
+                                </div>
                     }
                 </section>
             </main>
