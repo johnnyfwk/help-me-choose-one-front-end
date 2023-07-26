@@ -249,6 +249,10 @@ nav {
     width: 100%;
 }
 
+#profile-image {
+    max-width: 300px;
+}
+
 footer {
     background: var(--grey);
 }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import CommentInput from "./CommentInput";
 import * as api from "../api";
 
@@ -52,9 +53,11 @@ export default function CommentCard({comment, userLoggedIn, setIsCommentUpdatedS
         bottom: isCommentOptionsBoxVisible ? "0%" : "-100%"
     }
 
+    console.log(comment)
+
     return (
         <div className="comment-card" loading="lazy">
-            {comment.avatar_url === "default-avatar.webp"
+            {/* {comment.avatar_url === "default-avatar.webp"
                 ? <img
                     src={require(`../assets/images/avatars/${comment.avatar_url}`)}
                     alt="Avatar"
@@ -63,8 +66,36 @@ export default function CommentCard({comment, userLoggedIn, setIsCommentUpdatedS
                     src={comment.avatar_url}
                     alt="Avatar"
                 />
+            } */}
+
+            {Object.keys(userLoggedIn).length === 0
+                ? <div>
+                    <img src={
+                            comment.avatar_url === "default-avatar.webp"
+                                ? require(`../assets/images/avatars/${comment.avatar_url}`)
+                                : comment.avatar_url
+                        }
+                        alt="Avatar"
+                        className="post-avatar"
+                    />
+                    <div>{comment.username}</div>
+                </div>                
+                : <div>
+                    <Link to={`/users/${comment.comment_owner_id}`}>
+                        <img
+                            src={
+                                comment.avatar_url === "default-avatar.webp"
+                                    ? require(`../assets/images/avatars/${comment.avatar_url}`)
+                                    : comment.avatar_url
+                            }
+                            alt="Avatar"
+                            className="post-avatar"
+                        />
+                    </Link>
+                    <Link to={`/users/${comment.comment_owner_id}`}>{comment.username}</Link>
+                </div>
             }
-            <div>{comment.username}</div>
+
             <div>{new Date(comment.comment_date).toLocaleDateString()}</div>
             <div>{new Date(comment.comment_date).toLocaleTimeString()}</div>
             

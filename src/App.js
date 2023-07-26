@@ -136,8 +136,7 @@ function App() {
                             setIsPostCreatedMessageVisible={setIsPostCreatedMessageVisible}
                             setIsPostNotCreatedMessageVisible={setIsPostNotCreatedMessageVisible} />
                     } />
-                <Route path="/profile/" element={<Profile />} />
-                <Route path="/profile/:user_id" element={<Profile />} />
+                <Route path="/users/:user_id" element={<Profile />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/terms-and-conditions" element={<TermsAndConditions />} />

@@ -44,6 +44,22 @@ export function getPostsByCategory(category) {
             return response.data.posts;
         })
 }
+
+export function getUserById(user_id) {
+    return baseURL
+        .get(`/users/${user_id}`)
+        .then((response) => {
+            return response.data.user;
+        })
+}
+
+export function getPostsByUserId(user_id) {
+    return baseURL
+        .get(`/users/${user_id}/posts`)
+        .then((response) => {
+            return response.data.posts;
+        })
+}
 // GET requests
 
 // POST requests
