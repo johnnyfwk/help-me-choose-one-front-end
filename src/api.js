@@ -120,6 +120,14 @@ export function updateComment(comment_updated, comment, comment_likes_from_user_
             return response.data.comment;
         })
 }
+
+export function updateUser(password, avatar_url, user_id) {
+    return baseURL
+        .patch(`/users/${user_id}`, {password, avatar_url})
+        .then((response) => {
+            return response.data.user;
+        })
+}
 // PATCH requests
 
 // DELETE requests

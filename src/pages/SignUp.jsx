@@ -22,6 +22,7 @@ export default function SignUp({setIsAccountCreatedMessageVisible, setIsAccountN
 
     const [passwordInput, setPasswordInput] = useState("");
     const [isPasswordValid, setIsPasswordValid] = useState(null);
+    const passwordInputLabel = "Password:";
 
     const [avatarUrlInput, setAvatarUrlInput] = useState("");
     const [isAvatarUrlValid, setIsAvatarUrlValid] = useState(true);
@@ -150,6 +151,7 @@ export default function SignUp({setIsAccountCreatedMessageVisible, setIsAccountN
                     <PasswordInput
                         passwordInput={passwordInput}
                         setPasswordInput={setPasswordInput}
+                        passwordInputLabel={passwordInputLabel}
                     />
                     {isPasswordValid === null || isPasswordValid === true
                         ? null

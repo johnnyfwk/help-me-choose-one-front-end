@@ -1,17 +1,17 @@
 import * as utils from "../utils";
 
-export default function PasswordInput({passwordInput, setPasswordInput}) {
+export default function PasswordInput({passwordInput, setPasswordInput, passwordInputLabel}) {
     function handlePasswordInput(event) {
         setPasswordInput(event.target.value);
     }
 
     return (
         <div>
-            <label htmlFor="password">Password:</label>
+            <label htmlFor="password">{passwordInputLabel}</label>
             <input
                 type="password"
-                id="password"
-                name="password"
+                id={passwordInputLabel}
+                name={passwordInputLabel}
                 value={passwordInput}
                 onChange={handlePasswordInput}
             ></input>
