@@ -130,4 +130,20 @@ export function deleteComment(comment_id) {
             return response.data.comment;
         })
 }
+
+export function deleteCommentsByPostId(post_id) {
+    return baseURL
+        .delete(`/posts/${post_id}/comments`)
+        .then((response) => {
+            return response.data.comments;
+        })
+}
+
+export function deletePost(post_id) {
+    return baseURL
+        .delete(`/posts/${post_id}`)
+        .then((response) => {
+            return response.data.post;
+        })
+}
 // DELETE requests
