@@ -22,6 +22,8 @@
     --spacing30: 30px;
     --spacing40: 40px;
     --spacing50: 50px;
+
+    --profile-image-max-dimensions: 300px;
 }
 
 * {
@@ -124,7 +126,11 @@ nav {
 #comment-deleted-message,
 #comment-not-deleted-message,
 #post-deleted-message,
-#post-not-deleted-message {
+#post-not-deleted-message,
+#avatar-updated-message,
+#avatar-not-updated-message,
+#password-updated-message,
+#password-not-updated-message {
     position: fixed;
     bottom: -100%;
     left: 0%;
@@ -147,7 +153,9 @@ nav {
 #comment-posted-message,
 #comment-updated-message,
 #comment-deleted-message,
-#post-deleted-message {
+#post-deleted-message,
+#avatar-updated-message,
+#password-updated-message {
     background: var(--lime);
 }
 
@@ -158,7 +166,9 @@ nav {
 #comment-not-posted-message,
 #comment-not-updated-message,
 #comment-not-deleted-message,
-#post-not-deleted-message {
+#post-not-deleted-message,
+#avatar-not-updated-message,
+#password-not-updated-message {
     background: var(--red);
 }
 
@@ -263,13 +273,17 @@ nav {
 }
 
 #profile-image {
-    max-width: 300px;
+    max-width: var(--profile-image-max-dimensions);
+    max-height: var(--profile-image-max-dimensions);
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 #profile-tabs {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    /* gap: var(--spacing30); */
     cursor: pointer;
 }
 

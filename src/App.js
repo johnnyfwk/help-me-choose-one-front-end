@@ -34,18 +34,18 @@ function App() {
     const [isPostNotCreatedMessageVisible, setIsPostNotCreatedMessageVisible] = useState(false);
     const [isPostUpdatedMessageVisible, setIsPostUpdatedMessageVisible] = useState(false);
     const [isPostNotUpdatedMessageVisible, setIsPostNotUpdatedMessageVisible] = useState(false);
-
     const [isCommentPostedMessageVisible, setIsCommentPostedMessageVisible] = useState(false);
     const [isCommentNotPostedMessageVisible, setIsCommentNotPostedMessageVisible] = useState(false);
-
     const [isCommentUpdatedMessageVisible, setIsCommentUpdatedMessageVisible] = useState(false);
     const [isCommentNotUpdatedMessageVisible, setIsCommentNotUpdatedMessageVisible] = useState(false);
-
     const [isCommentDeletedMessageVisible, setIsCommentDeletedMessageVisible] = useState(false);
     const [isCommentNotDeletedMessageVisible, setIsCommentNotDeletedMessageVisible] = useState(false);
-
     const [isPostDeletedMessageVisible, setIsPostDeletedMessageVisible] = useState(false);
     const [isPostNotDeletedMessageVisible, setIsPostNotDeletedMessageVisible] = useState(false);
+    const [isAvatarUpdatedMessageVisible, setIsAvatarUpdatedMessageVisible] = useState(false);
+    const [isAvatarNotUpdatedMessageVisible, setIsAvatarNotUpdatedMessageVisible] = useState(false);
+    const [isPasswordUpdatedMessageVisible, setIsPasswordUpdatedMessageVisible] = useState(false);
+    const [isPasswordNotUpdatedMessageVisible, setIsPasswordNotUpdatedMessageVisible] = useState(false);
 
     const numberOfItemsToDisplayAndIncrement = 20;
 
@@ -127,6 +127,22 @@ function App() {
         bottom: isPostNotDeletedMessageVisible ? "0%" : "-100%"
     }
 
+    const styleAvatarUpdatedMessage = {
+        bottom: isAvatarUpdatedMessageVisible ? "0%" : "-100%"
+    }
+
+    const styleAvatarNotUpdatedMessage = {
+        bottom: isAvatarNotUpdatedMessageVisible ? "0%" : "-100%"
+    }
+
+    const stylePasswordUpdatedMessage = {
+        bottom: isPasswordUpdatedMessageVisible ? "0%" : "-100%"
+    }
+
+    const stylePasswordNotUpdatedMessage = {
+        bottom: isPasswordNotUpdatedMessageVisible ? "0%" : "-100%"
+    }
+
     return (
         <div className="App">
             <div id="logo-show-nav-button-and-nav">
@@ -160,22 +176,16 @@ function App() {
                         <Post
                             isVotesVisible={isVotesVisible}
                             setIsVotesVisible={setIsVotesVisible}
-
                             setIsVoteAddedMessageVisible={setIsVoteAddedMessageVisible}
                             setIsVoteNotAddedMessageVisible={setIsVoteNotAddedMessageVisible}
-
                             setIsPostUpdatedMessageVisible={setIsPostUpdatedMessageVisible}
                             setIsPostNotUpdatedMessageVisible={setIsPostNotUpdatedMessageVisible}
-
                             setIsCommentPostedMessageVisible={setIsCommentPostedMessageVisible}
                             setIsCommentNotPostedMessageVisible={setIsCommentNotPostedMessageVisible}
-
                             setIsCommentUpdatedMessageVisible={setIsCommentUpdatedMessageVisible}
                             setIsCommentNotUpdatedMessageVisible={setIsCommentNotUpdatedMessageVisible}
-
                             setIsCommentDeletedMessageVisible={setIsCommentDeletedMessageVisible}
                             setIsCommentNotDeletedMessageVisible={setIsCommentNotDeletedMessageVisible}
-
                             setIsPostDeletedMessageVisible={setIsPostDeletedMessageVisible}
                             setIsPostNotDeletedMessageVisible={setIsPostNotDeletedMessageVisible}
                         />
@@ -193,9 +203,12 @@ function App() {
                         <Profile
                             setIsCommentUpdatedMessageVisible={setIsCommentUpdatedMessageVisible}
                             setIsCommentNotUpdatedMessageVisible={setIsCommentNotUpdatedMessageVisible}
-
                             setIsCommentDeletedMessageVisible={setIsCommentDeletedMessageVisible}
                             setIsCommentNotDeletedMessageVisible={setIsCommentNotDeletedMessageVisible}
+                            setIsAvatarUpdatedMessageVisible={setIsAvatarUpdatedMessageVisible}
+                            setIsAvatarNotUpdatedMessageVisible={setIsAvatarNotUpdatedMessageVisible}
+                            setIsPasswordUpdatedMessageVisible={setIsPasswordUpdatedMessageVisible}
+                            setIsPasswordNotUpdatedMessageVisible={setIsPasswordNotUpdatedMessageVisible}
                         />
                     }
                 />
@@ -226,6 +239,10 @@ function App() {
             <div id="comment-not-deleted-message" style={styleCommentNotDeletedMessage}>Your comment could not be deleted</div>
             <div id="post-deleted-message" style={stylePostDeletedMessage}>Your post was deleted</div>
             <div id="post-not-deleted-message" style={stylePostNotDeletedMessage}>Your post could not be deleted</div>
+            <div id="avatar-updated-message" style={styleAvatarUpdatedMessage}>Your avatar was updated</div>
+            <div id="avatar-not-updated-message" style={styleAvatarNotUpdatedMessage}>Your avatar could not be updated</div>
+            <div id="password-updated-message" style={stylePasswordUpdatedMessage}>Your password was updated</div>
+            <div id="password-not-updated-message" style={stylePasswordNotUpdatedMessage}>Your password could not be updated</div>
         </div>
     );
 }

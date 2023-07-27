@@ -3,15 +3,21 @@ import { UserContext } from "../contexts/UserContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import * as api from "../api";
+import * as utils from "../utils";
 import PostCard from "../components/PostCard";
 import CommentCard from "../components/CommentCard";
+import AvatarInput from "../components/AvatarInput";
+import PasswordInput from "../components/PasswordInput";
 
 export default function Profile({
     setIsCommentUpdatedMessageVisible,
     setIsCommentNotUpdatedMessageVisible,
-
     setIsCommentDeletedMessageVisible,
-    setIsCommentNotDeletedMessageVisible
+    setIsCommentNotDeletedMessageVisible,
+    setIsAvatarUpdatedMessageVisible,
+    setIsAvatarNotUpdatedMessageVisible,
+    setIsPasswordUpdatedMessageVisible,
+    setIsPasswordNotUpdatedMessageVisible
 }) {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
     const { user_id } = useParams();
@@ -34,6 +40,21 @@ export default function Profile({
     const [isCommentUpdatedSuccessfully, setIsCommentUpdatedSuccessfully] = useState(null);
     const [isCommentDeletedSuccessfully, setIsCommentDeletedSuccessfully] = useState(null);
 
+    const [editAvatarUrlInput, setEditAvatarUrlInput] = useState("");
+    const [isEditAvatarUrlValid, setIsEditAvatarUrlValid] = useState(true);
+    const [isAvatarUpdatedSuccessfully, setIsAvatarUpdatedSuccessfully] = useState(null);
+
+    const [currentPasswordInput, setCurrentPasswordInput] = useState("");
+    const [isPasswordCorrect, setIsPasswordCorrect] = useState(null);
+    const currentPasswordInputLabel = "Current Password:";
+    const [newPasswordInput, setNewPasswordInput] = useState("");
+    const [isNewPasswordValid, setIsNewPasswordValid] = useState(null);
+    const newPasswordInputLabel = "New Password:";
+    const [newPasswordCheckInput, setNewPasswordCheckInput] = useState("");
+    const newPasswordInputCheckLabel = "New Password (Check):";
+    const [doNewPasswordInputsMatch, setDoNewPasswordInputsMatch] = useState(null);
+    const [isPasswordUpdatedSuccessfully, setIsPasswordUpdatedSuccessfully] = useState(null);
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -50,12 +71,19 @@ export default function Profile({
                 setIsLoading(false);
                 setIsFetchingUserSuccessful(true);
                 setUser(response);
+                setEditAvatarUrlInput(response.avatar_url);
             })
             .catch((error) => {
                 setIsLoading(false);
                 setIsFetchingUserSuccessful(false);
             })
-    }, [user_id, isCommentUpdatedSuccessfully, isCommentDeletedSuccessfully])
+    }, [
+        user_id,
+        isCommentUpdatedSuccessfully,
+        isCommentDeletedSuccessfully,
+        isAvatarUpdatedSuccessfully,
+        isPasswordUpdatedSuccessfully
+    ])
 
     useEffect(() => {
         setIsPostsLoading(true);
@@ -70,7 +98,12 @@ export default function Profile({
                 setIsPostsLoading(false);
                 setIsFetchingPostsSuccessful(false)
             })
-    }, [user_id, isCommentUpdatedSuccessfully, isCommentDeletedSuccessfully])
+    }, [user_id,
+        isCommentUpdatedSuccessfully,
+        isCommentDeletedSuccessfully,
+        isAvatarUpdatedSuccessfully,
+        isPasswordUpdatedSuccessfully
+    ])
 
     useEffect(() => {
         setIsCommentsLoading(true);
@@ -85,7 +118,19 @@ export default function Profile({
                 setIsCommentsLoading(false);
                 setIsFetchingCommentsSuccessful(false);
             })
-    }, [user_id, isCommentUpdatedSuccessfully, isCommentDeletedSuccessfully])
+    }, [user_id, isCommentUpdatedSuccessfully, isCommentDeletedSuccessfully, isAvatarUpdatedSuccessfully])
+
+    useEffect(() => {
+        setIsPasswordCorrect(null);
+    }, [currentPasswordInput])
+
+    useEffect(() => {
+        setIsNewPasswordValid(utils.isPasswordValid(newPasswordInput));
+    }, [newPasswordInput])
+
+    useEffect(() => {
+        setDoNewPasswordInputsMatch(null);
+    }, [newPasswordInput, newPasswordCheckInput])
 
     function onClickProfilePostsTab() {
         setVisibleTab("posts");
@@ -93,6 +138,51 @@ export default function Profile({
 
     function onClickProfileCommentsTab() {
         setVisibleTab("comments");
+    }
+
+    function onClickProfileEditTab() {
+        setVisibleTab("edit");
+    }
+
+    function onClickEditProfileButton() {
+        setIsAvatarUpdatedSuccessfully(null);
+        api.updateUser(user.password, editAvatarUrlInput, user_id)
+            .then((response) => {
+                console.log(response)
+                setIsAvatarUpdatedSuccessfully(true);
+                setIsAvatarUpdatedMessageVisible(true);
+                setTimeout(() => setIsAvatarUpdatedMessageVisible(false), 3000);
+            })
+            .catch((error) => {
+                setIsAvatarNotUpdatedMessageVisible(true);
+                setTimeout(() => setIsAvatarNotUpdatedMessageVisible(false), 3000);
+            })
+    }
+
+    function onClickChangePasswordButton() {
+        setIsPasswordCorrect(currentPasswordInput === user.password);
+        setDoNewPasswordInputsMatch(newPasswordInput === newPasswordCheckInput);
+        if (currentPasswordInput === user.password && isNewPasswordValid && newPasswordInput === newPasswordCheckInput) {
+            console.log("Password can be changed")
+            setIsPasswordUpdatedSuccessfully(null);
+            api.updateUser(newPasswordInput, user.avatar_url, user_id)
+                .then((response) => {
+                    console.log(response)
+                    setCurrentPasswordInput("");
+                    setNewPasswordInput("");
+                    setNewPasswordCheckInput("");
+                    setIsPasswordUpdatedSuccessfully(true);
+                    setIsPasswordUpdatedMessageVisible(true);
+                    setTimeout(() => setIsPasswordUpdatedMessageVisible(false), 3000);
+                })
+                .catch((error) => {
+                    setIsPasswordNotUpdatedMessageVisible(true);
+                    setTimeout(() => setIsPasswordNotUpdatedMessageVisible(false), 3000);
+                })
+        }
+        else {
+            console.log("Password can't be changed")
+        }
     }
 
     if (isLoading) {
@@ -118,8 +208,7 @@ export default function Profile({
             <header>
                 <h1>{user.username}</h1>
                 <img
-                    src={
-                        user.avatar_url === "default-avatar.webp"
+                    src={user.avatar_url === "default-avatar.webp"
                             ? require(`../assets/images/avatars/${user.avatar_url}`)
                             : user.avatar_url
                     }
@@ -131,11 +220,15 @@ export default function Profile({
             <main>
                 <div id="profile-tabs">
                     <h2 id="profile-posts-tab" onClick={onClickProfilePostsTab}>Posts</h2>
-                    {userLoggedIn.user_id !== user.user_id
+                    {userLoggedIn.user_id !== parseInt(user_id)
                         ? null
                         : <div>
                             <h2 id="profile-comments-tab" onClick={onClickProfileCommentsTab}>Comments</h2>
                         </div>
+                    }
+                    {userLoggedIn.user_id === parseInt(user_id)
+                        ? <h2 id="profile-edit-tab" onClick={onClickProfileEditTab}>Edit</h2>
+                        : null
                     }
                 </div>
                 
@@ -149,13 +242,22 @@ export default function Profile({
                             ? null
                             : <div className="error">Posts could not be loaded</div>
                         }
-                        <div className="post-card-container">
-                            {posts.map((post) => {
-                                return <PostCard key={post.post_id} post={post} />;
-                            })}
-                        </div>
-                      </div>
-                    : <div>
+                        {posts.length === 0 && userLoggedIn.user_id === parseInt(user_id)
+                            ? <div>You have not created any posts.</div>
+                            : posts.length === 0 && userLoggedIn.user_id !== parseInt(user_id)
+                                ? <div>User has not created any posts.</div>
+                                : <div className="post-card-container">
+                                    {posts.map((post) => {
+                                        return <PostCard key={post.post_id} post={post} />;
+                                    })}
+                                </div>
+                        }
+                    </div>
+                    : null
+                }
+
+                {visibleTab === "comments"
+                    ? <div>
                         {isCommentsLoading
                             ? <div>Loading comments...</div>
                             : null
@@ -164,25 +266,92 @@ export default function Profile({
                             ? null
                             : <div className="error">Comments could not be loaded</div>
                         }
-                        <div className="comments">
-                            {comments.map((comment) => {
-                                return <CommentCard
-                                    key={comment.comment_id}
-                                    comment={comment}
-                                    userLoggedIn={userLoggedIn}
-                                    
-                                    setIsCommentUpdatedSuccessfully={setIsCommentUpdatedSuccessfully}
-                                    setIsCommentUpdatedMessageVisible={setIsCommentUpdatedMessageVisible}
-                                    setIsCommentNotUpdatedMessageVisible={setIsCommentNotUpdatedMessageVisible}
+                        {comments.length === 0 && userLoggedIn.user_id === parseInt(user_id)
+                            ? <div>You have not posted any comments.</div>
+                            : comments.length === 0 && userLoggedIn.user_id !== parseInt(user_id)
+                                ? <div>User has not posted any comments.</div>
+                                : <div className="comments">
+                                    {comments.map((comment) => {
+                                        return <CommentCard
+                                            key={comment.comment_id}
+                                            comment={comment}
+                                            userLoggedIn={userLoggedIn}
+                                            setIsCommentUpdatedSuccessfully={setIsCommentUpdatedSuccessfully}
+                                            setIsCommentUpdatedMessageVisible={setIsCommentUpdatedMessageVisible}
+                                            setIsCommentNotUpdatedMessageVisible={setIsCommentNotUpdatedMessageVisible}
+                                            setIsCommentDeletedSuccessfully={setIsCommentDeletedSuccessfully}
+                                            setIsCommentDeletedMessageVisible={setIsCommentDeletedMessageVisible}
+                                            setIsCommentNotDeletedMessageVisible={setIsCommentNotDeletedMessageVisible}
+                                        />
+                                    })}
+                                </div>
+                        }
+                    </div>
+                    : null
+                }
 
-                                    setIsCommentDeletedSuccessfully={setIsCommentDeletedSuccessfully}
-                                    setIsCommentDeletedMessageVisible={setIsCommentDeletedMessageVisible}
-                                    setIsCommentNotDeletedMessageVisible={setIsCommentNotDeletedMessageVisible}
-                                    
-                                />
-                            })}
-                        </div>
-                      </div>
+                {visibleTab === "edit"
+                    ? <div>
+                        <h3>Avatar</h3>
+                        <AvatarInput
+                            avatarUrlInput={editAvatarUrlInput}
+                            setAvatarUrlInput={setEditAvatarUrlInput}
+                            setIsAvatarUrlValid={setIsEditAvatarUrlValid}
+                        />
+                        {isEditAvatarUrlValid === null || isEditAvatarUrlValid === true
+                            ? null
+                            : <span className="error">Please enter a valid image URL</span>
+                        }
+                        <button
+                            type="button"
+                            onClick={onClickEditProfileButton}
+                            disabled={!isEditAvatarUrlValid}
+                        >Edit</button>
+                        
+                        <h3>Password</h3>
+                        
+                        <PasswordInput
+                            passwordInput={currentPasswordInput}
+                            setPasswordInput={setCurrentPasswordInput}
+                            passwordInputLabel={currentPasswordInputLabel}
+                        />
+                        {isPasswordCorrect === null
+                            ? null
+                            : isPasswordCorrect
+                                ? null
+                                : <div className="error">Password is incorrect</div>
+                        }
+                        <PasswordInput
+                            passwordInput={newPasswordInput}
+                            setPasswordInput={setNewPasswordInput}
+                            passwordInputLabel={newPasswordInputLabel}
+                        />
+                        {isNewPasswordValid === null || isNewPasswordValid === true
+                            ? null
+                            : <span className="error">Password can not contain spaces</span>
+                        }
+
+                        <PasswordInput
+                            passwordInput={newPasswordCheckInput}
+                            setPasswordInput={setNewPasswordCheckInput}
+                            passwordInputLabel={newPasswordInputCheckLabel}
+                        />
+                        {doNewPasswordInputsMatch === null || doNewPasswordInputsMatch === true
+                            ? null
+                            : <span className="error">New passwords do not match</span>
+                        }
+
+                        <button
+                            type="button"
+                            onClick={onClickChangePasswordButton}
+                            disabled={
+                                !currentPasswordInput ||
+                                !newPasswordInput ||
+                                !newPasswordCheckInput
+                            }
+                        >Change Password</button>
+                    </div>
+                    : null
                 }
             </main>
         </div>
