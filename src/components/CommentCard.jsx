@@ -7,12 +7,14 @@ import * as utils from "../utils";
 export default function CommentCard({
     comment,
     userLoggedIn,
+
     setIsCommentUpdatedSuccessfully,
     setIsCommentUpdatedMessageVisible,
     setIsCommentNotUpdatedMessageVisible,
+
+    setIsCommentDeletedSuccessfully,
     setIsCommentDeletedMessageVisible,
-    setIsCommentNotDeletedMessageVisible,
-    setIsCommentDeletedSuccessfully
+    setIsCommentNotDeletedMessageVisible
 }) {
     const [editCommentInput, setEditCommentInput] = useState(comment.comment);
 
@@ -79,16 +81,17 @@ export default function CommentCard({
 
     function onClickUpdateCommentButton() {
         setIsCommentUpdatedSuccessfully(null);
-        setIsCommentUpdatedMessageVisible(null);
         api.updateComment(new Date(), editCommentInput, comment.comment_likes_from_user_ids, comment.comment_id)
             .then((response) => {
+                setEditCommentInput(editCommentInput);
                 setIsCommentUpdatedSuccessfully(true);
                 setIsCommentUpdatedMessageVisible(true);
                 setTimeout(() => setIsCommentUpdatedMessageVisible(false), 3000);
             })
             .catch((error) => {
-                setIsCommentUpdatedSuccessfully(false);
+                setEditCommentInput(comment.comment);
                 setIsCommentNotUpdatedMessageVisible(true);
+                setIsCommentEditable(false);
                 setTimeout(() => setIsCommentNotUpdatedMessageVisible(false), 3000);
             })
     }
@@ -106,7 +109,7 @@ export default function CommentCard({
     function onClickDeleteCommentYesButton() {
         setIsEditAndDeleteCommentButtonsVisible(false);
         setIsDeleteCommentConfirmationMessageVisible(false);
-        setIsCommentDeletedMessageVisible(false);
+
         setIsCommentDeletedSuccessfully(null);
         api.deleteComment(comment.comment_id)
             .then((response) => {
@@ -115,9 +118,8 @@ export default function CommentCard({
                 setTimeout(() => setIsCommentDeletedMessageVisible(false), 3000);
             })
             .catch((error) => {
-                setIsCommentDeletedSuccessfully(false);
                 setIsCommentNotDeletedMessageVisible(true);
-                setTimeout(() => setIsCommentNotDeletedMessageVisible(false), 3000)
+                setTimeout(() => setIsCommentNotDeletedMessageVisible(false), 3000);
             })
     }
 
@@ -174,8 +176,6 @@ export default function CommentCard({
                 ? <Link to={`/post/${comment.comment_post_id}-${utils.convertTitleToUrl(comment.title)}`}><h2>{comment.title}</h2></Link>
                 : null
             }
-
-            <p>Comment ID: {comment.comment_id}</p>
             
             {isCommentEditable
                 ? <div>

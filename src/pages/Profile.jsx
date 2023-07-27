@@ -9,6 +9,7 @@ import CommentCard from "../components/CommentCard";
 export default function Profile({
     setIsCommentUpdatedMessageVisible,
     setIsCommentNotUpdatedMessageVisible,
+
     setIsCommentDeletedMessageVisible,
     setIsCommentNotDeletedMessageVisible
 }) {
@@ -169,12 +170,15 @@ export default function Profile({
                                     key={comment.comment_id}
                                     comment={comment}
                                     userLoggedIn={userLoggedIn}
+                                    
                                     setIsCommentUpdatedSuccessfully={setIsCommentUpdatedSuccessfully}
                                     setIsCommentUpdatedMessageVisible={setIsCommentUpdatedMessageVisible}
                                     setIsCommentNotUpdatedMessageVisible={setIsCommentNotUpdatedMessageVisible}
-                                    setIsCommentDeletedMessageVisible={setIsCommentDeletedMessageVisible}
+
                                     setIsCommentDeletedSuccessfully={setIsCommentDeletedSuccessfully}
+                                    setIsCommentDeletedMessageVisible={setIsCommentDeletedMessageVisible}
                                     setIsCommentNotDeletedMessageVisible={setIsCommentNotDeletedMessageVisible}
+                                    
                                 />
                             })}
                         </div>

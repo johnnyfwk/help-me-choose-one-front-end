@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import * as api from "../api";
 import CommentCard from "../components/CommentCard";
@@ -18,14 +18,18 @@ export default function Post({
     setIsVoteNotAddedMessageVisible,
     setIsPostUpdatedMessageVisible,
     setIsPostNotUpdatedMessageVisible,
+
     setIsCommentPostedMessageVisible,
     setIsCommentNotPostedMessageVisible,
+
     setIsCommentUpdatedMessageVisible,
     setIsCommentNotUpdatedMessageVisible,
+
     setIsCommentDeletedMessageVisible,
     setIsCommentNotDeletedMessageVisible,
-    isCommentDeletedSuccessfully,
-    setIsCommentDeletedSuccessfully
+
+    setIsPostDeletedMessageVisible,
+    setIsPostNotDeletedMessageVisible
 }) {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
     const {post_id_and_title} = useParams();
@@ -62,8 +66,17 @@ export default function Post({
     const [isPostUpdatedSuccessfully, setIsPostUpdatedSuccessfully] = useState(null);
 
     const [commentInput, setCommentInput] = useState("");
+
     const [isCommentPostedSuccessfully, setIsCommentPostedSuccessfully] = useState(null);
     const [isCommentUpdatedSuccessfully, setIsCommentUpdatedSuccessfully] = useState(null);
+    const [isCommentDeletedSuccessfully, setIsCommentDeletedSuccessfully] = useState(null);
+    const [isPostDeletedSuccessfully, setIsPostDeletedSuccessfully] = useState(null);
+
+    const [isEditAndDeletePostButtonsVisible, setIsEditAndDeletePostButtonsVisible] = useState(false);
+    const [isDeletePostMessageVisible, setIsDeletePostMessageVisible] = useState(false);
+    const [isReportPostButtonVisible, setIsReportPostButtonVisible] = useState(false);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         setIsLoading(true);
@@ -101,7 +114,8 @@ export default function Post({
         isPostUpdatedSuccessfully,
         isCommentPostedSuccessfully,
         isCommentUpdatedSuccessfully,
-        isCommentDeletedSuccessfully
+        isCommentDeletedSuccessfully,
+        isPostDeletedSuccessfully
     ])
 
     useEffect(() => {
@@ -123,7 +137,8 @@ export default function Post({
         isPostUpdatedSuccessfully,
         isCommentPostedSuccessfully,
         isCommentUpdatedSuccessfully,
-        isCommentDeletedSuccessfully
+        isCommentDeletedSuccessfully,
+        isPostDeletedSuccessfully
     ])
 
     function handleOptionInput(event) {
@@ -131,6 +146,9 @@ export default function Post({
     }
 
     function onClickVoteButton() {
+        setIsEditAndDeletePostButtonsVisible(false);
+        setIsDeletePostMessageVisible(false);
+        setIsReportPostButtonVisible(false);
         let updatedOptionsAndVotes = [];
         post.options_and_votes.forEach((option) => {
             const newOption = {};
@@ -150,11 +168,12 @@ export default function Post({
             .then((response) => {
                 setIsVoteAddedSuccessfully(true);
                 setIsVoteAddedMessageVisible(true);
+                setOptionInput("");
                 setTimeout(() => setIsVoteAddedMessageVisible(false), 3000);
             })
             .catch((error) => {
-                setIsVoteAddedSuccessfully(false);
                 setIsVoteNotAddedMessageVisible(true);
+                setOptionInput("");
                 setTimeout(() => setIsVoteNotAddedMessageVisible(false), 3000);
             })
     }
@@ -162,6 +181,15 @@ export default function Post({
     function onClickShowVotesButton() {
         setIsVotesVisible((currentIsVotesVisible) => {
             return !currentIsVotesVisible;
+        })
+    }
+
+    function onClickPostOptionsButton() {
+        setIsEditAndDeletePostButtonsVisible((currentIsEditAndDeletePostButtonsVisible) => {
+            return !currentIsEditAndDeletePostButtonsVisible;
+        });
+        setIsReportPostButtonVisible((currentIsReportPostButtonVisible) => {
+            return !currentIsReportPostButtonVisible;
         })
     }
 
@@ -213,11 +241,12 @@ export default function Post({
                     setIsPostUpdatedSuccessfully(true);
                     setIsPostUpdatedMessageVisible(true);
                     setIsPostEditable(false);
+                    setIsEditAndDeletePostButtonsVisible(false);
                     setTimeout(() => setIsPostUpdatedMessageVisible(false), 3000);
                 })
                 .catch((error) => {
-                    setIsPostUpdatedSuccessfully(false);
                     setIsPostNotUpdatedMessageVisible(true);
+                    setIsEditAndDeletePostButtonsVisible(false);
                     setTimeout(() => setIsPostNotUpdatedMessageVisible(false), 3000);
                 })
         }
@@ -227,9 +256,41 @@ export default function Post({
         setIsPostEditable(false);
         setIsNumberOfOptionsLessThanTwo(null);
         setEditOptionsHasDuplicates(null);
+        setIsEditAndDeletePostButtonsVisible(false);
+    }
+
+    function onClickDeletePost() {
+        setIsEditAndDeletePostButtonsVisible(false);
+        setIsDeletePostMessageVisible(true);
+    }
+
+    function onClickDeletePostNo() {
+        setIsEditAndDeletePostButtonsVisible(true);
+        setIsDeletePostMessageVisible(false);
+    }
+
+    function onClickDeletePostYes() {
+        console.log(postId, "<--------- Post ID")
+        api.deletePost(postId)
+            .then((response) => {
+                console.log("Post has been deleted.")
+                setIsPostDeletedSuccessfully(true);
+                setIsPostDeletedMessageVisible(true);
+                navigate("/");
+                setTimeout(() => setIsPostDeletedMessageVisible(false), 3000);
+            })
+            .catch((error) => {
+                console.log(error);
+                setIsPostNotDeletedMessageVisible(true);
+                setIsDeletePostMessageVisible(false);
+                setTimeout(() => setIsPostNotDeletedMessageVisible(false), 3000);
+            })
     }
 
     function onClickPostCommentButton() {
+        setIsEditAndDeletePostButtonsVisible(false);
+        setIsDeletePostMessageVisible(false);
+        setIsReportPostButtonVisible(false);
         setIsCommentPostedSuccessfully(null);
         api.postComment(new Date(), new Date(), commentInput, [], post.post_id, userLoggedIn.user_id)
             .then((response) => {
@@ -240,10 +301,13 @@ export default function Post({
                 return api.updatePost(new Date(), post.title, post.description, post.category, post.options_and_votes, postId)
             })
             .catch((error) => {
-                setIsCommentPostedSuccessfully(false);
                 setIsCommentNotPostedMessageVisible(true);
                 setTimeout(() => setIsCommentNotPostedMessageVisible(false), 3000);
             })
+    }
+
+    function onClickReportPost() {
+
     }
 
     const stylePostOption = {
@@ -256,6 +320,18 @@ export default function Post({
 
     const styleEditPost = {
         display: isPostEditable ? "grid" : "none"
+    }
+
+    const styleEditAndDeletePostButtons = {
+        display: isEditAndDeletePostButtonsVisible ? "initial" : "none"
+    }
+
+    const styleDeletePostMessage = {
+        display: isDeletePostMessageVisible ? "initial" : "none"
+    }
+
+    const styleReportButton = {
+        display: isReportPostButtonVisible ? "initial" : "none"
     }
 
     if (isLoading) {
@@ -371,9 +447,28 @@ export default function Post({
                         }
                     </form>
 
+                    {Object.keys(userLoggedIn).length === 0
+                        ? null
+                        : <div id="post-options-button" onClick={onClickPostOptionsButton}>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    }
+
                     {userLoggedIn.user_id === post.post_owner_id
-                        ? <button onClick={onClickEditPost}>Edit Post</button>
-                        : null
+                        ? <div>
+                            <div style={styleEditAndDeletePostButtons}>
+                                <button onClick={onClickEditPost}>Edit</button>
+                                <button onClick={onClickDeletePost}>Delete</button>
+                            </div>
+                            <div style={styleDeletePostMessage}>
+                                <div>Delete Post?</div>
+                                <button onClick={onClickDeletePostNo}>No</button>
+                                <button onClick={onClickDeletePostYes}>Yes</button>
+                            </div>
+                        </div>
+                        : <button onClick={onClickReportPost} style={styleReportButton}>Report</button>
                     }
 
                     <div id="edit-post" style={styleEditPost}>
@@ -468,12 +563,14 @@ export default function Post({
                                             key={comment.comment_id}
                                             comment={comment}
                                             userLoggedIn={userLoggedIn}
+
                                             setIsCommentUpdatedSuccessfully={setIsCommentUpdatedSuccessfully}
                                             setIsCommentUpdatedMessageVisible={setIsCommentUpdatedMessageVisible}
                                             setIsCommentNotUpdatedMessageVisible={setIsCommentNotUpdatedMessageVisible}
+
+                                            setIsCommentDeletedSuccessfully={setIsCommentDeletedSuccessfully}
                                             setIsCommentDeletedMessageVisible={setIsCommentDeletedMessageVisible}
                                             setIsCommentNotDeletedMessageVisible={setIsCommentNotDeletedMessageVisible}
-                                            setIsCommentDeletedSuccessfully={setIsCommentDeletedSuccessfully}
                                         />
                                     })}
                                 </div>

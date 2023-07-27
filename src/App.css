@@ -122,7 +122,9 @@ nav {
 #comment-updated-message,
 #comment-not-updated-message,
 #comment-deleted-message,
-#comment-not-deleted-message {
+#comment-not-deleted-message,
+#post-deleted-message,
+#post-not-deleted-message {
     position: fixed;
     bottom: -100%;
     left: 0%;
@@ -144,7 +146,8 @@ nav {
 #post-updated-message,
 #comment-posted-message,
 #comment-updated-message,
-#comment-deleted-message {
+#comment-deleted-message,
+#post-deleted-message {
     background: var(--lime);
 }
 
@@ -154,7 +157,8 @@ nav {
 #post-not-updated-message,
 #comment-not-posted-message,
 #comment-not-updated-message,
-#comment-not-deleted-message {
+#comment-not-deleted-message,
+#post-not-deleted-message {
     background: var(--red);
 }
 
@@ -221,40 +225,20 @@ nav {
     max-width: 50px;
 }
 
+#post-options-button,
 .comment-options-button {
-    background: var(--orange);
+    background: var(--grey);
     display: grid;
     gap: 2px;
     cursor: pointer;
 }
 
-#comment-options-box-background {
-    background: var(--black);
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0%;
-    opacity: 0.7;
-    /* display: none; */
-    z-index: 2;
-}
-
+#post-options-button > div,
 .comment-options-button > div {
     background: var(--black);
     width: 4px;
     height: 4px;
     border-radius: 50%;
-}
-
-#comment-options-box {
-    background: var(--cyan);
-    cursor: pointer;
-    text-align: right;
-    position: fixed;
-    bottom: -100%;
-    width: 100%;
-    transition: bottom 0.2s;
-    z-index: 5;
 }
 
 .like-button {

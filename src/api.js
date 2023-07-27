@@ -130,4 +130,12 @@ export function deleteComment(comment_id) {
             return response.data.comment;
         })
 }
+
+export function deletePost(post_id) {
+    return baseURL
+        .delete(`/posts/${post_id}`)
+        .then((response) => {
+            return response.data.post;
+        })
+}
 // DELETE requests
