@@ -6,7 +6,12 @@ import * as api from "../api";
 import PostCard from "../components/PostCard";
 import CommentCard from "../components/CommentCard";
 
-export default function Profile({setIsCommentUpdatedMessageVisible, setIsCommentNotUpdatedMessageVisible}) {
+export default function Profile({
+    setIsCommentUpdatedMessageVisible,
+    setIsCommentNotUpdatedMessageVisible,
+    setIsCommentDeletedMessageVisible,
+    setIsCommentNotDeletedMessageVisible
+}) {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
     const { user_id } = useParams();
 
@@ -26,6 +31,7 @@ export default function Profile({setIsCommentUpdatedMessageVisible, setIsComment
     const [visibleTab, setVisibleTab] = useState("posts");
 
     const [isCommentUpdatedSuccessfully, setIsCommentUpdatedSuccessfully] = useState(null);
+    const [isCommentDeletedSuccessfully, setIsCommentDeletedSuccessfully] = useState(null);
 
     const navigate = useNavigate();
 
@@ -48,7 +54,7 @@ export default function Profile({setIsCommentUpdatedMessageVisible, setIsComment
                 setIsLoading(false);
                 setIsFetchingUserSuccessful(false);
             })
-    }, [user_id, isCommentUpdatedSuccessfully])
+    }, [user_id, isCommentUpdatedSuccessfully, isCommentDeletedSuccessfully])
 
     useEffect(() => {
         setIsPostsLoading(true);
@@ -63,7 +69,7 @@ export default function Profile({setIsCommentUpdatedMessageVisible, setIsComment
                 setIsPostsLoading(false);
                 setIsFetchingPostsSuccessful(false)
             })
-    }, [user_id, isCommentUpdatedSuccessfully])
+    }, [user_id, isCommentUpdatedSuccessfully, isCommentDeletedSuccessfully])
 
     useEffect(() => {
         setIsCommentsLoading(true);
@@ -78,7 +84,7 @@ export default function Profile({setIsCommentUpdatedMessageVisible, setIsComment
                 setIsCommentsLoading(false);
                 setIsFetchingCommentsSuccessful(false);
             })
-    }, [user_id, isCommentUpdatedSuccessfully])
+    }, [user_id, isCommentUpdatedSuccessfully, isCommentDeletedSuccessfully])
 
     function onClickProfilePostsTab() {
         setVisibleTab("posts");
@@ -166,6 +172,9 @@ export default function Profile({setIsCommentUpdatedMessageVisible, setIsComment
                                     setIsCommentUpdatedSuccessfully={setIsCommentUpdatedSuccessfully}
                                     setIsCommentUpdatedMessageVisible={setIsCommentUpdatedMessageVisible}
                                     setIsCommentNotUpdatedMessageVisible={setIsCommentNotUpdatedMessageVisible}
+                                    setIsCommentDeletedMessageVisible={setIsCommentDeletedMessageVisible}
+                                    setIsCommentDeletedSuccessfully={setIsCommentDeletedSuccessfully}
+                                    setIsCommentNotDeletedMessageVisible={setIsCommentNotDeletedMessageVisible}
                                 />
                             })}
                         </div>

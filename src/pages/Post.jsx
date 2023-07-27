@@ -21,7 +21,11 @@ export default function Post({
     setIsCommentPostedMessageVisible,
     setIsCommentNotPostedMessageVisible,
     setIsCommentUpdatedMessageVisible,
-    setIsCommentNotUpdatedMessageVisible
+    setIsCommentNotUpdatedMessageVisible,
+    setIsCommentDeletedMessageVisible,
+    setIsCommentNotDeletedMessageVisible,
+    isCommentDeletedSuccessfully,
+    setIsCommentDeletedSuccessfully
 }) {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
     const {post_id_and_title} = useParams();
@@ -91,7 +95,14 @@ export default function Post({
                 setIsFetchingPostSuccessful(false);
                 setHasLoggedInUserAlreadyVoted(null);
             })
-    }, [post_id_and_title, isVoteAddedSuccessfully, isPostUpdatedSuccessfully, isCommentPostedSuccessfully, isCommentUpdatedSuccessfully])
+    }, [
+        post_id_and_title,
+        isVoteAddedSuccessfully,
+        isPostUpdatedSuccessfully,
+        isCommentPostedSuccessfully,
+        isCommentUpdatedSuccessfully,
+        isCommentDeletedSuccessfully
+    ])
 
     useEffect(() => {
         setIsCommentsLoading(true);
@@ -106,7 +117,14 @@ export default function Post({
                 setIsCommentsLoading(false);
                 setIsFetchingCommentsSuccessful(false);
             })
-    }, [post_id_and_title, isVoteAddedSuccessfully, isPostUpdatedSuccessfully, isCommentPostedSuccessfully, isCommentUpdatedSuccessfully])
+    }, [
+        post_id_and_title,
+        isVoteAddedSuccessfully,
+        isPostUpdatedSuccessfully,
+        isCommentPostedSuccessfully,
+        isCommentUpdatedSuccessfully,
+        isCommentDeletedSuccessfully
+    ])
 
     function handleOptionInput(event) {
         setOptionInput(event.target.value);
@@ -453,6 +471,9 @@ export default function Post({
                                             setIsCommentUpdatedSuccessfully={setIsCommentUpdatedSuccessfully}
                                             setIsCommentUpdatedMessageVisible={setIsCommentUpdatedMessageVisible}
                                             setIsCommentNotUpdatedMessageVisible={setIsCommentNotUpdatedMessageVisible}
+                                            setIsCommentDeletedMessageVisible={setIsCommentDeletedMessageVisible}
+                                            setIsCommentNotDeletedMessageVisible={setIsCommentNotDeletedMessageVisible}
+                                            setIsCommentDeletedSuccessfully={setIsCommentDeletedSuccessfully}
                                         />
                                     })}
                                 </div>
