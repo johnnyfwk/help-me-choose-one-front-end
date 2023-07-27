@@ -121,3 +121,13 @@ export function updateComment(comment_updated, comment, comment_likes_from_user_
         })
 }
 // PATCH requests
+
+// DELETE requests
+export function deleteComment(comment_id) {
+    return baseURL
+        .delete(`/comments/${comment_id}`)
+        .then((response) => {
+            return response.data.comment;
+        })
+}
+// DELETE requests

@@ -38,6 +38,10 @@ function App() {
     const [isCommentNotPostedMessageVisible, setIsCommentNotPostedMessageVisible] = useState(false);
     const [isCommentUpdatedMessageVisible, setIsCommentUpdatedMessageVisible] = useState(false);
     const [isCommentNotUpdatedMessageVisible, setIsCommentNotUpdatedMessageVisible] = useState(false);
+    const [isCommentDeletedMessageVisible, setIsCommentDeletedMessageVisible] = useState(false);
+    const [isCommentNotDeletedMessageVisible, setIsCommentNotDeletedMessageVisible] = useState(false);
+
+    const [isCommentDeletedSuccessfully, setIsCommentDeletedSuccessfully] = useState(null);
 
     const numberOfItemsToDisplayAndIncrement = 20;
 
@@ -103,6 +107,14 @@ function App() {
         bottom: isCommentNotUpdatedMessageVisible ? "0%" : "-100%"
     }
 
+    const styleCommentDeletedMessage = {
+        bottom: isCommentDeletedMessageVisible ? "0%" : "-100%"
+    }
+
+    const styleCommentNotDeletedMessage = {
+        bottom: isCommentNotDeletedMessageVisible ? "0%" : "-100%"
+    }
+
     return (
         <div className="App">
             <div id="logo-show-nav-button-and-nav">
@@ -115,7 +127,12 @@ function App() {
                 />
             </div>            
             <Routes>
-                <Route path="/" element={<Home numberOfItemsToDisplayAndIncrement={numberOfItemsToDisplayAndIncrement} />} />
+                <Route
+                    path="/"
+                    element={
+                        <Home numberOfItemsToDisplayAndIncrement={numberOfItemsToDisplayAndIncrement} />
+                    }
+                />
                 <Route
                     path="/sign-up"
                     element={
@@ -139,6 +156,10 @@ function App() {
                             setIsCommentNotPostedMessageVisible={setIsCommentNotPostedMessageVisible}
                             setIsCommentUpdatedMessageVisible={setIsCommentUpdatedMessageVisible}
                             setIsCommentNotUpdatedMessageVisible={setIsCommentNotUpdatedMessageVisible}
+                            setIsCommentDeletedMessageVisible={setIsCommentDeletedMessageVisible}
+                            setIsCommentNotDeletedMessageVisible={setIsCommentNotDeletedMessageVisible}
+                            isCommentDeletedSuccessfully={isCommentDeletedSuccessfully}
+                            setIsCommentDeletedSuccessfully={setIsCommentDeletedSuccessfully}
                         />
                     } />
                 <Route
@@ -154,6 +175,9 @@ function App() {
                         <Profile
                             setIsCommentUpdatedMessageVisible={setIsCommentUpdatedMessageVisible}
                             setIsCommentNotUpdatedMessageVisible={setIsCommentNotUpdatedMessageVisible}
+                            setIsCommentDeletedMessageVisible={setIsCommentDeletedMessageVisible}
+                            setIsCommentDeletedSuccessfully={setIsCommentDeletedSuccessfully}
+                            setIsCommentNotDeletedMessageVisible={setIsCommentNotDeletedMessageVisible}
                         />
                     }
                 />
@@ -180,6 +204,8 @@ function App() {
             <div id="comment-not-posted-message" style={styleCommentNotPostedMessage}>Your post could not be posted</div>
             <div id="comment-updated-message" style={styleCommentUpdatedMessage}>Your comment has been updated</div>
             <div id="comment-not-updated-message" style={styleCommentNotUpdatedMessage}>Your post could not be updated</div>
+            <div id="comment-deleted-message" style={styleCommentDeletedMessage}>Your comment has been deleted</div>
+            <div id="comment-not-deleted-message" style={styleCommentNotDeletedMessage}>Your post could not be deleted</div>
         </div>
     );
 }

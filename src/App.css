@@ -120,7 +120,9 @@ nav {
 #comment-posted-message,
 #comment-not-posted-message,
 #comment-updated-message,
-#comment-not-updated-message {
+#comment-not-updated-message,
+#comment-deleted-message,
+#comment-not-deleted-message {
     position: fixed;
     bottom: -100%;
     left: 0%;
@@ -141,7 +143,8 @@ nav {
 #post-created-message,
 #post-updated-message,
 #comment-posted-message,
-#comment-updated-message {
+#comment-updated-message,
+#comment-deleted-message {
     background: var(--lime);
 }
 
@@ -150,8 +153,13 @@ nav {
 #post-not-created-message,
 #post-not-updated-message,
 #comment-not-posted-message,
-#comment-not-updated-message {
+#comment-not-updated-message,
+#comment-not-deleted-message {
     background: var(--red);
+}
+
+#delete-comment-message {
+    background: var(--orange);
 }
 
 .post-card-container {
@@ -220,6 +228,17 @@ nav {
     cursor: pointer;
 }
 
+#comment-options-box-background {
+    background: var(--black);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0%;
+    opacity: 0.7;
+    /* display: none; */
+    z-index: 2;
+}
+
 .comment-options-button > div {
     background: var(--black);
     width: 4px;
@@ -235,10 +254,10 @@ nav {
     bottom: -100%;
     width: 100%;
     transition: bottom 0.2s;
+    z-index: 5;
 }
 
 .like-button {
-    /* background: var(--grey); */
     border: 0;
     cursor: pointer;
 }

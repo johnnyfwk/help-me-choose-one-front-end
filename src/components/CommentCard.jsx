@@ -4,38 +4,25 @@ import CommentInput from "./CommentInput";
 import * as api from "../api";
 import * as utils from "../utils";
 
-export default function CommentCard({comment, userLoggedIn, setIsCommentUpdatedSuccessfully, setIsCommentUpdatedMessageVisible, setIsCommentNotUpdatedMessageVisible}) {
-    const [isCommentOptionsBoxVisible, setIsCommentOptionsBoxVisible] = useState(false);
-    const [isCommentEditable, setIsCommentEditable] = useState(false);
-    const [editCommentInput, setEditCommentInput] = useState("");
+export default function CommentCard({
+    comment,
+    userLoggedIn,
+    setIsCommentUpdatedSuccessfully,
+    setIsCommentUpdatedMessageVisible,
+    setIsCommentNotUpdatedMessageVisible,
+    setIsCommentDeletedMessageVisible,
+    setIsCommentNotDeletedMessageVisible,
+    setIsCommentDeletedSuccessfully
+}) {
+    const [editCommentInput, setEditCommentInput] = useState(comment.comment);
 
     const [userIdsOfCommentLikes, setUserIdsOfCommentLikes] = useState(comment.comment_likes_from_user_ids);
 
-    const [upToDateComment, setUpToDateComment] = useState({});
+    const [isCommentEditable, setIsCommentEditable] = useState(false);
 
-    function onClickCommentOptionsButton() {
-        setIsCommentOptionsBoxVisible((currentIsCommentOptionsBoxVisible) => {
-            return !currentIsCommentOptionsBoxVisible;
-        });
-    }
-
-    function onClickCloseCommentBox() {
-        setIsCommentOptionsBoxVisible(false);
-    }
-
-    function onClickEditComment() {
-        setIsCommentEditable(true);
-        setIsCommentOptionsBoxVisible(false);
-        setEditCommentInput(comment.comment)
-    }
-
-    function onClickReportComment() {
-        console.log("Report comment clicked");
-    }
-
-    function onClickCancelEditCommentButton() {
-        setIsCommentEditable(false);
-    }
+    const [isEditAndDeleteCommentButtonsVisible, setIsEditAndDeleteCommentButtonsVisible] = useState(false);
+    const [isDeleteCommentConfirmationMessageVisible, setIsDeleteCommentConfirmationMessageVisible] = useState(false);
+    const [isReportCommentButtonVisible, setIsReportCommentButtonVisible] = useState(false);
 
     function onClickLikeComment() {
         let localLikes = [...userIdsOfCommentLikes];
@@ -63,11 +50,31 @@ export default function CommentCard({comment, userLoggedIn, setIsCommentUpdatedS
                 return api.updateComment(new Date(), comment.comment, updatedLikes, comment.comment_id)
             })
             .then((response) => {
-                console.log(response);
+                
             })
             .catch((error) => {
                 console.log(error);
             })
+    }
+
+    function onClickCommentOptionsButton() {
+        setIsEditAndDeleteCommentButtonsVisible((currentEditAndDeleteCommentButtonsVisible) => {
+            return !currentEditAndDeleteCommentButtonsVisible;
+        });
+        setIsReportCommentButtonVisible((currentIsReportCommentButtonVisible) => {
+            return !currentIsReportCommentButtonVisible;
+        });
+    }
+
+    function onClickEditCommentButton() {
+        setIsCommentEditable(true);
+        setIsEditAndDeleteCommentButtonsVisible(false);
+    }
+
+    function onClickCancelEditCommentButton() {
+        setIsCommentEditable(false);
+        setIsEditAndDeleteCommentButtonsVisible(false);
+        setEditCommentInput(comment.comment);
     }
 
     function onClickUpdateCommentButton() {
@@ -86,8 +93,48 @@ export default function CommentCard({comment, userLoggedIn, setIsCommentUpdatedS
             })
     }
 
-    const styleCommentOptionsBox = {
-        bottom: isCommentOptionsBoxVisible ? "0%" : "-100%"
+    function onClickDeleteCommentButton() {
+        setIsEditAndDeleteCommentButtonsVisible(false);
+        setIsDeleteCommentConfirmationMessageVisible(true);
+    }
+
+    function onClickDeleteCommentNoButton() {
+        setIsEditAndDeleteCommentButtonsVisible(false);
+        setIsDeleteCommentConfirmationMessageVisible(false);
+    }
+
+    function onClickDeleteCommentYesButton() {
+        setIsEditAndDeleteCommentButtonsVisible(false);
+        setIsDeleteCommentConfirmationMessageVisible(false);
+        setIsCommentDeletedMessageVisible(false);
+        setIsCommentDeletedSuccessfully(null);
+        api.deleteComment(comment.comment_id)
+            .then((response) => {
+                setIsCommentDeletedSuccessfully(true);
+                setIsCommentDeletedMessageVisible(true);
+                setTimeout(() => setIsCommentDeletedMessageVisible(false), 3000);
+            })
+            .catch((error) => {
+                setIsCommentDeletedSuccessfully(false);
+                setIsCommentNotDeletedMessageVisible(true);
+                setTimeout(() => setIsCommentNotDeletedMessageVisible(false), 3000)
+            })
+    }
+
+    function onClickReportCommentButton() {
+        setIsReportCommentButtonVisible(false);
+    }
+
+    const styleEditAndDeleteCommentButtons = {
+        display: isEditAndDeleteCommentButtonsVisible ? "initial" : "none"
+    }
+
+    const styleDeleteCommentConfirmationMessage = {
+        display: isDeleteCommentConfirmationMessageVisible ? "initial" : "none"
+    }
+
+    const styleReportCommentButton = {
+        display: isReportCommentButtonVisible ? "initial" : "none"
     }
 
     return (
@@ -127,6 +174,8 @@ export default function CommentCard({comment, userLoggedIn, setIsCommentUpdatedS
                 ? <Link to={`/post/${comment.comment_post_id}-${utils.convertTitleToUrl(comment.title)}`}><h2>{comment.title}</h2></Link>
                 : null
             }
+
+            <p>Comment ID: {comment.comment_id}</p>
             
             {isCommentEditable
                 ? <div>
@@ -157,20 +206,35 @@ export default function CommentCard({comment, userLoggedIn, setIsCommentUpdatedS
                 >&#10084;&#65039;</button>
                 <span>{userIdsOfCommentLikes.length}</span>
             </div>
-            {userLoggedIn.user_id === comment.comment_owner_id
-                ? <div>
-                    <div className="comment-options-button" onClick={onClickCommentOptionsButton}>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
-                    <div id="comment-options-box" style={styleCommentOptionsBox}>
-                        <div onClick={onClickCloseCommentBox}>x</div>
-                        <div onClick={onClickEditComment}>Edit</div>
-                        <div onClick={onClickReportComment}>Report</div>
-                    </div>
+        
+            {Object.keys(userLoggedIn).length === 0
+                ? null
+                : <div
+                    className="comment-options-button"
+                    onClick={onClickCommentOptionsButton}
+                >
+                    <div></div>
+                    <div></div>
+                    <div></div>
                 </div>
-                : null
+            }
+
+            {Object.keys(userLoggedIn).length === 0
+                ? null
+                : userLoggedIn.user_id === comment.comment_owner_id
+                    ? <div>
+                        <div style={styleEditAndDeleteCommentButtons}>
+                            <button type="button" onClick={onClickEditCommentButton}>Edit</button>
+                            <button type="button" onClick={onClickDeleteCommentButton}>Delete</button>
+                        </div>
+                        
+                        <div style={styleDeleteCommentConfirmationMessage}>
+                            <div>Delete comment?</div>
+                            <button type="button" onClick={onClickDeleteCommentNoButton}>No</button>
+                            <button type="button" onClick={onClickDeleteCommentYesButton}>Yes</button>
+                        </div>
+                    </div>
+                    : <button type="button" onClick={onClickReportCommentButton} style={styleReportCommentButton}>Report</button>
             }
         </div>
     )
