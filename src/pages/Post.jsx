@@ -270,19 +270,19 @@ export default function Post({
     }
 
     function onClickDeletePostYes() {
-        console.log(postId, "<--------- Post ID")
-        api.deletePost(postId)
+        setIsDeletePostMessageVisible(false);
+        api.deleteCommentsByPostId(postId)
             .then((response) => {
-                console.log("Post has been deleted.")
+                return api.deletePost(postId)
+            })
+            .then((response) => {
                 setIsPostDeletedSuccessfully(true);
                 setIsPostDeletedMessageVisible(true);
-                navigate("/");
                 setTimeout(() => setIsPostDeletedMessageVisible(false), 3000);
+                navigate("/");
             })
             .catch((error) => {
-                console.log(error);
                 setIsPostNotDeletedMessageVisible(true);
-                setIsDeletePostMessageVisible(false);
                 setTimeout(() => setIsPostNotDeletedMessageVisible(false), 3000);
             })
     }

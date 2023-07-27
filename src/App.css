@@ -227,7 +227,7 @@ nav {
 
 #post-options-button,
 .comment-options-button {
-    background: var(--grey);
+    background: var(--lime);
     display: grid;
     gap: 2px;
     cursor: pointer;

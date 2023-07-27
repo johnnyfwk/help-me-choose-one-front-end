@@ -131,6 +131,14 @@ export function deleteComment(comment_id) {
         })
 }
 
+export function deleteCommentsByPostId(post_id) {
+    return baseURL
+        .delete(`/posts/${post_id}/comments`)
+        .then((response) => {
+            return response.data.comments;
+        })
+}
+
 export function deletePost(post_id) {
     return baseURL
         .delete(`/posts/${post_id}`)
