@@ -17,7 +17,9 @@ export default function Profile({
     setIsAvatarUpdatedMessageVisible,
     setIsAvatarNotUpdatedMessageVisible,
     setIsPasswordUpdatedMessageVisible,
-    setIsPasswordNotUpdatedMessageVisible
+    setIsPasswordNotUpdatedMessageVisible,
+    setIsAccountDeletedMessageVisible,
+    setIsAccountNotDeletedMessageVisible
 }) {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
     const { user_id } = useParams();
@@ -55,6 +57,10 @@ export default function Profile({
     const [doNewPasswordInputsMatch, setDoNewPasswordInputsMatch] = useState(null);
     const [isPasswordUpdatedSuccessfully, setIsPasswordUpdatedSuccessfully] = useState(null);
 
+    const [isDeleteAccountButtonVisible, setIsDeleteAccountButtonVisible] = useState(true);
+    const [isDeleteAccountConfirmationMessageVisible, setIsDeleteAccountConfirmationMessageVisible] = useState(false);
+    const [isAccountDeletionSuccessful, setIsAccountDeletionSuccessful] = useState(null);
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -82,7 +88,8 @@ export default function Profile({
         isCommentUpdatedSuccessfully,
         isCommentDeletedSuccessfully,
         isAvatarUpdatedSuccessfully,
-        isPasswordUpdatedSuccessfully
+        isPasswordUpdatedSuccessfully,
+        isAccountDeletionSuccessful
     ])
 
     useEffect(() => {
@@ -102,7 +109,8 @@ export default function Profile({
         isCommentUpdatedSuccessfully,
         isCommentDeletedSuccessfully,
         isAvatarUpdatedSuccessfully,
-        isPasswordUpdatedSuccessfully
+        isPasswordUpdatedSuccessfully,
+        isAccountDeletionSuccessful
     ])
 
     useEffect(() => {
@@ -118,7 +126,13 @@ export default function Profile({
                 setIsCommentsLoading(false);
                 setIsFetchingCommentsSuccessful(false);
             })
-    }, [user_id, isCommentUpdatedSuccessfully, isCommentDeletedSuccessfully, isAvatarUpdatedSuccessfully])
+    }, [user_id,
+        isCommentUpdatedSuccessfully,
+        isCommentDeletedSuccessfully,
+        isAvatarUpdatedSuccessfully,
+        isPasswordUpdatedSuccessfully,
+        isAccountDeletionSuccessful
+    ])
 
     useEffect(() => {
         setIsPasswordCorrect(null);
@@ -140,15 +154,22 @@ export default function Profile({
         setVisibleTab("comments");
     }
 
-    function onClickProfileEditTab() {
-        setVisibleTab("edit");
+    function onClickProfileAccountTab() {
+        setVisibleTab("account");
+    }
+
+    const styleDeleteAccountButton = {
+        display: isDeleteAccountButtonVisible ? "initial" : "none"
+    }
+
+    const styleDeleteAccountConfirmationMessage = {
+        display: isDeleteAccountConfirmationMessageVisible ? "initial" : "none"
     }
 
     function onClickEditProfileButton() {
         setIsAvatarUpdatedSuccessfully(null);
         api.updateUser(user.password, editAvatarUrlInput, user_id)
             .then((response) => {
-                console.log(response)
                 setIsAvatarUpdatedSuccessfully(true);
                 setIsAvatarUpdatedMessageVisible(true);
                 setTimeout(() => setIsAvatarUpdatedMessageVisible(false), 3000);
@@ -163,11 +184,9 @@ export default function Profile({
         setIsPasswordCorrect(currentPasswordInput === user.password);
         setDoNewPasswordInputsMatch(newPasswordInput === newPasswordCheckInput);
         if (currentPasswordInput === user.password && isNewPasswordValid && newPasswordInput === newPasswordCheckInput) {
-            console.log("Password can be changed")
             setIsPasswordUpdatedSuccessfully(null);
             api.updateUser(newPasswordInput, user.avatar_url, user_id)
                 .then((response) => {
-                    console.log(response)
                     setCurrentPasswordInput("");
                     setNewPasswordInput("");
                     setNewPasswordCheckInput("");
@@ -180,9 +199,40 @@ export default function Profile({
                     setTimeout(() => setIsPasswordNotUpdatedMessageVisible(false), 3000);
                 })
         }
-        else {
-            console.log("Password can't be changed")
-        }
+    }
+
+    function onClickDeleteAccountButton() {
+        setIsDeleteAccountButtonVisible(false);
+        setIsDeleteAccountConfirmationMessageVisible(true);
+    }
+
+    function onClickDeleteAccountCancelButton() {
+        setIsDeleteAccountButtonVisible(true);
+        setIsDeleteAccountConfirmationMessageVisible(false);
+    }
+
+    function onClickDeleteAccountDeleteButton() {
+        setIsDeleteAccountButtonVisible(true);
+        setIsDeleteAccountConfirmationMessageVisible(false);
+        setIsAccountDeletionSuccessful(null);
+        api.deleteCommentsByUserId(parseInt(user_id))
+            .then((response) => {
+                return api.deletePostsByUserId(parseInt(user_id))
+            })
+            .then((response) => {
+                return api.deleteAccount(parseInt(user_id))
+            })
+            .then((response) => {
+                setUserLoggedIn({});
+                setIsAccountDeletionSuccessful(true);
+                setIsAccountDeletedMessageVisible(true);
+                setTimeout(() => setIsAccountDeletedMessageVisible(false), 3000);
+                navigate("/");
+            })
+            .catch((error) => {
+                setIsAccountNotDeletedMessageVisible(true);
+                setTimeout(() => setIsAccountNotDeletedMessageVisible(false), 3000);
+            })
     }
 
     if (isLoading) {
@@ -219,15 +269,15 @@ export default function Profile({
 
             <main>
                 <div id="profile-tabs">
-                    <h2 id="profile-posts-tab" onClick={onClickProfilePostsTab}>Posts</h2>
+                    <div id="profile-posts-tab" onClick={onClickProfilePostsTab}>Posts</div>
                     {userLoggedIn.user_id !== parseInt(user_id)
                         ? null
                         : <div>
-                            <h2 id="profile-comments-tab" onClick={onClickProfileCommentsTab}>Comments</h2>
+                            <div id="profile-comments-tab" onClick={onClickProfileCommentsTab}>Comments</div>
                         </div>
                     }
                     {userLoggedIn.user_id === parseInt(user_id)
-                        ? <h2 id="profile-edit-tab" onClick={onClickProfileEditTab}>Edit</h2>
+                        ? <div id="profile-account-tab" onClick={onClickProfileAccountTab}>Account</div>
                         : null
                     }
                 </div>
@@ -290,7 +340,7 @@ export default function Profile({
                     : null
                 }
 
-                {visibleTab === "edit"
+                {visibleTab === "account"
                     ? <div>
                         <h3>Avatar</h3>
                         <AvatarInput
@@ -350,6 +400,24 @@ export default function Profile({
                                 !newPasswordCheckInput
                             }
                         >Change Password</button>
+
+                        <button
+                            type="button"
+                            onClick={onClickDeleteAccountButton}
+                            style={styleDeleteAccountButton}
+                        >Delete Account</button>
+
+                        <div style={styleDeleteAccountConfirmationMessage}>
+                            <div className="warning">Delete account? It can not be recovered and your posts and comments will be also be deleted.</div>
+                            <button
+                                type="button"
+                                onClick={onClickDeleteAccountCancelButton}
+                            >Cancel</button>
+                            <button
+                                type="button"
+                                onClick={onClickDeleteAccountDeleteButton}
+                            >Delete</button>
+                        </div>
                     </div>
                     : null
                 }
