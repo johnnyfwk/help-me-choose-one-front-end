@@ -298,11 +298,17 @@ nav {
     height: 100%;
     display: grid;
     align-content: start;
+    overflow: auto;
 }
 
 #edit-post input,
 #edit-post textarea {
     width: 100%;
+}
+
+#edit-post-options-and-images {
+    display: grid;
+    gap: var(--spacing50);
 }
 
 #profile-image {

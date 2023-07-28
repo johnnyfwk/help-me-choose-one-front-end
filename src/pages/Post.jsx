@@ -50,6 +50,7 @@ export default function Post({
     const [editTitleInput, setEditTitleInput] = useState("");
     const [editCategoryInput, setEditCategoryInput] = useState("");
     const [editDescriptionInput, setEditDescriptionInput] = useState("");
+
     const [editOptionInputs, setEditOptionInputs] = useState({
         option1Input: "",
         option2Input: "",
@@ -57,6 +58,15 @@ export default function Post({
         option4Input: "",
         option5Input: ""
     });
+
+    const [editOptionInputImages, setEditOptionInputImages] = useState({
+        option1ImageInput: "",
+        option2ImageInput: "",
+        option3ImageInput: "",
+        option4ImageInput: "",
+        option5ImageInput: ""
+    });
+
     const [editOptionsHasDuplicates, setEditOptionsHasDuplicates] = useState(null);
     const [isNumberOfOptionsLessThanTwo, setIsNumberOfOptionsLessThanTwo] = useState(null);
     const [isPostUpdatedSuccessfully, setIsPostUpdatedSuccessfully] = useState(null);
@@ -74,6 +84,12 @@ export default function Post({
 
     const [selectedImage, setSelectedImage] = useState("");
     const [isOptionImageVisible, setIsOptionImageVisible] = useState(false);
+
+    const [isOption1ImageInputValid, setIsOption1ImageInputValid] = useState(true);
+    const [isOption2ImageInputValid, setIsOption2ImageInputValid] = useState(true);
+    const [isOption3ImageInputValid, setIsOption3ImageInputValid] = useState(true);
+    const [isOption4ImageInputValid, setIsOption4ImageInputValid] = useState(true);
+    const [isOption5ImageInputValid, setIsOption5ImageInputValid] = useState(true);
 
     const navigate = useNavigate();
 
@@ -207,11 +223,22 @@ export default function Post({
             option5Input: post.options_and_votes[4] ? post.options_and_votes[4].option : "",
         }
         setEditOptionInputs(currentOptions);
+        const currentOptionImages = {
+            option1ImageInput: post.options_and_votes[0] ? post.options_and_votes[0].optionImage : "",
+            option2ImageInput: post.options_and_votes[1] ? post.options_and_votes[1].optionImage : "",
+            option3ImageInput: post.options_and_votes[2] ? post.options_and_votes[2].optionImage : "",
+            option4ImageInput: post.options_and_votes[3] ? post.options_and_votes[3].optionImage : "",
+            option5ImageInput: post.options_and_votes[4] ? post.options_and_votes[4].optionImage : "",
+        }
+        setEditOptionInputImages(currentOptionImages);
     }
 
     function onClickUpdatePostButton() {
-        const options = Object.values(editOptionInputs).filter((option) => option);
+        const options = Object.values(editOptionInputs).filter((option) => option);        
+        const optionImages = Object.values(editOptionInputImages).filter((image) => image);
+        const images = Object.values(editOptionInputImages)
         const optionsMinusSpaces = options.map((option) => option.trim());
+        const optionImagessMinusSpaces = optionImages.map((image) => image.trim());
         const optionsInLowercase = optionsMinusSpaces.map((option) => option.toLowerCase());
         const optionsContainsDuplicates = optionsInLowercase.some((value, index) => {
             return optionsInLowercase.indexOf(value, index + 1) !== -1;
@@ -223,19 +250,33 @@ export default function Post({
         else if (options.length < 2) {
             setIsNumberOfOptionsLessThanTwo(options.length < 2);
         }
-        else {           
-            const optionsAndVotes = optionsMinusSpaces.map((option) => {
-                const optionAndVotes = post.options_and_votes.filter((singleOption) => singleOption.option.toLowerCase() === option.toLowerCase())
-                const votesForOption = optionAndVotes.length > 0 ? optionAndVotes[0].votesFromUserIds : [];
-                return {
-                    "option": option,
-                    "optionImage": "",
-                    "votesFromUserIds": votesForOption
-                }
+        else {
+            const currentOptions = post.options_and_votes.map((option) => {
+                return option.option
             })
 
+            const updatedOptionsImagesAndVotes = [];
+            for (let optionNumber = 0; optionNumber < optionsMinusSpaces.length; optionNumber++) {
+                let votes;
+                if (currentOptions.includes(optionsMinusSpaces[optionNumber])) {
+                    const option = post.options_and_votes.filter((option_and_vote) => {
+                        return option_and_vote.option.toLowerCase() === optionsMinusSpaces[optionNumber];
+                    })
+                    votes = option[0].votesFromUserIds;
+                }
+                else {
+                    votes = [];
+                }
+
+                updatedOptionsImagesAndVotes.push({
+                    "option": optionsMinusSpaces[optionNumber],
+                    "optionImage": images[optionNumber] ? images[optionNumber].trim() : "",
+                    "votesFromUserIds": votes
+                })
+            }
+
             setIsPostUpdatedSuccessfully(null);
-            api.updatePost(new Date(), editTitleInput, editDescriptionInput, utils.convertCategoryToUrl(editCategoryInput), optionsAndVotes, postId)
+            api.updatePost(new Date(), editTitleInput, editDescriptionInput, utils.convertCategoryToUrl(editCategoryInput), updatedOptionsImagesAndVotes, postId)
                 .then((response) => {
                     setIsPostUpdatedSuccessfully(true);
                     setIsPostUpdatedMessageVisible(true);
@@ -256,6 +297,11 @@ export default function Post({
         setIsNumberOfOptionsLessThanTwo(null);
         setEditOptionsHasDuplicates(null);
         setIsEditAndDeletePostButtonsVisible(false);
+        setIsOption1ImageInputValid(true);
+        setIsOption2ImageInputValid(true);
+        setIsOption3ImageInputValid(true);
+        setIsOption4ImageInputValid(true);
+        setIsOption5ImageInputValid(true);
     }
 
     function onClickDeletePost() {
@@ -427,7 +473,11 @@ export default function Post({
                                                     : <input type="radio" id={option.option} name="option" value={option.option} onChange={handleOptionInput} />
                                                 }
                                                 <label htmlFor={option.option} className="post-option-label">{option.option}</label>
-                                                <span onClick={() => onClickViewOptionImageButton(option.optionImage)} className="view-option-image-button">View Image</span>
+                                                {option.optionImage
+                                                    ? <span onClick={() => onClickViewOptionImageButton(option.optionImage)} className="view-option-image-button">View Image</span>
+                                                    : null
+                                                }
+                                                
                                             </div>
                                             {isVotesVisible
                                                 ?   <div className="post-option-votes-and-percentage">
@@ -494,16 +544,6 @@ export default function Post({
                     <div id="edit-post" style={styleEditPost}>
                         <h2>Edit Post</h2>
 
-                        {editOptionsHasDuplicates === null || editOptionsHasDuplicates === false
-                            ? null
-                            : <p className="error">You have entered duplicate options</p>
-                        }
-
-                        {isNumberOfOptionsLessThanTwo
-                            ? <p className="error">Please enter at least two options</p>
-                            : null
-                        }
-
                         <TitleInput
                             titleInput={editTitleInput}
                             setTitleInput={setEditTitleInput}
@@ -523,7 +563,29 @@ export default function Post({
                             optionInputs={editOptionInputs}
                             setOptionInputs={setEditOptionInputs}
                             setOptionsHasDuplicates={setEditOptionsHasDuplicates}
+                            editOptionInputImages={editOptionInputImages}
+                            setEditOptionInputImages={setEditOptionInputImages}
+                            isOption1ImageInputValid={isOption1ImageInputValid}
+                            setIsOption1ImageInputValid={setIsOption1ImageInputValid}
+                            isOption2ImageInputValid={isOption2ImageInputValid}
+                            setIsOption2ImageInputValid={setIsOption2ImageInputValid}
+                            isOption3ImageInputValid={isOption3ImageInputValid}
+                            setIsOption3ImageInputValid={setIsOption3ImageInputValid}
+                            isOption4ImageInputValid={isOption4ImageInputValid}
+                            setIsOption4ImageInputValid={setIsOption4ImageInputValid}
+                            isOption5ImageInputValid={isOption5ImageInputValid}
+                            setIsOption5ImageInputValid={setIsOption5ImageInputValid}
                         />
+
+                        {editOptionsHasDuplicates === null || editOptionsHasDuplicates === false
+                            ? null
+                            : <p className="error">You have entered duplicate options</p>
+                        }
+
+                        {isNumberOfOptionsLessThanTwo
+                            ? <p className="error">Please enter at least two options</p>
+                            : null
+                        }
 
                         <div>
                             <button
@@ -536,7 +598,12 @@ export default function Post({
                                 disabled={
                                     !editTitleInput ||
                                     !editDescriptionInput ||
-                                    editCategoryInput === "Select a Category"
+                                    editCategoryInput === "Select a Category" ||
+                                    !isOption1ImageInputValid ||
+                                    !isOption2ImageInputValid ||
+                                    !isOption3ImageInputValid ||
+                                    !isOption4ImageInputValid ||
+                                    !isOption5ImageInputValid
                                 }
                             >Update</button>
                         </div>

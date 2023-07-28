@@ -20,7 +20,7 @@ export function isFamilyFriendly(string) {
     } 
 }
 
-export function isAvatarUrlValid(avatarUrl) {
+export function isImageUrlValid(avatarUrl) {
     return /([a-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif|bmp|webp|svg))/i.test(avatarUrl);
 }
 
