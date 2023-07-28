@@ -1,27 +1,27 @@
 import * as utils from "../utils";
 
-export default function AvatarInput({avatarUrlInput, setAvatarUrlInput, setIsAvatarUrlValid}) {
+export default function ImageInput({imageUrlInput, setImageUrlInput, setIsImageUrlValid}) {
     function handleAvatarUrlInput(event) {
-        setAvatarUrlInput(event.target.value.toLowerCase());
+        setImageUrlInput(event.target.value.toLowerCase());
         if (event.target.value.length === 0) {
-            setIsAvatarUrlValid(true);
+            setIsImageUrlValid(true);
         }
         else if (utils.isAvatarUrlValid(event.target.value) === true) {
-            setIsAvatarUrlValid(true);
+            setIsImageUrlValid(true);
         }
         else {
-            setIsAvatarUrlValid(false);
+            setIsImageUrlValid(false);
         }
     }
 
     return (
         <div>
-            <label htmlFor="avatar-url-input">Avatar URL (optional):</label>
+            <label htmlFor="avatar-url-input">Image URL (optional):</label>
             <input
                 type="text"
                 id="avatar-url-input"
                 name="avatar-url-input"
-                value={avatarUrlInput}
+                value={imageUrlInput}
                 onChange={handleAvatarUrlInput}
             ></input>
         </div>

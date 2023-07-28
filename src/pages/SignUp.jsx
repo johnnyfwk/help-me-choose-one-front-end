@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 import { UserContext } from "../contexts/UserContext";
 import UsernameInput from "../components/UsernameInput";
 import PasswordInput from "../components/PasswordInput";
-import AvatarInput from "../components/AvatarInput";
+import ImageInput from "../components/ImageInput";
 import * as api from "../api";
 import * as utils from "../utils";
 
@@ -151,13 +151,13 @@ export default function SignUp({setIsAccountCreatedMessageVisible, setIsAccountN
                     />
                     {isPasswordValid === null || isPasswordValid === true
                         ? null
-                        : <span className="error">Password can not contain spaces</span>    
+                        : <span className="error">Password can not contain spaces</span>
                     }
 
-                    <AvatarInput
-                        avatarUrlInput={avatarUrlInput}
-                        setAvatarUrlInput={setAvatarUrlInput}
-                        setIsAvatarUrlValid={setIsAvatarUrlValid}
+                    <ImageInput
+                        imageUrlInput={avatarUrlInput}
+                        setImageUrlInput={setAvatarUrlInput}
+                        setIsImageUrlValid={setIsAvatarUrlValid}
                     />
                     {isAvatarUrlValid === null || isAvatarUrlValid === true
                         ? null

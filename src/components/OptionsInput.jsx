@@ -8,6 +8,7 @@ export default function OptionsInput({
     function handleOptionInput(event) {
         setOptionsHasDuplicates(null);
         const { name, value } = event.target;
+        console.log(name,":",value)
         setOptionInputs((prevValues) => {
             return ({ ...prevValues, [name]: value })
         });

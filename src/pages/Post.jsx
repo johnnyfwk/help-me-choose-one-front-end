@@ -18,16 +18,12 @@ export default function Post({
     setIsVoteNotAddedMessageVisible,
     setIsPostUpdatedMessageVisible,
     setIsPostNotUpdatedMessageVisible,
-
     setIsCommentPostedMessageVisible,
     setIsCommentNotPostedMessageVisible,
-
     setIsCommentUpdatedMessageVisible,
     setIsCommentNotUpdatedMessageVisible,
-
     setIsCommentDeletedMessageVisible,
     setIsCommentNotDeletedMessageVisible,
-
     setIsPostDeletedMessageVisible,
     setIsPostNotDeletedMessageVisible
 }) {
@@ -75,6 +71,9 @@ export default function Post({
     const [isEditAndDeletePostButtonsVisible, setIsEditAndDeletePostButtonsVisible] = useState(false);
     const [isDeletePostMessageVisible, setIsDeletePostMessageVisible] = useState(false);
     const [isReportPostButtonVisible, setIsReportPostButtonVisible] = useState(false);
+
+    const [selectedImage, setSelectedImage] = useState("");
+    const [isOptionImageVisible, setIsOptionImageVisible] = useState(false);
 
     const navigate = useNavigate();
 
@@ -306,6 +305,15 @@ export default function Post({
             })
     }
 
+    function onClickViewOptionImageButton(image) {
+        setSelectedImage(image);
+        setIsOptionImageVisible(true);
+    }
+
+    function onClickCloseImage() {
+        setIsOptionImageVisible(false);
+    }
+
     function onClickReportPost() {
 
     }
@@ -334,6 +342,10 @@ export default function Post({
         display: isReportPostButtonVisible ? "initial" : "none"
     }
 
+    const styleOptionImage = {
+        display: isOptionImageVisible ? "grid" : "none"
+    }
+
     if (isLoading) {
         return (
             <p>Page is loading...</p>
@@ -345,7 +357,7 @@ export default function Post({
             <p className="error">Page could not be loaded.</p>
         )
     }
-
+    
     return (
         <div>
             <Helmet>
@@ -395,6 +407,13 @@ export default function Post({
                     <p>{post.description}</p>
 
                     <button type="button" onClick={onClickShowVotesButton}>{isVotesVisible ? "Hide Votes" : "Show Votes"}</button>
+
+                    <div id="post-option-image-and-close-button" onClick={onClickCloseImage} style={styleOptionImage}>
+                        {selectedImage
+                            ? <img src={selectedImage} alt="option-image" />
+                            : <div>No image added</div>
+                        }
+                    </div>
                     
                     <form id="post-options-form">
                         <div id="post-options">
@@ -407,7 +426,8 @@ export default function Post({
                                                     ? null
                                                     : <input type="radio" id={option.option} name="option" value={option.option} onChange={handleOptionInput} />
                                                 }
-                                                <label htmlFor={option.option}>{option.option}</label>
+                                                <label htmlFor={option.option} className="post-option-label">{option.option}</label>
+                                                <span onClick={() => onClickViewOptionImageButton(option.optionImage)} className="view-option-image-button">View Image</span>
                                             </div>
                                             {isVotesVisible
                                                 ?   <div className="post-option-votes-and-percentage">
