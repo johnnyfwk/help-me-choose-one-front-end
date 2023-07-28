@@ -22,6 +22,8 @@ import Error404 from './pages/Error404';
 function App() {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
 
+    const numberOfItemsToDisplayAndIncrement = 20;
+
     const [isNavVisible, setIsNavVisible] = useState(false);
     const [isVotesVisible, setIsVotesVisible] = useState(false);
     const [isAccountCreatedMessageVisible, setIsAccountCreatedMessageVisible] = useState(false);
@@ -48,8 +50,6 @@ function App() {
     const [isPasswordNotUpdatedMessageVisible, setIsPasswordNotUpdatedMessageVisible] = useState(false);
     const [isAccountDeletedMessageVisible, setIsAccountDeletedMessageVisible] = useState(false);
     const [isAccountNotDeletedMessageVisible, setIsAccountNotDeletedMessageVisible] = useState(false);
-
-    const numberOfItemsToDisplayAndIncrement = 20;
 
     function onClickLogOutButton() {
         setUserLoggedIn({});
@@ -211,6 +211,7 @@ function App() {
                     path="/user/:user_id"
                     element={
                         <Profile
+                            numberOfItemsToDisplayAndIncrement={numberOfItemsToDisplayAndIncrement}
                             setIsCommentUpdatedMessageVisible={setIsCommentUpdatedMessageVisible}
                             setIsCommentNotUpdatedMessageVisible={setIsCommentNotUpdatedMessageVisible}
                             setIsCommentDeletedMessageVisible={setIsCommentDeletedMessageVisible}

@@ -8,8 +8,10 @@ import PostCard from "../components/PostCard";
 import CommentCard from "../components/CommentCard";
 import AvatarInput from "../components/AvatarInput";
 import PasswordInput from "../components/PasswordInput";
+import LoadMoreButton from "../components/LoadMoreButton";
 
 export default function Profile({
+    numberOfItemsToDisplayAndIncrement,
     setIsCommentUpdatedMessageVisible,
     setIsCommentNotUpdatedMessageVisible,
     setIsCommentDeletedMessageVisible,
@@ -61,6 +63,11 @@ export default function Profile({
     const [isDeleteAccountConfirmationMessageVisible, setIsDeleteAccountConfirmationMessageVisible] = useState(false);
     const [isAccountDeletionSuccessful, setIsAccountDeletionSuccessful] = useState(null);
 
+    const [numberOfPostsToDisplay, setNumberOfPostsToDisplay] = useState(numberOfItemsToDisplayAndIncrement);
+    const [postsToDisplay, setPostsToDisplay] = useState([]);
+    const [numberOfCommentsToDisplay, setNumberOfCommentsToDisplay] = useState(numberOfItemsToDisplayAndIncrement);
+    const [commentsToDisplay, setCommentsToDisplay] = useState([]);
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -95,11 +102,23 @@ export default function Profile({
     useEffect(() => {
         setIsPostsLoading(true);
         setIsFetchingPostsSuccessful(null);
+        setNumberOfPostsToDisplay(numberOfItemsToDisplayAndIncrement);
         api.getPostsByUserId(user_id)
             .then((response) => {
                 setIsPostsLoading(false);
                 setIsFetchingPostsSuccessful(true);
                 setPosts(response);
+                let postsToRender;
+                setNumberOfPostsToDisplay((currentNumberOfPostsToDisplay) => {
+                    if (response.length > currentNumberOfPostsToDisplay) {
+                        postsToRender = response.slice(0, currentNumberOfPostsToDisplay);
+                    }
+                    else {
+                        postsToRender = response;
+                    }
+                    setPostsToDisplay(postsToRender);
+                    return currentNumberOfPostsToDisplay;
+                })
             })
             .catch((error) => {
                 setIsPostsLoading(false);
@@ -114,13 +133,34 @@ export default function Profile({
     ])
 
     useEffect(() => {
+        if (posts.length <= numberOfPostsToDisplay) {
+            setPostsToDisplay(posts);
+        }
+        else {
+            const postsToDisplay = posts.slice(0, numberOfPostsToDisplay);
+            setPostsToDisplay(postsToDisplay);
+        }
+    }, [numberOfPostsToDisplay])
+
+    useEffect(() => {
         setIsCommentsLoading(true);
         setIsFetchingCommentsSuccessful(null);
         api.getCommentsByUserId(user_id)
             .then((response) => {
                 setIsCommentsLoading(false);
                 setIsFetchingCommentsSuccessful(true);
-                setComments(response)
+                setComments(response);
+                let commentsToRender;
+                setNumberOfCommentsToDisplay((currentNumberOfCommentsToDisplay) => {
+                    if (response.length > currentNumberOfCommentsToDisplay) {
+                        commentsToRender = response.slice(0, currentNumberOfCommentsToDisplay);
+                    }
+                    else {
+                        commentsToRender = response;
+                    }
+                    setCommentsToDisplay(commentsToRender);
+                    return currentNumberOfCommentsToDisplay;
+                })
             })
             .catch((error) => {
                 setIsCommentsLoading(false);
@@ -133,6 +173,16 @@ export default function Profile({
         isPasswordUpdatedSuccessfully,
         isAccountDeletionSuccessful
     ])
+
+    useEffect(() => {
+        if (comments.length <= numberOfCommentsToDisplay) {
+            setCommentsToDisplay(comments);
+        }
+        else {
+            const commentsToDisplay = comments.slice(0, numberOfCommentsToDisplay);
+            setCommentsToDisplay(commentsToDisplay);
+        }
+    }, [numberOfCommentsToDisplay])
 
     useEffect(() => {
         setIsPasswordCorrect(null);
@@ -296,10 +346,18 @@ export default function Profile({
                             ? <div>You have not created any posts.</div>
                             : posts.length === 0 && userLoggedIn.user_id !== parseInt(user_id)
                                 ? <div>User has not created any posts.</div>
-                                : <div className="post-card-container">
-                                    {posts.map((post) => {
-                                        return <PostCard key={post.post_id} post={post} />;
-                                    })}
+                                : <div>
+                                    <div className="post-cards">
+                                        {postsToDisplay.map((post) => {
+                                            return <PostCard key={post.post_id} post={post} />;
+                                        })}
+                                    </div>
+                                    <LoadMoreButton
+                                        numberOfItemsToDisplayAndIncrement={numberOfItemsToDisplayAndIncrement}
+                                        numberOfItemsToDisplay={numberOfPostsToDisplay}
+                                        setNumberOfItemsToDisplay={setNumberOfPostsToDisplay}
+                                        items={posts}
+                                    />
                                 </div>
                         }
                     </div>
@@ -320,21 +378,30 @@ export default function Profile({
                             ? <div>You have not posted any comments.</div>
                             : comments.length === 0 && userLoggedIn.user_id !== parseInt(user_id)
                                 ? <div>User has not posted any comments.</div>
-                                : <div className="comments">
-                                    {comments.map((comment) => {
-                                        return <CommentCard
-                                            key={comment.comment_id}
-                                            comment={comment}
-                                            userLoggedIn={userLoggedIn}
-                                            setIsCommentUpdatedSuccessfully={setIsCommentUpdatedSuccessfully}
-                                            setIsCommentUpdatedMessageVisible={setIsCommentUpdatedMessageVisible}
-                                            setIsCommentNotUpdatedMessageVisible={setIsCommentNotUpdatedMessageVisible}
-                                            setIsCommentDeletedSuccessfully={setIsCommentDeletedSuccessfully}
-                                            setIsCommentDeletedMessageVisible={setIsCommentDeletedMessageVisible}
-                                            setIsCommentNotDeletedMessageVisible={setIsCommentNotDeletedMessageVisible}
-                                        />
-                                    })}
+                                : <div>
+                                    <div className="comments">
+                                        {commentsToDisplay.map((comment) => {
+                                            return <CommentCard
+                                                key={comment.comment_id}
+                                                comment={comment}
+                                                userLoggedIn={userLoggedIn}
+                                                setIsCommentUpdatedSuccessfully={setIsCommentUpdatedSuccessfully}
+                                                setIsCommentUpdatedMessageVisible={setIsCommentUpdatedMessageVisible}
+                                                setIsCommentNotUpdatedMessageVisible={setIsCommentNotUpdatedMessageVisible}
+                                                setIsCommentDeletedSuccessfully={setIsCommentDeletedSuccessfully}
+                                                setIsCommentDeletedMessageVisible={setIsCommentDeletedMessageVisible}
+                                                setIsCommentNotDeletedMessageVisible={setIsCommentNotDeletedMessageVisible}
+                                            />
+                                        })}
+                                    </div>
+                                    <LoadMoreButton
+                                        numberOfItemsToDisplayAndIncrement={numberOfItemsToDisplayAndIncrement}
+                                        numberOfItemsToDisplay={numberOfCommentsToDisplay}
+                                        setNumberOfItemsToDisplay={setNumberOfCommentsToDisplay}
+                                        items={comments}
+                                    />
                                 </div>
+                                
                         }
                     </div>
                     : null
