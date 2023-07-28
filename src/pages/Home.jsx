@@ -54,7 +54,6 @@ export default function Home({numberOfItemsToDisplayAndIncrement}) {
                 setNumberOfItemsToDisplay((currentNumberOfItemsToDisplay) => {
                     if (allPostsInCategory.length > currentNumberOfItemsToDisplay) {
                         postsToDisplay = allPostsInCategory.slice(0, currentNumberOfItemsToDisplay);
-                        
                     }
                     else {
                         postsToDisplay = allPostsInCategory;
@@ -125,7 +124,7 @@ export default function Home({numberOfItemsToDisplayAndIncrement}) {
                     </select>
                 </form>
 
-                <div className="post-card-container">
+                <div className="post-cards">
                     {itemsToDisplay.map((post) => {
                         return <PostCard key={post.post_id} post={post} />
                     })}
@@ -133,10 +132,9 @@ export default function Home({numberOfItemsToDisplayAndIncrement}) {
                 
                 <LoadMoreButton
                     numberOfItemsToDisplayAndIncrement={numberOfItemsToDisplayAndIncrement}
-                    setNumberOfItemsToDisplay={setNumberOfItemsToDisplay}
-                    posts={posts}
                     numberOfItemsToDisplay={numberOfItemsToDisplay}
-                    itemsToDisplay={itemsToDisplay}
+                    setNumberOfItemsToDisplay={setNumberOfItemsToDisplay}
+                    items={posts}
                 />
             </main>
         </div>

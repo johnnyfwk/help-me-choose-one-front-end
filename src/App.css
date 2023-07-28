@@ -184,7 +184,7 @@ nav {
     background: var(--orange);
 }
 
-.post-card-container {
+.post-cards {
     display: grid;
     gap: var(--spacing20);
 }

@@ -1,4 +1,9 @@
-export default function LoadMoreButton({numberOfItemsToDisplayAndIncrement, setNumberOfItemsToDisplay, posts, numberOfItemsToDisplay, itemsToDisplay}) {
+export default function LoadMoreButton({
+    numberOfItemsToDisplayAndIncrement,
+    numberOfItemsToDisplay,
+    setNumberOfItemsToDisplay,
+    items,
+}) {
     function onClickLoadMoreButton() {
         setNumberOfItemsToDisplay((currentNumberOfItemsToDisplay) => {
             return currentNumberOfItemsToDisplay + numberOfItemsToDisplayAndIncrement;
@@ -6,7 +11,7 @@ export default function LoadMoreButton({numberOfItemsToDisplayAndIncrement, setN
     }
 
     const styleLoadMoreButton = {
-        display: numberOfItemsToDisplay < posts.length ? "grid" : "none"
+        display: numberOfItemsToDisplay < items.length ? "grid" : "none"
     }
 
     return (
