@@ -47,6 +47,10 @@ img {
     color: var(--lime);
 }
 
+.warning {
+    color: var(--orange);
+}
+
 textarea {
     width: 100%;
 }
@@ -130,7 +134,9 @@ nav {
 #avatar-updated-message,
 #avatar-not-updated-message,
 #password-updated-message,
-#password-not-updated-message {
+#password-not-updated-message,
+#account-deleted-message,
+#account-not-deleted-message {
     position: fixed;
     bottom: -100%;
     left: 0%;
@@ -155,7 +161,8 @@ nav {
 #comment-deleted-message,
 #post-deleted-message,
 #avatar-updated-message,
-#password-updated-message {
+#password-updated-message,
+#account-deleted-message {
     background: var(--lime);
 }
 
@@ -168,7 +175,8 @@ nav {
 #comment-not-deleted-message,
 #post-not-deleted-message,
 #avatar-not-updated-message,
-#password-not-updated-message {
+#password-not-updated-message,
+#account-not-deleted-message {
     background: var(--red);
 }
 
@@ -201,7 +209,7 @@ nav {
 
 #post-options {
     display: grid;
-    gap: var(--spacing20);
+    gap: var(--spacing10);
 }
 
 .post-option-radio-input-and-label {
@@ -283,7 +291,6 @@ nav {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    /* gap: var(--spacing30); */
     cursor: pointer;
 }
 

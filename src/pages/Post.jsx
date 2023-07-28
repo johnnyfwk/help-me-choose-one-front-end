@@ -434,7 +434,7 @@ export default function Post({
                         </div>
                         
                         {Object.keys(userLoggedIn).length === 0
-                            ? <p><Link to="/log-in">Log in</Link> to vote</p>
+                            ? <p><Link to="/log-in">Log in</Link> to vote and post a comment.</p>
                             : hasLoggedInUserAlreadyVoted
                                 ? <div>You have already voted on this post.</div>
                                 : <div>
@@ -524,7 +524,11 @@ export default function Post({
                 </section>
                 
                 <section>
-                    <h2>Post a Comment</h2>
+                    {userLoggedIn.user_id
+                        ? <h2>Post a Comment</h2>
+                        : null
+                    }
+                    
                     <form>
                         {userLoggedIn.user_id
                             ? <div>
@@ -538,7 +542,7 @@ export default function Post({
                                 disabled={!commentInput}
                             >Post Comment</button>
                             </div>
-                            : <p><Link to="/log-in">Log in</Link> to post a comment</p>
+                            : null
                         }
                     </form>
                 </section>

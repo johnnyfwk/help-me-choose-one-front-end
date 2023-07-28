@@ -46,6 +46,8 @@ function App() {
     const [isAvatarNotUpdatedMessageVisible, setIsAvatarNotUpdatedMessageVisible] = useState(false);
     const [isPasswordUpdatedMessageVisible, setIsPasswordUpdatedMessageVisible] = useState(false);
     const [isPasswordNotUpdatedMessageVisible, setIsPasswordNotUpdatedMessageVisible] = useState(false);
+    const [isAccountDeletedMessageVisible, setIsAccountDeletedMessageVisible] = useState(false);
+    const [isAccountNotDeletedMessageVisible, setIsAccountNotDeletedMessageVisible] = useState(false);
 
     const numberOfItemsToDisplayAndIncrement = 20;
 
@@ -143,6 +145,14 @@ function App() {
         bottom: isPasswordNotUpdatedMessageVisible ? "0%" : "-100%"
     }
 
+    const styleAccountDeletedMessage = {
+        bottom: isAccountDeletedMessageVisible ? "0%" : "-100%"
+    }
+
+    const styleAccountNotDeletedMessage = {
+        bottom: isAccountNotDeletedMessageVisible ? "0%" : "-100%"
+    }
+
     return (
         <div className="App">
             <div id="logo-show-nav-button-and-nav">
@@ -209,6 +219,8 @@ function App() {
                             setIsAvatarNotUpdatedMessageVisible={setIsAvatarNotUpdatedMessageVisible}
                             setIsPasswordUpdatedMessageVisible={setIsPasswordUpdatedMessageVisible}
                             setIsPasswordNotUpdatedMessageVisible={setIsPasswordNotUpdatedMessageVisible}
+                            setIsAccountDeletedMessageVisible={setIsAccountDeletedMessageVisible}
+                            setIsAccountNotDeletedMessageVisible={setIsAccountNotDeletedMessageVisible}
                         />
                     }
                 />
@@ -243,6 +255,8 @@ function App() {
             <div id="avatar-not-updated-message" style={styleAvatarNotUpdatedMessage}>Your avatar could not be updated</div>
             <div id="password-updated-message" style={stylePasswordUpdatedMessage}>Your password was updated</div>
             <div id="password-not-updated-message" style={stylePasswordNotUpdatedMessage}>Your password could not be updated</div>
+            <div id="account-deleted-message" style={styleAccountDeletedMessage}>Your account was deleted</div>
+            <div id="account-not-deleted-message" style={styleAccountNotDeletedMessage}>Your account could not be deleted</div>
         </div>
     );
 }

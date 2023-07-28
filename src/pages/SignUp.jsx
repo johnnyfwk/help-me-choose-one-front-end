@@ -27,8 +27,6 @@ export default function SignUp({setIsAccountCreatedMessageVisible, setIsAccountN
     const [avatarUrlInput, setAvatarUrlInput] = useState("");
     const [isAvatarUrlValid, setIsAvatarUrlValid] = useState(true);
 
-    const [isAccountCreationSuccessful, setIsAccountCreationSuccessful] = useState(null);
-
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -85,17 +83,15 @@ export default function SignUp({setIsAccountCreatedMessageVisible, setIsAccountN
     }, [passwordInput])
 
     function onClickSignUpButton() {
-        setIsAccountCreationSuccessful(null);
         api.addUser(usernameInput, passwordInput, avatarUrlInput ? avatarUrlInput : "default-avatar.webp", new Date())
             .then((response) => {
-                setIsAccountCreationSuccessful(true);
                 setUserLoggedIn(response);
                 setIsAccountCreatedMessageVisible(true);
                 setTimeout(() => setIsAccountCreatedMessageVisible(false), 3000);
                 navigate("/");
             })
             .catch((error) => {
-                setIsAccountCreationSuccessful(false);
+                setIsUsernameAvailable(false);
                 setIsAccountNotCreatedMessageVisible(true);
                 setTimeout(() => setIsAccountNotCreatedMessageVisible(false), 3000);
             })

@@ -154,4 +154,28 @@ export function deletePost(post_id) {
             return response.data.post;
         })
 }
+
+export function deleteCommentsByUserId(user_id) {
+    return baseURL
+        .delete(`/users/${user_id}/comments`)
+        .then((response) => {
+            return response.data.comments;
+        })
+}
+
+export function deletePostsByUserId(user_id) {
+    return baseURL
+        .delete(`/users/${user_id}/posts`)
+        .then((response) => {
+            return response.data.posts;
+        })
+}
+
+export function deleteAccount(user_id) {
+    return baseURL
+        .delete(`/users/${user_id}`)
+        .then((response) => {
+            return response.data.user;
+        })
+}
 // DELETE requests
