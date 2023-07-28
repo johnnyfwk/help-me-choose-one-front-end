@@ -212,8 +212,33 @@ nav {
     gap: var(--spacing10);
 }
 
-.post-option-radio-input-and-label {
+.post-option-label {
     font-weight: bold;
+}
+
+.view-option-image-button {
+    cursor: pointer;
+}
+
+#post-option-image-and-close-button {
+    background: orange;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+#post-option-image-and-close-button img {
+    max-height: 50%;
+    object-fit:contain;
+}
+
+#post-option-image-and-close-button div {
+    background: yellow;
+    text-align: center;
 }
 
 .post-option-votes-and-percentage {
@@ -273,11 +298,17 @@ nav {
     height: 100%;
     display: grid;
     align-content: start;
+    overflow: auto;
 }
 
 #edit-post input,
 #edit-post textarea {
     width: 100%;
+}
+
+#edit-post-options-and-images {
+    display: grid;
+    gap: var(--spacing50);
 }
 
 #profile-image {

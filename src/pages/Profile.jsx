@@ -6,7 +6,7 @@ import * as api from "../api";
 import * as utils from "../utils";
 import PostCard from "../components/PostCard";
 import CommentCard from "../components/CommentCard";
-import AvatarInput from "../components/AvatarInput";
+import ImageInput from "../components/ImageInput";
 import PasswordInput from "../components/PasswordInput";
 import LoadMoreButton from "../components/LoadMoreButton";
 
@@ -410,10 +410,10 @@ export default function Profile({
                 {visibleTab === "account"
                     ? <div>
                         <h3>Avatar</h3>
-                        <AvatarInput
-                            avatarUrlInput={editAvatarUrlInput}
-                            setAvatarUrlInput={setEditAvatarUrlInput}
-                            setIsAvatarUrlValid={setIsEditAvatarUrlValid}
+                        <ImageInput
+                            imageUrlInput={editAvatarUrlInput}
+                            setImageUrlInput={setEditAvatarUrlInput}
+                            setIsImageUrlValid={setIsEditAvatarUrlValid}
                         />
                         {isEditAvatarUrlValid === null || isEditAvatarUrlValid === true
                             ? null
