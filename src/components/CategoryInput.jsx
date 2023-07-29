@@ -4,8 +4,8 @@ export default function CategoryInput({categoryInput, setCategoryInput}) {
     }
 
     return (
-        <div>
-            <label htmlFor="categories">Categories:</label>
+        <div id="categories-input">
+            <label htmlFor="categories">Categories</label>
             <select id="categories" value={categoryInput} onChange={handleCategoryInput}>
                 <option defaultValue>Select a Category</option>
                 <option value="Accommodation">Accommodation</option>

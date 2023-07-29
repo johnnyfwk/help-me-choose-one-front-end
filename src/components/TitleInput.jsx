@@ -6,8 +6,8 @@ export default function TitleInput({titleInput, setTitleInput}) {
     }
 
     return (
-        <div>
-            <label htmlFor="title">Title:</label>
+        <div id="title-input">
+            <label htmlFor="title">Title</label>
             <input
                 type="text"
                 id="title"
@@ -16,7 +16,7 @@ export default function TitleInput({titleInput, setTitleInput}) {
                 onChange={handleTitleInput}
                 maxLength={titleMaxLength}
             ></input>
-            <div>{titleInput} / {titleMaxLength}</div>
+            <div>{titleInput.length} / {titleMaxLength}</div>
         </div>
     )
 }

@@ -30,6 +30,7 @@ export default function Nav({isNavVisible, setIsNavVisible, onClickLogOutButton}
                     <Link to={`/user/${userLoggedIn.user_id}`}>My Profile</Link>
                 </>
             }
+            
             <Link to="/about" id="nav-link-about">About</Link>
             <Link to="/contact" id="nav-link-contact">Contact</Link>
             <Link to="/terms-and-conditions" id="nav-link-terms-and-conditions">Terms & Conditions</Link>

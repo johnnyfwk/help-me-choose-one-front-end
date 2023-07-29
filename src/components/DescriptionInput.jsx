@@ -6,8 +6,8 @@ export default function DescriptionInput({descriptionInput, setDescriptionInput}
     }
 
     return (
-        <div>
-            <label htmlFor="description">Description:</label>
+        <div id="description-input">
+            <label htmlFor="description">Description</label>
             <textarea
                 id="description"
                 name="description"

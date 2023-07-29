@@ -9,17 +9,25 @@ export default function PostCard({post}) {
 
     return (
         <Link to={`/post/${post.post_id}-${utils.convertTitleToUrl(post.title)}`} className="post-card" loading="lazy">
-            {post.avatar_url === "default-avatar.webp"
-                ? <img src={require(`../assets/images/avatars/${post.avatar_url}`)} alt="Avatar" />
-                : <img src={post.avatar_url} alt="Avatar" />
-            }
-            <div>{post.username}</div>
+            <div className="post-card-avatar-username">
+                {post.avatar_url === "default-avatar.webp"
+                    ? <img src={require(`../assets/images/avatars/${post.avatar_url}`)} alt="Avatar" />
+                    : <img src={post.avatar_url} alt="Avatar" />
+                }
+                <div>{post.username}</div>
+            </div>
+            
             <h2>{post.title}</h2>
+
             <p>{post.description}</p>
-            <div>{utils.convertUrlsToUserFriendlyHeadings(post.category)}</div>
-            <div>Votes: {totalVotes}</div>
-            <div>{new Date(post.post_date).toLocaleDateString()}</div>
-            <div>{new Date(post.post_date).toLocaleTimeString()}</div>
+
+            <div className="post-card-category-votes-date">
+                <div>{utils.convertUrlsToUserFriendlyHeadings(post.category)}</div>
+                <div>Votes: {totalVotes}</div>
+                <div>{new Date(post.post_date).toLocaleDateString()}</div>
+                <div>{new Date(post.post_date).toLocaleTimeString()}</div>
+            </div>
+            
         </Link>
     )
 }
