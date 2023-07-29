@@ -78,9 +78,11 @@ export default function Post({
     const [isCommentDeletedSuccessfully, setIsCommentDeletedSuccessfully] = useState(null);
     const [isPostDeletedSuccessfully, setIsPostDeletedSuccessfully] = useState(null);
 
+    const [isEditAndDeletePostButtonsContainerVisible, setIsEditAndDeletePostButtonsContainerVisible] = useState(false);
     const [isEditAndDeletePostButtonsVisible, setIsEditAndDeletePostButtonsVisible] = useState(false);
+    const [isDeletePostMessageContainerVisible, setIsDeletePostMessageContainerVisible] = useState();
     const [isDeletePostMessageVisible, setIsDeletePostMessageVisible] = useState(false);
-    const [isReportPostButtonVisible, setIsReportPostButtonVisible] = useState(false);
+    const [isReportPostButtonContainerVisible, setIsReportPostButtonContainerVisible] = useState(false);
 
     const [selectedImage, setSelectedImage] = useState("");
     const [isOptionImageVisible, setIsOptionImageVisible] = useState(false);
@@ -161,9 +163,9 @@ export default function Post({
     }
 
     function onClickVoteButton() {
-        setIsEditAndDeletePostButtonsVisible(false);
+        setIsEditAndDeletePostButtonsContainerVisible(false);
         setIsDeletePostMessageVisible(false);
-        setIsReportPostButtonVisible(false);
+        setIsReportPostButtonContainerVisible(false);
         let updatedOptionsAndVotes = [];
         post.options_and_votes.forEach((option) => {
             const newOption = {};
@@ -200,11 +202,11 @@ export default function Post({
     }
 
     function onClickPostOptionsButton() {
-        setIsEditAndDeletePostButtonsVisible((currentIsEditAndDeletePostButtonsVisible) => {
+        setIsEditAndDeletePostButtonsContainerVisible((currentIsEditAndDeletePostButtonsVisible) => {
             return !currentIsEditAndDeletePostButtonsVisible;
         });
-        setIsReportPostButtonVisible((currentIsReportPostButtonVisible) => {
-            return !currentIsReportPostButtonVisible;
+        setIsReportPostButtonContainerVisible((currentIsReportPostButtonContainerVisible) => {
+            return !currentIsReportPostButtonContainerVisible;
         })
     }
 
@@ -285,12 +287,12 @@ export default function Post({
                     setIsPostUpdatedSuccessfully(true);
                     setIsPostUpdatedMessageVisible(true);
                     setIsPostEditable(false);
-                    setIsEditAndDeletePostButtonsVisible(false);
+                    setIsEditAndDeletePostButtonsContainerVisible(false);
                     setTimeout(() => setIsPostUpdatedMessageVisible(false), 3000);
                 })
                 .catch((error) => {
                     setIsPostNotUpdatedMessageVisible(true);
-                    setIsEditAndDeletePostButtonsVisible(false);
+                    setIsEditAndDeletePostButtonsContainerVisible(false);
                     setTimeout(() => setIsPostNotUpdatedMessageVisible(false), 3000);
                 })
         }
@@ -300,7 +302,7 @@ export default function Post({
         setIsPostEditable(false);
         setIsNumberOfOptionsLessThanTwo(null);
         setEditOptionsHasDuplicates(null);
-        setIsEditAndDeletePostButtonsVisible(false);
+        setIsEditAndDeletePostButtonsContainerVisible(false);
         setIsOption1ImageInputValid(true);
         setIsOption2ImageInputValid(true);
         setIsOption3ImageInputValid(true);
@@ -309,17 +311,19 @@ export default function Post({
     }
 
     function onClickDeletePost() {
-        setIsEditAndDeletePostButtonsVisible(false);
-        setIsDeletePostMessageVisible(true);
+        setIsEditAndDeletePostButtonsContainerVisible(false);
+        // setIsDeletePostMessageVisible(true);
+        setIsDeletePostMessageContainerVisible(true);
     }
 
     function onClickDeletePostNo() {
-        setIsEditAndDeletePostButtonsVisible(true);
-        setIsDeletePostMessageVisible(false);
+        setIsEditAndDeletePostButtonsContainerVisible(false);
+        // setIsDeletePostMessageVisible(false);
+        setIsDeletePostMessageContainerVisible(false);
     }
 
     function onClickDeletePostYes() {
-        setIsDeletePostMessageVisible(false);
+        setIsDeletePostMessageContainerVisible(false);
         api.deleteCommentsByPostId(postId)
             .then((response) => {
                 return api.deletePost(postId)
@@ -337,9 +341,9 @@ export default function Post({
     }
 
     function onClickPostCommentButton() {
-        setIsEditAndDeletePostButtonsVisible(false);
+        setIsEditAndDeletePostButtonsContainerVisible(false);
         setIsDeletePostMessageVisible(false);
-        setIsReportPostButtonVisible(false);
+        setIsReportPostButtonContainerVisible(false);
         setIsCommentPostedSuccessfully(null);
         api.postComment(new Date(), new Date(), commentInput, [], post.post_id, userLoggedIn.user_id)
             .then((response) => {
@@ -364,7 +368,7 @@ export default function Post({
         setIsOptionImageVisible(false);
     }
 
-    function onClickReportPost() {
+    function onClickReportPostLink() {
         navigate(`/report/?report_owners_id=${userLoggedIn.user_id}&report_owners_name=${userLoggedIn.username}&post_id=${postId}&post_owners_id=${post.post_owner_id}&post_owners_name=${post.username}&comment_id=null&comment_owners_id=null&comment_owners_name=`);
     }
 
@@ -380,16 +384,24 @@ export default function Post({
         display: isPostEditable ? "grid" : "none"
     }
 
+    const styleEditAndDeletePostButtonsContainer = {
+        bottom: isEditAndDeletePostButtonsContainerVisible  ? "0%" : "-100%"
+    }
+
     const styleEditAndDeletePostButtons = {
         display: isEditAndDeletePostButtonsVisible ? "initial" : "none"
+    }
+
+    const styleDeletePostMessageContainer = {
+        bottom: isDeletePostMessageContainerVisible ? "0%" : "-100%"
     }
 
     const styleDeletePostMessage = {
         display: isDeletePostMessageVisible ? "initial" : "none"
     }
 
-    const styleReportButton = {
-        display: isReportPostButtonVisible ? "initial" : "none"
+    const styleReportButtonLinkContainer = {
+        bottom: isReportPostButtonContainerVisible ? "0%" : "-100%"
     }
 
     const styleOptionImage = {
@@ -418,47 +430,63 @@ export default function Post({
 
             <header>
                 <h1>{post.title}</h1>
-                <div>{utils.convertUrlsToUserFriendlyHeadings(post.category)}</div>
-                <div>{new Date(post.post_date).toLocaleDateString()}</div>
-                <div>{new Date(post.post_date).toLocaleTimeString()}</div>
             </header>
 
             <main>
-                <section>
+                <section className="post-section-main">
                     {Object.keys(userLoggedIn).length === 0
                         ? <div>
-                            <img
-                                src={
-                                    post.avatar_url === "default-avatar.webp"
-                                        ? require(`../assets/images/avatars/${post.avatar_url}`)
-                                        : post.avatar_url
-                                }
-                                alt="Avatar"
-                                className="post-avatar"
-                            />
-                            <div>{post.username}</div>
+                            <div className="post-avatar-username-options-button">
+                                <div className="post-avatar-username">
+                                    <img
+                                        src={
+                                            post.avatar_url === "default-avatar.webp"
+                                                ? require(`../assets/images/avatars/${post.avatar_url}`)
+                                                : post.avatar_url
+                                        }
+                                        alt="Avatar"
+                                        className="post-avatar"
+                                    />
+                                    <div>{post.username}</div>
+                                </div>
+                                
+                            </div>
                         </div>
                         : <div>
-                            <Link to={`/user/${post.post_owner_id}`}>
-                                <img
-                                    src={
-                                        post.avatar_url === "default-avatar.webp"
-                                            ? require(`../assets/images/avatars/${post.avatar_url}`)
-                                            : post.avatar_url
-                                    }
-                                    alt="Avatar"
-                                    className="post-avatar"
-                                />
-                            </Link>
-                            <Link to={`/user/${post.post_owner_id}`}>{post.username}</Link>
+                            <div className="post-avatar-username-options-button">
+                                <div className="post-avatar-username">
+                                    <Link to={`/user/${post.post_owner_id}`}>
+                                        <img
+                                            src={
+                                                post.avatar_url === "default-avatar.webp"
+                                                    ? require(`../assets/images/avatars/${post.avatar_url}`)
+                                                    : post.avatar_url
+                                            }
+                                            alt="Avatar"
+                                            className="post-avatar"
+                                        />
+                                    </Link>
+                                    <Link to={`/user/${post.post_owner_id}`} className="post-username">{post.username}</Link>
+                                </div>
+                                <div id="post-options-button" onClick={onClickPostOptionsButton}>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
                         </div>
                     }
+
+                    <div id="post-category">{utils.convertUrlsToUserFriendlyHeadings(post.category)}</div>
+                    
+                    <div id="post-date">
+                        <div>{new Date(post.post_date).toLocaleDateString()}</div>
+                        <div>{new Date(post.post_date).toLocaleTimeString()}</div>
+                    </div>
                     
                     <p>{post.description}</p>
-
-                    <button type="button" onClick={onClickShowVotesButton}>{isVotesVisible ? "Hide Votes" : "Show Votes"}</button>
-
-                    <div id="post-option-image-and-close-button" onClick={onClickCloseImage} style={styleOptionImage}>
+                    
+                    <div id="post-option-image" onClick={onClickCloseImage} style={styleOptionImage}>
                         {selectedImage
                             ? <img src={selectedImage} alt="option-image" />
                             : <div>No image added</div>
@@ -470,28 +498,26 @@ export default function Post({
                             {post.options_and_votes.map((option) => {
                                 return (
                                     <div key={option.option} className="post-option" style={stylePostOption}>
-                                        <div>
-                                            <div className="post-option-radio-input-and-label">
+                                        <div className="post-option-radio-input-label-view-image">
+                                            <div className="post-option-radio-input-label">
                                                 {Object.keys(userLoggedIn).length === 0 || hasLoggedInUserAlreadyVoted
                                                     ? null
                                                     : <input type="radio" id={option.option} name="option" value={option.option} onChange={handleOptionInput} />
                                                 }
                                                 <label htmlFor={option.option} className="post-option-label">{option.option}</label>
-                                                {option.optionImage
-                                                    ? <span onClick={() => onClickViewOptionImageButton(option.optionImage)} className="view-option-image-button">View Image</span>
-                                                    : null
-                                                }
-                                                
                                             </div>
-                                            {isVotesVisible
-                                                ?   <div className="post-option-votes-and-percentage">
-                                                    <div>{option.votesFromUserIds.length} votes</div>
-                                                    <div>({voterIds.length > 0 ? Math.round((option.votesFromUserIds.length * 100) / voterIds.length) : 0}%)</div>
-                                                </div>
+                                            {option.optionImage
+                                                ? <span onClick={() => onClickViewOptionImageButton(option.optionImage)} className="view-option-image-button">View Image</span>
                                                 : null
                                             }
                                         </div>
-                                        
+                                        {isVotesVisible
+                                            ?   <div className="post-option-votes-and-percentage">
+                                                <div>{option.votesFromUserIds.length} votes</div>
+                                                <div>({voterIds.length > 0 ? Math.round((option.votesFromUserIds.length * 100) / voterIds.length) : 0}%)</div>
+                                            </div>
+                                            : null
+                                        }
                                         {isVotesVisible
                                             ? <div
                                                 className="post-option-percentage-bar"
@@ -510,8 +536,17 @@ export default function Post({
                         {Object.keys(userLoggedIn).length === 0
                             ? <p><Link to="/log-in">Log in</Link> to vote and post a comment.</p>
                             : hasLoggedInUserAlreadyVoted
-                                ? <div>You have already voted on this post.</div>
-                                : <div>
+                                ? <div id="already-voted-message-display-votes-button">
+                                    <div>You have already voted on this post.</div>
+                                    <div>
+                                        <button type="button" onClick={onClickShowVotesButton}>{isVotesVisible ? "Hide Votes" : "Show Votes"}</button>
+                                    </div>
+                                </div>
+                                
+                                : <div id="display-votes-and-vote-button">
+                                    <div>
+                                        <button type="button" onClick={onClickShowVotesButton}>{isVotesVisible ? "Hide Votes" : "Show Votes"}</button>
+                                    </div>
                                     <button
                                         type="button"
                                         onClick={onClickVoteButton}
@@ -521,28 +556,29 @@ export default function Post({
                         }
                     </form>
 
-                    {Object.keys(userLoggedIn).length === 0
-                        ? null
-                        : <div id="post-options-button" onClick={onClickPostOptionsButton}>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                        </div>
-                    }
-
                     {userLoggedIn.user_id === post.post_owner_id
-                        ? <div>
-                            <div style={styleEditAndDeletePostButtons}>
-                                <button onClick={onClickEditPost}>Edit</button>
-                                <button onClick={onClickDeletePost}>Delete</button>
+                        ? <div
+                            id="edit-and-delete-post-buttons-container"
+                            style={styleEditAndDeletePostButtonsContainer}
+                        >
+                            <div id="edit-and-delete-post-links-container">
+                                <div onClick={onClickEditPost}>Edit</div>
+                                <div onClick={onClickDeletePost}>Delete</div>
                             </div>
-                            <div style={styleDeletePostMessage}>
+                            <div id="delete-post-message-container" style={styleDeletePostMessageContainer}>
                                 <div>Delete Post?</div>
-                                <button onClick={onClickDeletePostNo}>No</button>
-                                <button onClick={onClickDeletePostYes}>Yes</button>
+                                <div id="delete-post-buttons-container">
+                                    <button onClick={onClickDeletePostNo}>No</button>
+                                    <button onClick={onClickDeletePostYes}>Yes</button>
+                                </div>
                             </div>
                         </div>
-                        : <button onClick={onClickReportPost} style={styleReportButton}>Report</button>
+                        : <div
+                            style={styleReportButtonLinkContainer}
+                            id="report-button-link-container"
+                        >
+                            <div id="report-button-link" onClick={onClickReportPostLink}>Report</div>
+                        </div>
                     }
 
                     <div id="edit-post" style={styleEditPost}>
@@ -622,16 +658,19 @@ export default function Post({
                     
                     <form>
                         {userLoggedIn.user_id
-                            ? <div>
+                            ? <div id="post-comment-input-and-post-a-comment-button">
                                 <CommentInput
-                                commentInput={commentInput}
-                                setCommentInput={setCommentInput}
-                            />
-                            <button
-                                type="button"
-                                onClick={onClickPostCommentButton}
-                                disabled={!commentInput}
-                            >Post Comment</button>
+                                    commentInput={commentInput}
+                                    setCommentInput={setCommentInput}
+                                />
+                                <div>
+                                    <button
+                                        type="button"
+                                        onClick={onClickPostCommentButton}
+                                        disabled={!commentInput}
+                                    >Post Comment</button>
+                                </div>
+                                
                             </div>
                             : null
                         }

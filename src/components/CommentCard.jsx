@@ -182,9 +182,6 @@ export default function CommentCard({
                     </div>
                 </div>
             }
-
-            <div>{new Date(comment.comment_date).toLocaleDateString()}</div>
-            <div>{new Date(comment.comment_date).toLocaleTimeString()}</div>
             
             {window.location.href.includes("/user")
                 ? <Link to={`/post/${comment.comment_post_id}-${utils.convertTitleToUrl(comment.title)}`}><h2>{comment.title}</h2></Link>
@@ -212,26 +209,18 @@ export default function CommentCard({
                 : <p>{comment.comment}</p>
             }
             
-            <div>
-                <button
-                    className="like-button"
-                    onClick={onClickLikeComment}
-                    disabled={Object.keys(userLoggedIn).length === 0}
-                >&#10084;&#65039;</button>
-                <span>{userIdsOfCommentLikes.length}</span>
-            </div>
-        
-            {/* {Object.keys(userLoggedIn).length === 0
-                ? null
-                : <div
-                    className="comment-card-options-button"
-                    onClick={onClickCommentOptionsButton}
-                >
-                    <div></div>
-                    <div></div>
-                    <div></div>
+            <div className="comment-card-like-button-likes-date">
+                <div className="comment-card-like-button-likes">
+                    <button
+                        className="like-button"
+                        onClick={onClickLikeComment}
+                        disabled={Object.keys(userLoggedIn).length === 0}
+                    >&#10084;&#65039;</button>
+                    <span>{userIdsOfCommentLikes.length}</span>
                 </div>
-            } */}
+                <div>{new Date(comment.comment_date).toLocaleDateString()}</div>
+                <div>{new Date(comment.comment_date).toLocaleTimeString()}</div>
+            </div>
 
             {Object.keys(userLoggedIn).length === 0
                 ? null
