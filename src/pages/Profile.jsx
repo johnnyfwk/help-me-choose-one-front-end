@@ -285,6 +285,18 @@ export default function Profile({
             })
     }
 
+    const styleTabPosts = {
+        color: visibleTab === "posts" ? "#FF206E" : "#FFFFFF"
+    }
+
+    const styleTabComments = {
+        color: visibleTab === "comments" ? "#FF206E" : "#FFFFFF"
+    }
+
+    const styleTabAccount = {
+        color: visibleTab === "account" ? "#FF206E" : "#FFFFFF"
+    }
+
     if (isLoading) {
         return (
             <p>Page is loading...</p>
@@ -319,15 +331,15 @@ export default function Profile({
 
             <main>
                 <div id="profile-tabs">
-                    <div id="profile-posts-tab" onClick={onClickProfilePostsTab}>Posts</div>
+                    <div id="profile-posts-tab" onClick={onClickProfilePostsTab} style={styleTabPosts}>Posts</div>
                     {userLoggedIn.user_id !== parseInt(user_id)
                         ? null
                         : <div>
-                            <div id="profile-comments-tab" onClick={onClickProfileCommentsTab}>Comments</div>
+                            <div id="profile-comments-tab" onClick={onClickProfileCommentsTab} style={styleTabComments}>Comments</div>
                         </div>
                     }
                     {userLoggedIn.user_id === parseInt(user_id)
-                        ? <div id="profile-account-tab" onClick={onClickProfileAccountTab}>Account</div>
+                        ? <div id="profile-account-tab" onClick={onClickProfileAccountTab} style={styleTabAccount}>Account</div>
                         : null
                     }
                 </div>

@@ -35,6 +35,7 @@
     --gap-between-input-elements: 10px;
 
     --profile-image-max-dimensions: 200px;
+    --post-and-comment-card-avatar-image-dimensions: 40px;
 }
 
 * {
@@ -270,8 +271,20 @@ textarea {
 
 .post-card img,
 .comment-card img {
-    max-width: 40px;
+    width: var(--post-and-comment-card-avatar-image-dimensions);
+    height: var(--post-and-comment-card-avatar-image-dimensions);
+    object-fit: cover;
     border-radius: 50%;
+}
+
+.comment-card-post-title-link:link,
+.comment-card-post-title-link:active,
+.comment-card-post-title-link:visited {
+    color: var(--white);
+}
+
+.comment-card-post-title-link:hover {
+    text-decoration: underline;
 }
 
 .post-card-category-votes-date,
@@ -280,7 +293,7 @@ textarea {
     flex-wrap: wrap;
     gap: 20px;
     color: var(--battlship-gray);
-    /* font-size: 0.9rem; */
+    font-size: 0.9rem;
 }
 
 .post-section-main {

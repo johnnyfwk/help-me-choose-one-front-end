@@ -184,7 +184,12 @@ export default function CommentCard({
             }
             
             {window.location.href.includes("/user")
-                ? <Link to={`/post/${comment.comment_post_id}-${utils.convertTitleToUrl(comment.title)}`}><h2>{comment.title}</h2></Link>
+                ? <Link
+                    to={`/post/${comment.comment_post_id}-${utils.convertTitleToUrl(comment.title)}`}
+                    className="comment-card-post-title-link"
+                >
+                    <h2>{comment.title}</h2>
+                </Link>
                 : null
             }
             
