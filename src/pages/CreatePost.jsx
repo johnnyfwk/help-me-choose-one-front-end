@@ -80,7 +80,7 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
             }
             
             setIsPostCreationSuccessful(null);
-            api.createPost(new Date(), new Date(), titleInput, descriptionInput, utils.convertCategoryToUrl(categoryInput), optionsImagesAndVotes, userLoggedIn.user_id)
+            api.createPost(new Date(), new Date(), titleInput.trim(), descriptionInput.trim(), utils.convertCategoryToUrl(categoryInput), optionsImagesAndVotes, userLoggedIn.user_id)
                 .then((response) => {
                     setIsPostCreationSuccessful(true);
                     setIsPostCreatedMessageVisible(true);

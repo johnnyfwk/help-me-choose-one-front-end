@@ -14,6 +14,7 @@ export default function PasswordInput({passwordInput, setPasswordInput, password
                 name={passwordInputLabel}
                 value={passwordInput}
                 onChange={handlePasswordInput}
+                maxLength="100"
             ></input>
         </div>
     )

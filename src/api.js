@@ -102,6 +102,14 @@ export function postComment(comment_date, comment_updated, comment, comment_like
             return response.data.comment;
         })
 }
+
+export function createReport(report_date, report_owners_id, report_owners_name, report_post_id, report_post_owners_id, report_post_owners_name, report_comment_id, report_comment_owners_id, report_comment_owners_name, report_title, report_description) {
+    return baseURL
+        .post("/reports", {report_date, report_owners_id, report_owners_name, report_post_id, report_post_owners_id, report_post_owners_name, report_comment_id, report_comment_owners_id, report_comment_owners_name, report_title, report_description})
+        .then((response) => {
+            return response.data.report;
+        })
+}
 // POST requests
 
 // PATCH requests

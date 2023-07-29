@@ -20,8 +20,8 @@ export function isFamilyFriendly(string) {
     } 
 }
 
-export function isImageUrlValid(avatarUrl) {
-    return /([a-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif|bmp|webp|svg))/i.test(avatarUrl);
+export function isImageUrlValid(imageUrl) {
+    return /([a-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif|bmp|webp|svg))/i.test(imageUrl) && !/\s+/.test(imageUrl);
 }
 
 export function convertUrlsToUserFriendlyHeadings(url) {
