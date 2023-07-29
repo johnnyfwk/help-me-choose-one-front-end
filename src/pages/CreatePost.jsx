@@ -104,7 +104,7 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
             </Helmet>
 
             <header>
-                <h1>CreatePost</h1>
+                <h1>Create Post</h1>
                 <p>Enter at least two options.</p>
             </header>
 
@@ -165,7 +165,6 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
                         }
                     >Create Post</button>
                 </form>
-                
             </main>
         </div>
         

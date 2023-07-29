@@ -144,21 +144,9 @@ export default function CommentCard({
     return (
         <div className="comment-card" loading="lazy">
             {Object.keys(userLoggedIn).length === 0
-                ? <div>
-                    <img src={
-                            comment.avatar_url === "default-avatar.webp"
-                                ? require(`../assets/images/avatars/${comment.avatar_url}`)
-                                : comment.avatar_url
-                        }
-                        alt="Avatar"
-                        className="post-avatar"
-                    />
-                    <div>{comment.username}</div>
-                </div>                
-                : <div>
-                    <Link to={`/user/${comment.comment_owner_id}`}>
-                        <img
-                            src={
+                ? <div className="comment-card-avatar-username-options-button">
+                    <div className="comment-card-avatar-username">
+                        <img src={
                                 comment.avatar_url === "default-avatar.webp"
                                     ? require(`../assets/images/avatars/${comment.avatar_url}`)
                                     : comment.avatar_url
@@ -166,8 +154,32 @@ export default function CommentCard({
                             alt="Avatar"
                             className="post-avatar"
                         />
-                    </Link>
-                    <Link to={`/user/${comment.comment_owner_id}`}>{comment.username}</Link>
+                        <div>{comment.username}</div>
+                    </div>
+                </div>                
+                : <div className="comment-card-avatar-username-options-button">
+                    <div className="comment-card-avatar-username">
+                        <Link to={`/user/${comment.comment_owner_id}`}>
+                            <img
+                                src={
+                                    comment.avatar_url === "default-avatar.webp"
+                                        ? require(`../assets/images/avatars/${comment.avatar_url}`)
+                                        : comment.avatar_url
+                                }
+                                alt="Avatar"
+                                className="post-avatar"
+                            />
+                        </Link>
+                        <Link to={`/user/${comment.comment_owner_id}`}>{comment.username}</Link>
+                    </div>
+                    <div
+                        className="comment-card-options-button"
+                        onClick={onClickCommentOptionsButton}
+                    >
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
                 </div>
             }
 
@@ -209,17 +221,17 @@ export default function CommentCard({
                 <span>{userIdsOfCommentLikes.length}</span>
             </div>
         
-            {Object.keys(userLoggedIn).length === 0
+            {/* {Object.keys(userLoggedIn).length === 0
                 ? null
                 : <div
-                    className="comment-options-button"
+                    className="comment-card-options-button"
                     onClick={onClickCommentOptionsButton}
                 >
                     <div></div>
                     <div></div>
                     <div></div>
                 </div>
-            }
+            } */}
 
             {Object.keys(userLoggedIn).length === 0
                 ? null
