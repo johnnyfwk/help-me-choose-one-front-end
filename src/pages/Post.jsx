@@ -280,7 +280,7 @@ export default function Post({
             }
 
             setIsPostUpdatedSuccessfully(null);
-            api.updatePost(new Date(), editTitleInput, editDescriptionInput, utils.convertCategoryToUrl(editCategoryInput), updatedOptionsImagesAndVotes, postId)
+            api.updatePost(new Date(), editTitleInput.trim(), editDescriptionInput.trim(), utils.convertCategoryToUrl(editCategoryInput), updatedOptionsImagesAndVotes, postId)
                 .then((response) => {
                     setIsPostUpdatedSuccessfully(true);
                     setIsPostUpdatedMessageVisible(true);
@@ -365,7 +365,7 @@ export default function Post({
     }
 
     function onClickReportPost() {
-
+        navigate(`/report/?report_owners_id=${userLoggedIn.user_id}&report_owners_name=${userLoggedIn.username}&post_id=${postId}&post_owners_id=${post.post_owner_id}&post_owners_name=${post.username}&comment_id=null&comment_owners_id=null&comment_owners_name=`);
     }
 
     const stylePostOption = {

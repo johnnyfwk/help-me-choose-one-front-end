@@ -13,6 +13,7 @@ import Post from './pages/Post';
 import CreatePost from './pages/CreatePost';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import Report from './pages/Report';
 import TermsAndConditions from './pages/TermsAndConditions';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Disclaimer from './pages/Disclaimer';
@@ -227,6 +228,7 @@ function App() {
                 />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/report" element={<Report />} />
                 <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/disclaimer" element={<Disclaimer />} />

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CommentInput from "./CommentInput";
 import * as api from "../api";
 import * as utils from "../utils";
@@ -7,11 +7,9 @@ import * as utils from "../utils";
 export default function CommentCard({
     comment,
     userLoggedIn,
-
     setIsCommentUpdatedSuccessfully,
     setIsCommentUpdatedMessageVisible,
     setIsCommentNotUpdatedMessageVisible,
-
     setIsCommentDeletedSuccessfully,
     setIsCommentDeletedMessageVisible,
     setIsCommentNotDeletedMessageVisible
@@ -25,6 +23,8 @@ export default function CommentCard({
     const [isEditAndDeleteCommentButtonsVisible, setIsEditAndDeleteCommentButtonsVisible] = useState(false);
     const [isDeleteCommentConfirmationMessageVisible, setIsDeleteCommentConfirmationMessageVisible] = useState(false);
     const [isReportCommentButtonVisible, setIsReportCommentButtonVisible] = useState(false);
+
+    const navigate = useNavigate();
 
     function onClickLikeComment() {
         let localLikes = [...userIdsOfCommentLikes];
@@ -125,6 +125,8 @@ export default function CommentCard({
 
     function onClickReportCommentButton() {
         setIsReportCommentButtonVisible(false);
+        navigate(`/report/?report_owners_id=${userLoggedIn.user_id}&report_owners_name=${userLoggedIn.username}&post_id=${comment.comment_post_id
+        }&post_owners_id=null&post_owners_name=&comment_id=${comment.comment_id}&comment_owners_id=${comment.comment_owner_id}&comment_owners_name=${comment.username}`);
     }
 
     const styleEditAndDeleteCommentButtons = {
@@ -234,7 +236,11 @@ export default function CommentCard({
                             <button type="button" onClick={onClickDeleteCommentYesButton}>Yes</button>
                         </div>
                     </div>
-                    : <button type="button" onClick={onClickReportCommentButton} style={styleReportCommentButton}>Report</button>
+                    : <button
+                        type="button"
+                        onClick={onClickReportCommentButton}
+                        style={styleReportCommentButton}
+                    >Report</button>
             }
         </div>
     )
