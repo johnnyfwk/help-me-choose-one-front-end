@@ -51,6 +51,8 @@ function App() {
     const [isPasswordNotUpdatedMessageVisible, setIsPasswordNotUpdatedMessageVisible] = useState(false);
     const [isAccountDeletedMessageVisible, setIsAccountDeletedMessageVisible] = useState(false);
     const [isAccountNotDeletedMessageVisible, setIsAccountNotDeletedMessageVisible] = useState(false);
+    const [isReportSentMessageVisible, setIsReportSentMessageVisible] = useState(false);
+    const [isReportNotSentMessageVisible, setIsReportNotSentMessageVisible] = useState(false);
 
     function onClickLogOutButton() {
         setUserLoggedIn({});
@@ -154,6 +156,14 @@ function App() {
         bottom: isAccountNotDeletedMessageVisible ? "0%" : "-100%"
     }
 
+    const styleReportSentMessage = {
+        bottom: isReportSentMessageVisible ? "0%" : "-100%"
+    }
+
+    const styleReportNotSentMessage = {
+        bottom: isReportNotSentMessageVisible ? "0%" : "-100%"
+    }
+
     return (
         <div className="App">
             <div id="logo-show-nav-button-and-nav">
@@ -228,7 +238,15 @@ function App() {
                 />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
-                <Route path="/report" element={<Report />} />
+                <Route
+                    path="/report"
+                    element={
+                        <Report
+                            setIsReportSentMessageVisible={setIsReportSentMessageVisible}
+                            setIsReportNotSentMessageVisible={setIsReportNotSentMessageVisible}
+                        />
+                    }
+                />
                 <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/disclaimer" element={<Disclaimer />} />
@@ -260,6 +278,8 @@ function App() {
             <div id="password-not-updated-message" style={stylePasswordNotUpdatedMessage}>Your password could not be updated</div>
             <div id="account-deleted-message" style={styleAccountDeletedMessage}>Your account was deleted</div>
             <div id="account-not-deleted-message" style={styleAccountNotDeletedMessage}>Your account could not be deleted</div>
+            <div id="report-sent-message" style={styleReportSentMessage}>Your report was sent</div>
+            <div id="report-not-sent-message" style={styleReportNotSentMessage}>Your report could not be sent</div>
         </div>
     );
 }

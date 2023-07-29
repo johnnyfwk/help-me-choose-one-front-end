@@ -136,7 +136,9 @@ nav {
 #password-updated-message,
 #password-not-updated-message,
 #account-deleted-message,
-#account-not-deleted-message {
+#account-not-deleted-message,
+#report-sent-message,
+#report-not-sent-message {
     position: fixed;
     bottom: -100%;
     left: 0%;
@@ -162,7 +164,8 @@ nav {
 #post-deleted-message,
 #avatar-updated-message,
 #password-updated-message,
-#account-deleted-message {
+#account-deleted-message,
+#report-sent-message {
     background: var(--lime);
 }
 
@@ -176,8 +179,10 @@ nav {
 #post-not-deleted-message,
 #avatar-not-updated-message,
 #password-not-updated-message,
-#account-not-deleted-message {
+#account-not-deleted-message,
+#report-not-sent-message {
     background: var(--red);
+    color: var(--white);
 }
 
 #delete-comment-message {
