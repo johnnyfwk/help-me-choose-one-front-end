@@ -234,45 +234,49 @@ export default function Post({
     }
 
     function onClickUpdatePostButton() {
-        const options = Object.values(editOptionInputs).filter((option) => option);        
-        const optionImages = Object.values(editOptionInputImages).filter((image) => image);
-        const images = Object.values(editOptionInputImages)
-        const optionsMinusSpaces = options.map((option) => option.trim());
-        const optionImagessMinusSpaces = optionImages.map((image) => image.trim());
-        const optionsInLowercase = optionsMinusSpaces.map((option) => option.toLowerCase());
-        const optionsContainsDuplicates = optionsInLowercase.some((value, index) => {
-            return optionsInLowercase.indexOf(value, index + 1) !== -1;
+        const updatedOptions = Object.values(editOptionInputs).filter((option) => option);        
+        const updatedOptionsMinusSpaces = updatedOptions.map((option) => option.trim());
+        const updatedOptionsInLowercase = updatedOptionsMinusSpaces.map((option) => option.toLowerCase());
+        const optionsContainsDuplicates = updatedOptionsInLowercase.some((value, index) => {
+            return updatedOptionsInLowercase.indexOf(value, index + 1) !== -1;
         });
 
         if (optionsContainsDuplicates) {
             setEditOptionsHasDuplicates(optionsContainsDuplicates);
         }
-        else if (options.length < 2) {
-            setIsNumberOfOptionsLessThanTwo(options.length < 2);
+        else if (updatedOptions.length < 2) {
+            setIsNumberOfOptionsLessThanTwo(updatedOptions.length < 2);
         }
         else {
             const currentOptions = post.options_and_votes.map((option) => {
-                return option.option
+                return option.option;
             })
+            const currentOptionsInLowerCase = currentOptions.map((option) => {
+                return option.toLowerCase();
+            })
+            const updatedOptions = Object.values(editOptionInputs);
+            const newImages = Object.values(editOptionInputImages);
 
             const updatedOptionsImagesAndVotes = [];
-            for (let optionNumber = 0; optionNumber < optionsMinusSpaces.length; optionNumber++) {
+            for (let optionNumber = 0; optionNumber < updatedOptions.length; optionNumber++) {
                 let votes;
-                if (currentOptions.includes(optionsMinusSpaces[optionNumber])) {
-                    const option = post.options_and_votes.filter((option_and_vote) => {
-                        return option_and_vote.option.toLowerCase() === optionsMinusSpaces[optionNumber];
-                    })
-                    votes = option[0].votesFromUserIds;
-                }
-                else {
-                    votes = [];
-                }
+                if (updatedOptions[optionNumber].length !== 0) {
+                    if (currentOptionsInLowerCase.includes(updatedOptions[optionNumber].toLowerCase())) {
+                        const option = post.options_and_votes.filter((optionAndVotes) => {
+                            return optionAndVotes.option.toLowerCase() === updatedOptions[optionNumber].toLowerCase();
+                        })
+                        votes = option[0].votesFromUserIds;
+                    }
+                    else {
+                        votes = [];
+                    }
 
-                updatedOptionsImagesAndVotes.push({
-                    "option": optionsMinusSpaces[optionNumber],
-                    "optionImage": images[optionNumber] ? images[optionNumber].trim() : "",
-                    "votesFromUserIds": votes
-                })
+                    updatedOptionsImagesAndVotes.push({
+                        option: updatedOptions[optionNumber] ? updatedOptions[optionNumber].trim() : "",
+                        optionImage: newImages[optionNumber] ? newImages[optionNumber].trim() : "",
+                        votesFromUserIds: votes
+                    })
+                }
             }
 
             setIsPostUpdatedSuccessfully(null);
@@ -563,8 +567,8 @@ export default function Post({
                             optionInputs={editOptionInputs}
                             setOptionInputs={setEditOptionInputs}
                             setOptionsHasDuplicates={setEditOptionsHasDuplicates}
-                            editOptionInputImages={editOptionInputImages}
-                            setEditOptionInputImages={setEditOptionInputImages}
+                            optionInputImages={editOptionInputImages}
+                            setOptionInputImages={setEditOptionInputImages}
                             isOption1ImageInputValid={isOption1ImageInputValid}
                             setIsOption1ImageInputValid={setIsOption1ImageInputValid}
                             isOption2ImageInputValid={isOption2ImageInputValid}

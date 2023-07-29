@@ -4,8 +4,8 @@ export default function OptionsInput({
     optionInputs,
     setOptionInputs,
     setOptionsHasDuplicates,
-    editOptionInputImages,
-    setEditOptionInputImages,
+    optionInputImages,
+    setOptionInputImages,
     isOption1ImageInputValid,
     setIsOption1ImageInputValid,
     isOption2ImageInputValid,
@@ -25,7 +25,7 @@ export default function OptionsInput({
         setOptionInputs((prevValues) => {
             return ({ ...prevValues, [name]: value })
         });
-        setEditOptionInputImages((currentEditOptionInputImages) => {
+        setOptionInputImages((currentEditOptionInputImages) => {
             const currentEditOptionInputImagesCopy = {...currentEditOptionInputImages};
             if (name === "option1Input" && value === "") {
                 currentEditOptionInputImagesCopy.option1ImageInput = "";
@@ -61,7 +61,7 @@ export default function OptionsInput({
 
     function handleOptionImageInput(event) {
         const { name, value } = event.target;
-        setEditOptionInputImages((prevValues) => {
+        setOptionInputImages((prevValues) => {
             return ({...prevValues, [name]: value })
         })
         if (name === "option1ImageInput") {
@@ -102,7 +102,7 @@ export default function OptionsInput({
         option3ImageInput,
         option4ImageInput,
         option5ImageInput
-    } = editOptionInputImages;
+    } = optionInputImages;
 
     return (
         <div id="edit-post-options-and-images">
@@ -190,7 +190,7 @@ export default function OptionsInput({
                         name="option3ImageInput"
                         value={option3ImageInput}
                         onChange={handleOptionImageInput}
-                        disabled={!option4Input}
+                        disabled={!option3Input}
                     ></input>
                 </div>
                 {isOption3ImageInputValid || option3ImageInput === ""
