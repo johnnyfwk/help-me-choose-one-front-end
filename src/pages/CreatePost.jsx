@@ -15,6 +15,7 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
     const [titleInput, setTitleInput] = useState("");
     const [descriptionInput, setDescriptionInput] = useState("");
     const [categoryInput, setCategoryInput] = useState("");
+
     const [optionInputs, setOptionInputs] = useState({
         option1Input: "",
         option2Input: "",
@@ -22,6 +23,21 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
         option4Input: "",
         option5Input: ""
     });
+
+    const [optionInputImages, setOptionInputImages] = useState({
+        option1ImageInput: "",
+        option2ImageInput: "",
+        option3ImageInput: "",
+        option4ImageInput: "",
+        option5ImageInput: ""
+    });
+
+    const [isOption1ImageInputValid, setIsOption1ImageInputValid] = useState(true);
+    const [isOption2ImageInputValid, setIsOption2ImageInputValid] = useState(true);
+    const [isOption3ImageInputValid, setIsOption3ImageInputValid] = useState(true);
+    const [isOption4ImageInputValid, setIsOption4ImageInputValid] = useState(true);
+    const [isOption5ImageInputValid, setIsOption5ImageInputValid] = useState(true);
+
     const [optionsHasDuplicates, setOptionsHasDuplicates] = useState(null);
 
     const [isPostCreationSuccessful, setIsPostCreationSuccessful] = useState(null);
@@ -39,6 +55,7 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
     function onClickCreatePostButton() {
         setOptionsHasDuplicates(null);
         const options = Object.values(optionInputs).filter((option) => option);
+        const images = Object.values(optionInputImages);
         const optionsMinusSpaces = options.map((option) => option.trim());
         const optionsInLowercase = optionsMinusSpaces.map((option) => option.toLowerCase());
         const optionsContainsDuplicates = optionsInLowercase.some((value, index) => {
@@ -50,15 +67,20 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
         }
         else {
             setOptionsHasDuplicates(false);
-            const optionsAndVotes = optionsMinusSpaces.map((option) => {
-                return {
-                    "option": option,
-                    "optionImage": "",
-                    "votesFromUserIds": []
+            const addedInputs = Object.values(optionInputs);
+            const optionsImagesAndVotes = [];
+            for (let optionNumber = 0; optionNumber < addedInputs.length; optionNumber++) {
+                if (addedInputs[optionNumber].length > 0) {
+                    optionsImagesAndVotes.push({
+                        "option": addedInputs[optionNumber].trim(),
+                        "optionImage": images[optionNumber] ? images[optionNumber].trim() : "",
+                        "votesFromUserIds": []
+                    })
                 }
-            })
+            }
+            
             setIsPostCreationSuccessful(null);
-            api.createPost(new Date(), new Date(), titleInput, descriptionInput, utils.convertCategoryToUrl(categoryInput), optionsAndVotes, userLoggedIn.user_id)
+            api.createPost(new Date(), new Date(), titleInput, descriptionInput, utils.convertCategoryToUrl(categoryInput), optionsImagesAndVotes, userLoggedIn.user_id)
                 .then((response) => {
                     setIsPostCreationSuccessful(true);
                     setIsPostCreatedMessageVisible(true);
@@ -111,6 +133,18 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
                         optionInputs={optionInputs}
                         setOptionInputs={setOptionInputs}
                         setOptionsHasDuplicates={setOptionsHasDuplicates}
+                        optionInputImages={optionInputImages}
+                        setOptionInputImages={setOptionInputImages}
+                        isOption1ImageInputValid={isOption1ImageInputValid}
+                        setIsOption1ImageInputValid={setIsOption1ImageInputValid}
+                        isOption2ImageInputValid={isOption2ImageInputValid}
+                        setIsOption2ImageInputValid={setIsOption2ImageInputValid}
+                        isOption3ImageInputValid={isOption3ImageInputValid}
+                        setIsOption3ImageInputValid={setIsOption3ImageInputValid}
+                        isOption4ImageInputValid={isOption4ImageInputValid}
+                        setIsOption4ImageInputValid={setIsOption4ImageInputValid}
+                        isOption5ImageInputValid={isOption5ImageInputValid}
+                        setIsOption5ImageInputValid={setIsOption5ImageInputValid}
                     />
                     
                     <button
@@ -122,7 +156,12 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
                             !categoryInput ||
                             categoryInput === "Select a Category" ||
                             isSubmitDisabled ||
-                            isPostCreationSuccessful
+                            isPostCreationSuccessful ||
+                            !isOption1ImageInputValid ||
+                            !isOption2ImageInputValid ||
+                            !isOption3ImageInputValid ||
+                            !isOption4ImageInputValid ||
+                            !isOption5ImageInputValid
                         }
                     >Create Post</button>
                 </form>
