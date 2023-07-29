@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import * as api from "../api";
 
-export default function Report() {
+export default function Report({setIsReportSentMessageVisible, setIsReportNotSentMessageVisible}) {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
 
     const [searchParams, setSearchParams] = useSearchParams();
@@ -39,21 +39,15 @@ export default function Report() {
     }
 
     function onClickSubmitReportButton() {
-        console.log(typeof reportOwnersId, "<--------- reportOwnersId")
-        console.log(reportOwnersName, "<--------- reportOwnersName")
-        console.log(typeof postId, "<--------- postId")
-        console.log(typeof postOwnersId, "<--------- postOwnersId")
-        console.log(postOwnersName, "<--------- postOwnersName")
-        console.log(typeof commentId, "<--------- commentId")
-        console.log(typeof commentOwnersId, "<--------- commentOwnersId")
-        console.log(commentOwnersName, "<--------- commentOwnersName")
         api.createReport(new Date(), parseInt(reportOwnersId), reportOwnersName, parseInt(postId), parseInt(postOwnersId), postOwnersName, parseInt(commentId), parseInt(commentOwnersId), commentOwnersName, titleInput.trim(), descriptionInput.trim())
             .then((response) => {
-                console.log("report created")
-                console.log(response)
+                setIsReportSentMessageVisible(true);
+                setTimeout(() => setIsReportSentMessageVisible(false), 3000);
+                navigate("/");
             })
             .catch((error) => {
-                console.log(error);
+                setIsReportNotSentMessageVisible(true);
+                setTimeout(() => setIsReportNotSentMessageVisible(false), 3000);
             })
     }
 
