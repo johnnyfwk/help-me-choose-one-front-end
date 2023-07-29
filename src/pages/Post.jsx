@@ -81,7 +81,7 @@ export default function Post({
     const [isEditAndDeletePostButtonsContainerVisible, setIsEditAndDeletePostButtonsContainerVisible] = useState(false);
     const [isEditAndDeletePostButtonsVisible, setIsEditAndDeletePostButtonsVisible] = useState(false);
     const [isDeletePostMessageContainerVisible, setIsDeletePostMessageContainerVisible] = useState();
-    const [isDeletePostMessageVisible, setIsDeletePostMessageVisible] = useState(false);
+    // const [isDeletePostMessageVisible, setIsDeletePostMessageVisible] = useState(false);
     const [isReportPostButtonContainerVisible, setIsReportPostButtonContainerVisible] = useState(false);
 
     const [selectedImage, setSelectedImage] = useState("");
@@ -164,7 +164,7 @@ export default function Post({
 
     function onClickVoteButton() {
         setIsEditAndDeletePostButtonsContainerVisible(false);
-        setIsDeletePostMessageVisible(false);
+        // setIsDeletePostMessageVisible(false);
         setIsReportPostButtonContainerVisible(false);
         let updatedOptionsAndVotes = [];
         post.options_and_votes.forEach((option) => {
@@ -210,7 +210,16 @@ export default function Post({
         })
     }
 
+    function onClickCloseEditAndDeletePostLinksContainerButton() {
+        setIsEditAndDeletePostButtonsContainerVisible(false);
+    }
+
+    function onClickCloseReportButtonLinkContainer() {
+        setIsReportPostButtonContainerVisible(false);
+    }
+
     function onClickEditPost() {
+        setIsEditAndDeletePostButtonsContainerVisible(false);
         setIsPostEditable((currentIsPostEditable) => {
             return !currentIsPostEditable;
         });
@@ -342,7 +351,7 @@ export default function Post({
 
     function onClickPostCommentButton() {
         setIsEditAndDeletePostButtonsContainerVisible(false);
-        setIsDeletePostMessageVisible(false);
+        // setIsDeletePostMessageVisible(false);
         setIsReportPostButtonContainerVisible(false);
         setIsCommentPostedSuccessfully(null);
         api.postComment(new Date(), new Date(), commentInput, [], post.post_id, userLoggedIn.user_id)
@@ -388,17 +397,13 @@ export default function Post({
         bottom: isEditAndDeletePostButtonsContainerVisible  ? "0%" : "-100%"
     }
 
-    const styleEditAndDeletePostButtons = {
-        display: isEditAndDeletePostButtonsVisible ? "initial" : "none"
-    }
-
     const styleDeletePostMessageContainer = {
         bottom: isDeletePostMessageContainerVisible ? "0%" : "-100%"
     }
 
-    const styleDeletePostMessage = {
-        display: isDeletePostMessageVisible ? "initial" : "none"
-    }
+    // const styleDeletePostMessage = {
+    //     display: isDeletePostMessageVisible ? "initial" : "none"
+    // }
 
     const styleReportButtonLinkContainer = {
         bottom: isReportPostButtonContainerVisible ? "0%" : "-100%"
@@ -421,7 +426,7 @@ export default function Post({
     }
     
     return (
-        <div>
+        <div id="post">
             <Helmet>
                 <link rel="canonical" href={`https://helpmechooseone.com/post/${post_id_and_title}`} />
                 <title>{post.title} • Help Me Choose One</title>
@@ -534,7 +539,7 @@ export default function Post({
                         </div>
                         
                         {Object.keys(userLoggedIn).length === 0
-                            ? <p><Link to="/log-in">Log in</Link> to vote and post a comment.</p>
+                            ? <div><Link to="/log-in" id="post-log-in-link">Log in</Link> to vote and post a comment.</div>
                             : hasLoggedInUserAlreadyVoted
                                 ? <div id="already-voted-message-display-votes-button">
                                     <div>You have already voted on this post.</div>
@@ -542,7 +547,6 @@ export default function Post({
                                         <button type="button" onClick={onClickShowVotesButton}>{isVotesVisible ? "Hide Votes" : "Show Votes"}</button>
                                     </div>
                                 </div>
-                                
                                 : <div id="display-votes-and-vote-button">
                                     <div>
                                         <button type="button" onClick={onClickShowVotesButton}>{isVotesVisible ? "Hide Votes" : "Show Votes"}</button>
@@ -562,6 +566,7 @@ export default function Post({
                             style={styleEditAndDeletePostButtonsContainer}
                         >
                             <div id="edit-and-delete-post-links-container">
+                                <div onClick={onClickCloseEditAndDeletePostLinksContainerButton}>x</div>
                                 <div onClick={onClickEditPost}>Edit</div>
                                 <div onClick={onClickDeletePost}>Delete</div>
                             </div>
@@ -577,6 +582,7 @@ export default function Post({
                             style={styleReportButtonLinkContainer}
                             id="report-button-link-container"
                         >
+                            <div onClick={onClickCloseReportButtonLinkContainer}>x</div>
                             <div id="report-button-link" onClick={onClickReportPostLink}>Report</div>
                         </div>
                     }
@@ -584,38 +590,40 @@ export default function Post({
                     <div id="edit-post" style={styleEditPost}>
                         <h2>Edit Post</h2>
 
-                        <TitleInput
-                            titleInput={editTitleInput}
-                            setTitleInput={setEditTitleInput}
-                        />
+                        <div id="edit-post-inputs">
+                            <TitleInput
+                                titleInput={editTitleInput}
+                                setTitleInput={setEditTitleInput}
+                            />
 
-                        <CategoryInput
-                            categoryInput={editCategoryInput}
-                            setCategoryInput={setEditCategoryInput}
-                        />
+                            <CategoryInput
+                                categoryInput={editCategoryInput}
+                                setCategoryInput={setEditCategoryInput}
+                            />
 
-                        <DescriptionInput
-                            descriptionInput={editDescriptionInput}
-                            setDescriptionInput={setEditDescriptionInput}
-                        />
+                            <DescriptionInput
+                                descriptionInput={editDescriptionInput}
+                                setDescriptionInput={setEditDescriptionInput}
+                            />
 
-                        <OptionsInput
-                            optionInputs={editOptionInputs}
-                            setOptionInputs={setEditOptionInputs}
-                            setOptionsHasDuplicates={setEditOptionsHasDuplicates}
-                            optionInputImages={editOptionInputImages}
-                            setOptionInputImages={setEditOptionInputImages}
-                            isOption1ImageInputValid={isOption1ImageInputValid}
-                            setIsOption1ImageInputValid={setIsOption1ImageInputValid}
-                            isOption2ImageInputValid={isOption2ImageInputValid}
-                            setIsOption2ImageInputValid={setIsOption2ImageInputValid}
-                            isOption3ImageInputValid={isOption3ImageInputValid}
-                            setIsOption3ImageInputValid={setIsOption3ImageInputValid}
-                            isOption4ImageInputValid={isOption4ImageInputValid}
-                            setIsOption4ImageInputValid={setIsOption4ImageInputValid}
-                            isOption5ImageInputValid={isOption5ImageInputValid}
-                            setIsOption5ImageInputValid={setIsOption5ImageInputValid}
-                        />
+                            <OptionsInput
+                                optionInputs={editOptionInputs}
+                                setOptionInputs={setEditOptionInputs}
+                                setOptionsHasDuplicates={setEditOptionsHasDuplicates}
+                                optionInputImages={editOptionInputImages}
+                                setOptionInputImages={setEditOptionInputImages}
+                                isOption1ImageInputValid={isOption1ImageInputValid}
+                                setIsOption1ImageInputValid={setIsOption1ImageInputValid}
+                                isOption2ImageInputValid={isOption2ImageInputValid}
+                                setIsOption2ImageInputValid={setIsOption2ImageInputValid}
+                                isOption3ImageInputValid={isOption3ImageInputValid}
+                                setIsOption3ImageInputValid={setIsOption3ImageInputValid}
+                                isOption4ImageInputValid={isOption4ImageInputValid}
+                                setIsOption4ImageInputValid={setIsOption4ImageInputValid}
+                                isOption5ImageInputValid={isOption5ImageInputValid}
+                                setIsOption5ImageInputValid={setIsOption5ImageInputValid}
+                            />
+                        </div>
 
                         {editOptionsHasDuplicates === null || editOptionsHasDuplicates === false
                             ? null
@@ -627,7 +635,7 @@ export default function Post({
                             : null
                         }
 
-                        <div>
+                        <div id="edit-post-buttons">
                             <button
                                 type="button"
                                 onClick={onClickCancelEditPostButton}

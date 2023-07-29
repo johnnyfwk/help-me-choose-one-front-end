@@ -298,7 +298,7 @@ export default function Profile({
     }
 
     return (
-        <div>
+        <div id="profile">
             <Helmet>
                 <link rel="canonical" href="https://helpmechooseone.com/" />
                 <title>User: {user.username} • Help Me Choose One</title>
@@ -306,7 +306,6 @@ export default function Profile({
             </Helmet>
 
             <header>
-                <h1>{user.username}</h1>
                 <img
                     src={user.avatar_url === "default-avatar.webp"
                             ? require(`../assets/images/avatars/${user.avatar_url}`)
@@ -315,6 +314,7 @@ export default function Profile({
                     alt="Avatar"
                     id="profile-image"
                 />
+                <h1>{user.username}</h1>
             </header>
 
             <main>
@@ -410,20 +410,25 @@ export default function Profile({
                 {visibleTab === "account"
                     ? <div>
                         <h3>Avatar</h3>
-                        <ImageInput
-                            imageUrlInput={editAvatarUrlInput}
-                            setImageUrlInput={setEditAvatarUrlInput}
-                            setIsImageUrlValid={setIsEditAvatarUrlValid}
-                        />
-                        {isEditAvatarUrlValid === null || isEditAvatarUrlValid === true
-                            ? null
-                            : <span className="error">Please enter a valid image URL</span>
-                        }
-                        <button
-                            type="button"
-                            onClick={onClickEditProfileButton}
-                            disabled={!isEditAvatarUrlValid}
-                        >Edit</button>
+                        <div id="profile-avatar-container">
+                            <ImageInput
+                                imageUrlInput={editAvatarUrlInput}
+                                setImageUrlInput={setEditAvatarUrlInput}
+                                setIsImageUrlValid={setIsEditAvatarUrlValid}
+                            />
+                            {isEditAvatarUrlValid === null || isEditAvatarUrlValid === true
+                                ? null
+                                : <span className="error">Please enter a valid image URL</span>
+                            }
+                            <div>
+                                <button
+                                    type="button"
+                                    onClick={onClickEditProfileButton}
+                                    disabled={!isEditAvatarUrlValid}
+                                >Update</button>
+                            </div>
+                        </div>
+                        
                         
                         <h3>Password</h3>
                         

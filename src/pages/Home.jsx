@@ -96,7 +96,7 @@ export default function Home({numberOfItemsToDisplayAndIncrement}) {
     }
 
     return (
-        <div>
+        <div id="home">
             <Helmet>
                 <link rel="canonical" href="https://helpmechooseone.com/" />
                 <title>Let the Internet help you choose • Help Me Choose One</title>

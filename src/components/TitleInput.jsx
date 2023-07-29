@@ -16,7 +16,7 @@ export default function TitleInput({titleInput, setTitleInput}) {
                 onChange={handleTitleInput}
                 maxLength={titleMaxLength}
             ></input>
-            <div>{titleInput.length} / {titleMaxLength}</div>
+            <div id="title-input-length">{titleInput.length} / {titleMaxLength}</div>
         </div>
     )
 }

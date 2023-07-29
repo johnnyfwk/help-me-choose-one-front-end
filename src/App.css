@@ -34,7 +34,7 @@
     --gap-between-form-elements: 20px;
     --gap-between-input-elements: 10px;
 
-    --profile-image-max-dimensions: 300px;
+    --profile-image-max-dimensions: 200px;
 }
 
 * {
@@ -52,9 +52,11 @@ h1 {
     font-size: 3rem;
 }
 
-p {
+p,
+ul,
+ol {
     font-size: 1.1rem;
-    line-height: 1.5rem;
+    line-height: 1.7rem;
 }
 
 header {
@@ -64,9 +66,14 @@ header {
 
 main {
     background: var(--night);
+    
+    padding: var(--left-and-right-padding);
+}
+
+#home main,
+#post main {
     display: grid;
     gap: var(--main-spacing-between-elements);
-    padding: var(--left-and-right-padding);
 }
 
 .max-width {
@@ -80,7 +87,7 @@ img {
 }
 
 .error {
-    color: var(--red);
+    color: var(--rose);
 }
 
 .success {
@@ -147,7 +154,7 @@ footer {
 }
 
 nav {
-    background: var(--outer-space);
+    background: var(--jet);
     color: var(--white);
     position: fixed;
     display: grid;
@@ -171,7 +178,7 @@ nav a:hover {
 }
 
 .load-more-button {
-    background: var(--battlship-gray);
+    background: var(--rose);
     padding: 15px 30px;
     border-radius: 10rem;
     cursor: pointer;
@@ -202,9 +209,32 @@ form {
     gap: var(--gap-between-form-elements);
 }
 
+#image-input {
+    display: grid;
+    gap: 10px;
+}
+
 select,
-input {
+input,
+textarea {
     padding: 10px;
+}
+
+#create-post-form {
+    display: grid;
+    gap: 40px;
+}
+
+#duplicate-options-entered-message {
+    background: var(--rose);
+    position: fixed;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    padding: 30px;
+    text-align: center;
+    font-weight: bold;
+    transition: bottom 0.2s;
 }
 
 #title-input,
@@ -244,15 +274,18 @@ input {
     border-radius: 50%;
 }
 
-.post-card-category-votes-date {
+.post-card-category-votes-date,
+.comment-card-like-button-likes-date {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
+    color: var(--battlship-gray);
+    /* font-size: 0.9rem; */
 }
 
 .post-section-main {
     display: grid;
-    gap: 20px;
+    gap: 15px;
 }
 
 .post-avatar-username-options-button {
@@ -266,6 +299,17 @@ input {
     flex-wrap: wrap;
     align-items: center;
     gap: 10px;
+    font-size: 1.5rem;
+}
+
+.post-avatar-username a:link,
+.post-avatar-username a:active,
+.post-avatar-username a:visited {
+    color: var(--white);
+}
+
+.post-avatar-username a:hover {
+    text-decoration: underline;
 }
 
 .post-avatar {
@@ -362,6 +406,16 @@ input {
     text-align: center;
 }
 
+#post-log-in-link:link,
+#post-log-in-link:active,
+#post-log-in-link:visited {
+    color: var(--rose);
+}
+
+#post-log-in-link:hover {
+    text-decoration: underline;
+}
+
 #already-voted-message-display-votes-button {
     display: grid;
     gap: 20px;
@@ -424,6 +478,11 @@ input {
     border-radius: 50%;
 }
 
+#comment-input {
+    display: grid;
+    gap: 10px;
+}
+
 .comment-card-like-button-likes-date {
     display: flex;
     flex-wrap: wrap;
@@ -450,27 +509,58 @@ input {
     width: 100%;
     height: 100%;
     display: grid;
+    gap: 20px;
     align-content: start;
     overflow: auto;
-    padding: 30px;
+    padding: 20px;
 }
 
-#edit-post input,
-#edit-post textarea {
-    width: 100%;
+#post-inputs,
+#edit-post-inputs {
+    display: grid;
+    gap: 40px;
+}
+
+#title-input > label,
+#categories-input > label,
+#description-input > label,
+.edit-post-option-label-input-and-lengths > label,
+.edit-post-option-label-input-and-error-message > label {
+    font-weight: bold;
 }
 
 #edit-post-options-and-images {
     display: grid;
-    gap: var(--spacing50);
+    gap: 40px;
 }
 
+.edit-post-option-and-image {
+    display: grid;
+    gap: 10px
+}
 
+.edit-post-option-label-input-and-lengths,
+.edit-post-option-label-input-and-error-message {
+    display: grid;
+    gap: 10px;
+}
+
+#title-input-length,
+#description-input-length,
+.edit-post-input-length {
+    color: var(--battlship-gray);
+}
+
+#edit-post-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
 
 #edit-and-delete-post-buttons-container,
 #report-button-link-container,
 #delete-post-message-container {
-    background: var(--jet);
+    background: var(--outer-space);
     position: fixed;
     width: 100%;
     left: 0;
@@ -481,6 +571,8 @@ input {
     font-weight: bold;
     text-align: right;
     transition: bottom 0.2s;
+    display: grid;
+    gap: 20px;
 }
 
 #report-button-link {
@@ -507,10 +599,15 @@ input {
 
 /* Profile */
 #profile-image {
-    max-width: var(--profile-image-max-dimensions);
-    max-height: var(--profile-image-max-dimensions);
+    width: var(--profile-image-max-dimensions);
+    height: var(--profile-image-max-dimensions);
     object-fit: cover;
     border-radius: 50%;
+    margin: auto;
+}
+
+#profile h1 {
+    text-align: center;
 }
 
 #profile-tabs {
@@ -518,10 +615,17 @@ input {
     flex-wrap: wrap;
     justify-content: space-around;
     cursor: pointer;
+    font-size: 1.2rem;
+    padding: 20px;
+    font-weight: bold;
+}
+
+#profile-avatar-container {
+    display: grid;
 }
 
 footer {
-    /* background: var(--grey); */
+    /* background: var(--jet); */
     padding: var(--left-and-right-padding);
     display: grid;
     gap: 30px;
@@ -544,6 +648,8 @@ footer a:hover {
 
 #copyright {
     color: var(--battlship-gray);
+    font-size: 0.9rem;
+    line-height: 1.5rem;
 }
 
 #account-created-message,
