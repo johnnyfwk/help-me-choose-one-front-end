@@ -122,14 +122,26 @@ export default function Home({numberOfItemsToDisplayAndIncrement}) {
             </header>
 
             <main>
-                <select id="categories" value={categoryInput} onChange={handleCategoryInput}>
-                    {categories.map((category) => {
-                        return <option
-                            key={category}
-                            value={category}
-                        >{category}</option>
-                    })}
-                </select>
+                {itemsToDisplay.length === 0
+                    ? null
+                    : <select id="categories" value={categoryInput} onChange={handleCategoryInput}>
+                        {categories.map((category) => {
+                            return <option
+                                key={category}
+                                value={category}
+                            >{category}</option>
+                        })}
+                    </select>
+                }
+
+                {itemsToDisplay.length === 0
+                    ? <p>No posts to display.</p>
+                    : <div className="post-cards">
+                        {itemsToDisplay.map((post) => {
+                            return <PostCard key={post.post_id} post={post} />
+                        })}
+                    </div>
+                }
 
                 <div className="post-cards">
                     {itemsToDisplay.map((post) => {
