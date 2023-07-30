@@ -29,7 +29,7 @@
     --main-padding: 20px;
     --main-spacing-between-elements: 20px;
 
-    --gap-between-cards: 20px;
+    --gap-between-cards: 30px;
 
     --gap-between-form-elements: 20px;
     --gap-between-input-elements: 10px;
@@ -276,17 +276,18 @@ textarea {
     gap: var(--gap-between-input-elements);
 }
 
-.post-cards {
+.post-cards,
+.comments {
     display: grid;
     gap: var(--gap-between-cards);
 }
 
 .post-card,
 .comment-card {
-    background: var(--jet);
-    padding: 15px;
+    /* background: var(--jet); */
+    /* padding: 15px; */
     display: grid;
-    gap: 15px;
+    gap: 10px;
 }
 
 .post-card:link,
@@ -496,11 +497,6 @@ textarea {
     gap: 10px;
 }
 
-.comments {
-    display: grid;
-    gap: var(--gap-between-cards);
-}
-
 .comment-card-avatar-username-options-button {
     display: flex;
     flex-wrap: wrap;
@@ -580,7 +576,7 @@ textarea {
 }
 
 .like-button {
-    background: var(--jet);
+    background: var(--night);
     border: 0;
     cursor: pointer;
     padding: 0 5px 0 0;

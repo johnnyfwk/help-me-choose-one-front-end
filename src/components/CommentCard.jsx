@@ -135,10 +135,6 @@ export default function CommentCard({
         window.scrollTo(0, 0);
     }
 
-    const styleCommentCard = {
-        padding: userLoggedIn.user_id && !isEditAndDeleteCommentButtonsVisible && !isDeleteCommentConfirmationMessageVisible ? "15px 15px 0px 15px" : "15px"
-    }
-
     const styleCommentOptionsButton = {
         display: isCommentOptionsButtonVisible ? "grid" : "none"
     }
@@ -160,7 +156,7 @@ export default function CommentCard({
     }
 
     return (
-        <div className="comment-card" loading="lazy" style={styleCommentCard}>
+        <div className="comment-card" loading="lazy">
             {Object.keys(userLoggedIn).length === 0
                 ? <div className="comment-card-avatar-username-options-button">
                     <div className="comment-card-avatar-username">
