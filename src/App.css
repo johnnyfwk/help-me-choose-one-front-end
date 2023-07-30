@@ -439,11 +439,14 @@ textarea {
 
 #post-option-image {
     background: var(--night);
+    color: var(--white);
     position: fixed;
     width: 100%;
     height: 100%;
     left: 0;
     top: 0;
+    display: grid;
+
     cursor: pointer;
     z-index: 2;
 }
@@ -454,7 +457,6 @@ textarea {
 }
 
 #post-option-image div {
-    background: yellow;
     text-align: center;
 }
 

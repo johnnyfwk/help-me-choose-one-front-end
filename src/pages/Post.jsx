@@ -496,10 +496,7 @@ export default function Post({
                     <p>{post.description}</p>
                     
                     <div id="post-option-image" onClick={onClickCloseImage} style={styleOptionImage}>
-                        {selectedImage
-                            ? <img src={selectedImage} alt="option-image" />
-                            : <div>No image added</div>
-                        }
+                        <img src={selectedImage} alt="option-image" />
                     </div>
                     
                     <form id="post-options-form">
