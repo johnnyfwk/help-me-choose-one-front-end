@@ -7,6 +7,8 @@ export default function PostCard({post}) {
         totalVotes += option.votesFromUserIds.length;
     })
 
+    const descriptionMaxLength = 100;
+
     return (
         <Link to={`/post/${post.post_id}-${utils.convertTitleToUrl(post.title)}`} className="post-card" loading="lazy">
             <div className="post-card-avatar-username">
@@ -19,7 +21,10 @@ export default function PostCard({post}) {
             
             <h2>{post.title}</h2>
 
-            <p>{post.description.slice(0, 200)}</p>
+            <p>{post.description.length < descriptionMaxLength
+                ? post.description
+                : post.description.slice(0, descriptionMaxLength) + "..."
+            }</p>
 
             <div className="post-card-category-votes-date">
                 <div>Votes: {totalVotes}</div>
