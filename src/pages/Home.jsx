@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import { Helmet } from "react-helmet";
 import * as api from "../api";
@@ -109,10 +109,16 @@ export default function Home({numberOfItemsToDisplayAndIncrement}) {
 
             <header>
                 {Object.keys(userLoggedIn).length === 0
-                    ? <h1>Welcome Guest</h1>
+                    ? <h1>Let the Internet help you make a choice.</h1>
                     : <h1>Welcome {userLoggedIn.username}</h1>
                 }
-                <p>Let the Internet help you make a choice.</p>
+                {Object.keys(userLoggedIn).length === 0
+                    ? <div>
+                        <p>If you have a choice to make but don't which one to choose, <Link to="sign-up">sign up</Link> or <Link to="/log-in">log in</Link> in and post your question so other members of the site can help you choose.</p>
+                    </div>
+                    : <p>Post a question and let other members of the site help you make a choice or help others with their choices by voting and commenting on their posts.</p>
+                }
+                
             </header>
 
             <main>
