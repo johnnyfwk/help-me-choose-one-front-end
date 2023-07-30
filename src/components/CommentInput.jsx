@@ -13,8 +13,9 @@ export default function CommentInput({commentInput, setCommentInput}) {
                 value={commentInput}
                 onChange={handleCommentInput}
                 maxLength={commentMaxLength}
+                placeholder="Post a comment"
             ></textarea>
-            <div>{commentInput.length} / {commentMaxLength}</div>
+            <div id="comment-input-lengths">{commentInput.length} / {commentMaxLength}</div>
         </div>
     )
 }

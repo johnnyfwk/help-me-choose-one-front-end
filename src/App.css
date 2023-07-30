@@ -22,6 +22,7 @@
     --battlship-gray: #868785;
     --outer-space: #494B48;
     --jet: #2B2D29;
+    /* --lime: #72ff20; */
 
     --max-width: 1000px;
     
@@ -41,6 +42,7 @@
 * {
     box-sizing: border-box;
     text-decoration: none;
+    margin: 0;
 }
 
 body {
@@ -60,14 +62,31 @@ ol {
     line-height: 1.7rem;
 }
 
+p a:link,
+p a:active,
+p a:visited {
+    color: var(--rose);
+}
+
+button {
+    background: var(--battlship-gray);
+    color: var(--white);
+    border: 0;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
 header {
     /* background: var(--green); */
-    padding: 0px var(--left-and-right-padding) 0px var(--left-and-right-padding);
+    padding: var(--left-and-right-padding);
+    display: grid;
+    gap: 10px;
 }
 
 main {
     background: var(--night);
-    
     padding: var(--left-and-right-padding);
 }
 
@@ -187,13 +206,6 @@ nav a:hover {
     text-align: center;
 }
 
-#sign-up-link {
-    background: var(--violet)
-}
-
-#log-in-link {
-    background: var(--green);
-}
 
 #log-out-button {
     /* background: var(--red); */
@@ -205,20 +217,29 @@ nav a:hover {
     text-decoration: underline;
 }
 
-form {
-    display: grid;
-    gap: var(--gap-between-form-elements);
-}
-
-#image-input {
-    display: grid;
-    gap: 10px;
-}
-
 select,
 input,
 textarea {
     padding: 10px;
+}
+
+#sign-up form,
+#log-in form {
+    display: grid;
+    gap: 20px;
+}
+
+.log-in-input-and-error-message,
+.sign-up-input-and-error-message {
+    display: grid;
+    gap: 10px;
+}
+
+#username-input,
+#password-input,
+#image-input {
+    display: grid;
+    gap: 10px;
 }
 
 #create-post-form {
@@ -254,6 +275,8 @@ textarea {
 .comment-card {
     background: var(--jet);
     padding: 15px;
+    display: grid;
+    gap: 15px;
 }
 
 .post-card:link,
@@ -296,6 +319,14 @@ textarea {
     font-size: 0.9rem;
 }
 
+#comment-card-edit-and-delete-buttons {
+    /* background: orange; */
+    /* position: absolute; */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
 .post-section-main {
     display: grid;
     gap: 15px;
@@ -326,7 +357,9 @@ textarea {
 }
 
 .post-avatar {
-    max-width: 50px;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
     border-radius: 50%;
 }
 
@@ -364,7 +397,7 @@ textarea {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    align-items: center;
+    align-items: end;
 }
 
 .post-option-radio-input-label {
@@ -419,6 +452,11 @@ textarea {
     text-align: center;
 }
 
+#post-options-form {
+    display: grid;
+    gap: 20px;
+}
+
 #post-log-in-link:link,
 #post-log-in-link:active,
 #post-log-in-link:visited {
@@ -439,9 +477,14 @@ textarea {
     gap: 20px;
 }
 
+#post-section-post-comment {
+    display: grid;
+    gap: 10px;
+}
+
 #post-comment-input-and-post-a-comment-button {
     display: grid;
-    gap: 20px;
+    gap: 10px;
 }
 
 .comments {
@@ -507,6 +550,28 @@ textarea {
     flex-wrap: wrap;
 }
 
+#comment-card-input-and-buttons {
+    display: grid;
+    gap: 10px;
+}
+
+#comment-card-cancel-and-update-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#comment-card-delete-comment-confirmation-message {
+    display: grid;
+    gap: 10px;
+}
+
+#comment-card-delete-comment-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
 .like-button {
     background: var(--jet);
     border: 0;
@@ -560,8 +625,10 @@ textarea {
 
 #title-input-length,
 #description-input-length,
-.edit-post-input-length {
+.edit-post-input-length,
+#comment-input-lengths {
     color: var(--battlship-gray);
+    font-size: 0.9rem;
 }
 
 #edit-post-buttons {
@@ -611,6 +678,10 @@ textarea {
 
 
 /* Profile */
+#profile header {
+    padding: var(--left-and-right-padding) var(--left-and-right-padding) 0 var(--left-and-right-padding);
+}
+
 #profile-image {
     width: var(--profile-image-max-dimensions);
     height: var(--profile-image-max-dimensions);
@@ -633,15 +704,54 @@ textarea {
     font-weight: bold;
 }
 
-#profile-avatar-container {
+#profile-tab-account {
     display: grid;
+    gap: 40px;
+}
+
+#profile-tab-account-avatar {
+    /* background: orange; */
+    display: grid;
+    gap: 20px;
+}
+
+#profile-tab-account-avatar-container {
+    display: grid;
+    gap: 10px;
+}
+
+#profile-tab-account-password {
+    /* background: violet; */
+    display: grid;
+    gap: 20px;
+}
+
+#profile-tab-account-password-inputs {
+    display: grid;
+    gap: 20px;
+}
+
+.profile-tab-account-password-input-and-error-message {
+    display: grid;
+    gap: 10px;
+}
+
+#profile-tab-account-delete-account-confirmation-message {
+    display: grid;
+    gap: 10px;
+}
+
+#profile-tab-account-delete-account-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 footer {
     /* background: var(--jet); */
     padding: var(--left-and-right-padding);
     display: grid;
-    gap: 30px;
+    gap: 20px;
 }
 
 #footer-links {

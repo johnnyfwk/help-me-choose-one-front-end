@@ -415,13 +415,17 @@ export default function Post({
 
     if (isLoading) {
         return (
-            <p>Page is loading...</p>
+            <main>
+                <p>Page is loading...</p>
+            </main>
         )
     }
 
     if (isFetchingPostSuccessful === false) {
         return (
-            <p className="error">Page could not be loaded.</p>
+            <main>
+                <p className="error">Page could not be loaded.</p>
+            </main>
         )
     }
     
@@ -659,11 +663,6 @@ export default function Post({
                 </section>
                 
                 <section>
-                    {userLoggedIn.user_id
-                        ? <h2>Post a Comment</h2>
-                        : null
-                    }
-                    
                     <form>
                         {userLoggedIn.user_id
                             ? <div id="post-comment-input-and-post-a-comment-button">
@@ -678,16 +677,13 @@ export default function Post({
                                         disabled={!commentInput}
                                     >Post Comment</button>
                                 </div>
-                                
                             </div>
                             : null
                         }
                     </form>
                 </section>
 
-                <section>
-                    <h2>Comments</h2>
-                    
+                <section>                    
                     {isCommentsLoading
                         ? <p>Loading comments...</p>
                         : null

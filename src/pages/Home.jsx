@@ -85,13 +85,17 @@ export default function Home({numberOfItemsToDisplayAndIncrement}) {
 
     if (isLoading) {
         return (
-            <p>Page is loading...</p>
+            <main>
+                <p>Page is loading...</p>
+            </main>
         )
     }
 
     if (isFetchingPostsSuccessful === false) {
         return (
-            <p className="error">Page could not be loaded.</p>
+            <main>
+                <p className="error">Page could not be loaded.</p>
+            </main>
         )
     }
 

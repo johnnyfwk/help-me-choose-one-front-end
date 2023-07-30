@@ -74,18 +74,22 @@ export default function LogIn({setIsLoggedInMessageVisible}) {
 
     if (isLoading) {
         return (
-            <p>Page is loading...</p>
+            <main>
+                <p>Page is loading...</p>
+            </main>
         )
     }
 
     if (isFetchingUsersSuccessful === false) {
         return (
-            <p className="error">Page could not be loaded.</p>
+            <main>
+                <p className="error">Page could not be loaded.</p>
+            </main>
         )
     }
 
     return (
-        <div>
+        <div id="log-in">
             <Helmet>
                 <link rel="canonical" href="https://helpmechooseone.com/log-in/" />
                 <title>Log In • Help Me Choose One</title>
@@ -99,32 +103,40 @@ export default function LogIn({setIsLoggedInMessageVisible}) {
             </header>
 
             <main>
-                <UsernameInput 
-                    usernameInput={usernameInput}
-                    setUsernameInput={setUsernameInput}
-                />
-                {isUsernameInputInDatabase === null || isUsernameInputInDatabase === true
-                    ? null
-                    : <span className="error">Username does not exist</span>
-                }
-
-                <PasswordInput
-                    passwordInput={passwordInput}
-                    setPasswordInput={setPasswordInput}
-                />
-                {isPasswordCorrect === null || isPasswordCorrect === true
-                    ? null
-                    : <span className="error">Password is incorrect</span>
-                }
-
-                <button
-                    type="button"
-                    onClick={onClickLogInButton}
-                    disabled={
-                        !usernameInput ||
-                        !passwordInput
-                    }
-                >Log In</button>
+                <form>
+                    <div className="log-in-input-and-error-message">
+                        <UsernameInput 
+                            usernameInput={usernameInput}
+                            setUsernameInput={setUsernameInput}
+                        />
+                        {isUsernameInputInDatabase === null || isUsernameInputInDatabase === true
+                            ? null
+                            : <span className="error">Username does not exist</span>
+                        }
+                    </div>
+                    
+                    <div className="log-in-input-and-error-message">
+                        <PasswordInput
+                            passwordInput={passwordInput}
+                            setPasswordInput={setPasswordInput}
+                        />
+                        {isPasswordCorrect === null || isPasswordCorrect === true
+                            ? null
+                            : <span className="error">Password is incorrect</span>
+                        }
+                    </div>
+                    
+                    <div>
+                        <button
+                            type="button"
+                            onClick={onClickLogInButton}
+                            disabled={
+                                !usernameInput ||
+                                !passwordInput
+                            }
+                        >Log In</button>
+                    </div>
+                </form>
             </main>
         </div>
     )
