@@ -22,7 +22,6 @@
     --battlship-gray: #868785;
     --outer-space: #494B48;
     --jet: #2B2D29;
-    /* --lime: #72ff20; */
 
     --max-width: 1000px;
     
@@ -39,6 +38,11 @@
     --post-and-comment-card-avatar-image-dimensions: 40px;
 }
 
+@font-face {
+    font-family: Quicksand;
+    src: url("../src/assets/fonts/Quicksand-VariableFont_wght.ttf");
+}
+
 * {
     box-sizing: border-box;
     text-decoration: none;
@@ -49,6 +53,7 @@ body {
     margin: 0;
     background: var(--night);
     color: var(--white);
+    font-family: Quicksand;
 }
 
 h1 {
@@ -79,7 +84,6 @@ button {
 }
 
 header {
-    /* background: var(--green); */
     padding: var(--left-and-right-padding);
     display: grid;
     gap: 10px;
@@ -120,6 +124,10 @@ img {
 
 textarea {
     width: 100%;
+    min-height: 50px;
+    resize: none;
+    overflow-y: hidden;
+    line-height: 1.2rem;
 }
 
 #logo-show-nav-button-and-nav,
@@ -142,8 +150,8 @@ footer {
 }
 
 #logo {
-    /* background: var(--grey); */
     font-size: 1.5rem;
+    font-weight: bold;
     display: grid;
     align-content: center;
     padding: 10px 0px 10px 0px;
@@ -160,7 +168,6 @@ footer {
 }
 
 #show-nav-button {
-    /* background: var(--lime); */
     cursor: pointer;
     font-size: 2rem;
     font-weight: bold;
@@ -169,7 +176,6 @@ footer {
 }
 
 #hide-nav-button {
-    /* background: var(--red); */
     cursor: pointer;
 }
 
@@ -208,7 +214,6 @@ nav a:hover {
 
 
 #log-out-button {
-    /* background: var(--red); */
     color: var(--white);
     cursor: pointer;
 }
@@ -315,13 +320,11 @@ textarea {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    color: var(--battlship-gray);
+    color: var(--silver);
     font-size: 0.9rem;
 }
 
 #comment-card-edit-and-delete-buttons {
-    /* background: orange; */
-    /* position: absolute; */
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -388,7 +391,6 @@ textarea {
 }
 
 .post-option {
-    /* background: green; */
     display: grid;
     gap: 7px;
 }
@@ -493,7 +495,6 @@ textarea {
 }
 
 .comment-card-avatar-username-options-button {
-    /* background: orange; */
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -518,7 +519,6 @@ textarea {
 
 #post-options-button,
 .comment-card-options-button {
-    /* background: var(--lime); */
     display: grid;
     gap: 3px;
     cursor: pointer;
@@ -576,6 +576,7 @@ textarea {
     background: var(--jet);
     border: 0;
     cursor: pointer;
+    padding: 0 5px 0 0;
 }
 
 #edit-post {
@@ -676,8 +677,6 @@ textarea {
     gap: 10px;
 }
 
-
-/* Profile */
 #profile header {
     padding: var(--left-and-right-padding) var(--left-and-right-padding) 0 var(--left-and-right-padding);
 }
@@ -710,7 +709,6 @@ textarea {
 }
 
 #profile-tab-account-avatar {
-    /* background: orange; */
     display: grid;
     gap: 20px;
 }
@@ -721,7 +719,6 @@ textarea {
 }
 
 #profile-tab-account-password {
-    /* background: violet; */
     display: grid;
     gap: 20px;
 }
@@ -747,8 +744,14 @@ textarea {
     gap: 10px;
 }
 
+#terms-and-conditions main,
+#privacy-policy main,
+#disclaimer main {
+    display: grid;
+    gap: 15px;
+}
+
 footer {
-    /* background: var(--jet); */
     padding: var(--left-and-right-padding);
     display: grid;
     gap: 20px;
@@ -869,7 +872,6 @@ footer a:hover {
         position: initial;
         display: flex;
         align-items: center;
-        /* gap: 20px; */
         flex-wrap: wrap;
         width: initial;
         height: initial;

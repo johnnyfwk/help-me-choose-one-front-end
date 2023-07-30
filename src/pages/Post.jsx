@@ -503,6 +503,10 @@ export default function Post({
                     </div>
                     
                     <form id="post-options-form">
+                        <div>
+                            <button type="button" onClick={onClickShowVotesButton}>{isVotesVisible ? "Hide Votes" : "Show Votes"}</button>
+                        </div>
+
                         <div id="post-options">
                             {post.options_and_votes.map((option) => {
                                 return (
@@ -547,14 +551,8 @@ export default function Post({
                             : hasLoggedInUserAlreadyVoted
                                 ? <div id="already-voted-message-display-votes-button">
                                     <div>You have already voted on this post.</div>
-                                    <div>
-                                        <button type="button" onClick={onClickShowVotesButton}>{isVotesVisible ? "Hide Votes" : "Show Votes"}</button>
-                                    </div>
                                 </div>
                                 : <div id="display-votes-and-vote-button">
-                                    <div>
-                                        <button type="button" onClick={onClickShowVotesButton}>{isVotesVisible ? "Hide Votes" : "Show Votes"}</button>
-                                    </div>
                                     <button
                                         type="button"
                                         onClick={onClickVoteButton}

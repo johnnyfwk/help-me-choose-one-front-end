@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet";
 
 export default function TermsAndConditions() {
     return (
-        <div>
+        <div id="terms-and-conditions">
             <Helmet>
                 <link rel="canonical" href="https://helpmechooseone.com/terms-and-conditions" />
                 <title>Terms & Conditions • Help Me Choose One</title>

@@ -22,7 +22,6 @@ export default function PostCard({post}) {
             <p>{post.description}</p>
 
             <div className="post-card-category-votes-date">
-                {/* <div>{utils.convertUrlsToUserFriendlyHeadings(post.category)}</div> */}
                 <div>Votes: {totalVotes}</div>
                 <div>{new Date(post.post_date).toLocaleDateString()}</div>
                 <div>{new Date(post.post_date).toLocaleTimeString()}</div>

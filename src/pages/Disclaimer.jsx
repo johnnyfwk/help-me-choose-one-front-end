@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet";
 
 export default function Disclaimer() {
     return (
-        <div>
+        <div id="disclaimer">
             <Helmet>
                 <link rel="canonical" href="https://helpmechooseone.com/disclaimer" />
                 <title>Disclaimer • Help Me Choose One</title>

@@ -117,10 +117,6 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
             </header>
 
             <main>
-                {/* {optionsHasDuplicates === null || optionsHasDuplicates === false
-                    ? null
-                    : <div className="error">You have entered duplicate options</div>
-                } */}
                 <div id="duplicate-options-entered-message" style={styleDuplicateOptionsEnteredMessage}>You have entered duplicate options</div>
 
                 <form id="create-post-form">
