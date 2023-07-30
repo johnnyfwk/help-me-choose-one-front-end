@@ -421,6 +421,10 @@ export default function Post({
         opacity: !commentInput ? "0.3" : "1"
     }
 
+    const styleVoteButton = {
+        opacity: !optionInput ? "0.3" : "1"
+    }
+
     if (isLoading) {
         return (
             <main>
@@ -563,6 +567,7 @@ export default function Post({
                                         type="button"
                                         onClick={onClickVoteButton}
                                         disabled={!optionInput}
+                                        style={styleVoteButton}
                                     >Vote</button>
                                 </div>   
                         }
