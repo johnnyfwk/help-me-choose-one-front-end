@@ -284,10 +284,13 @@ textarea {
 
 .post-card,
 .comment-card {
-    /* background: var(--jet); */
-    /* padding: 15px; */
     display: grid;
     gap: 10px;
+}
+
+.post-card {
+    background: var(--jet);
+    padding: 15px;
 }
 
 .post-card:link,

@@ -19,7 +19,7 @@ export default function PostCard({post}) {
             
             <h2>{post.title}</h2>
 
-            <p>{post.description}</p>
+            <p>{post.description.slice(0, 200)}</p>
 
             <div className="post-card-category-votes-date">
                 <div>Votes: {totalVotes}</div>
