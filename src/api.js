@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const baseURL = axios.create({
-    baseURL: "http://localhost:9090/bE2uT8XzAqG1yJ6fNvL3"
+    // baseURL: "http://localhost:9090/bE2uT8XzAqG1yJ6fNvL3"
+    baseURL: "https://help-me-choose-one.onrender.com/bE2uT8XzAqG1yJ6fNvL3"
 });
 
 // GET requests
