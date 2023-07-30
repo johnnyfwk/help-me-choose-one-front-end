@@ -6,7 +6,7 @@ export default function PasswordInput({passwordInput, setPasswordInput, password
     }
 
     return (
-        <div>
+        <div id="password-input">
             <label htmlFor="password">{passwordInputLabel}</label>
             <input
                 type="password"

@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet";
 
 export default function PrivacyPolicy() {
     return (
-        <div>
+        <div id="privacy-policy">
             <Helmet>
                 <link rel="canonical" href="https://helpmechooseone.com/privacy-policy" />
                 <title>Privacy Policy • Help Me Choose One</title>

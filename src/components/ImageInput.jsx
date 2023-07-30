@@ -15,8 +15,8 @@ export default function ImageInput({imageUrlInput, setImageUrlInput, setIsImageU
     }
 
     return (
-        <div>
-            <label htmlFor="avatar-url-input">Image URL (optional):</label>
+        <div id="image-input">
+            <label htmlFor="avatar-url-input">Image URL (optional)</label>
             <input
                 type="text"
                 id="image-url-input"

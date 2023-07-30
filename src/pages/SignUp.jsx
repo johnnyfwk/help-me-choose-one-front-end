@@ -22,7 +22,7 @@ export default function SignUp({setIsAccountCreatedMessageVisible, setIsAccountN
 
     const [passwordInput, setPasswordInput] = useState("");
     const [isPasswordValid, setIsPasswordValid] = useState(null);
-    const passwordInputLabel = "Password:";
+    const passwordInputLabel = "Password";
 
     const [avatarUrlInput, setAvatarUrlInput] = useState("");
     const [isAvatarUrlValid, setIsAvatarUrlValid] = useState(true);
@@ -99,18 +99,22 @@ export default function SignUp({setIsAccountCreatedMessageVisible, setIsAccountN
 
     if (isLoading) {
         return (
-            <p>Page is loading...</p>
+            <main>
+                <p>Page is loading...</p>
+            </main>
         )
     }
 
     if (isFetchingUsersSuccessful === false) {
         return (
-            <p className="error">Page could not be loaded.</p>
+            <main>
+                <p className="error">Page could not be loaded.</p>
+            </main>
         )
     }
 
     return (
-        <div>
+        <div id="sign-up">
             <Helmet>
                 <link rel="canonical" href="https://helpmechooseone.com/sign-up/" />
                 <title>Sign Up • Help Me Choose One</title>
@@ -125,58 +129,66 @@ export default function SignUp({setIsAccountCreatedMessageVisible, setIsAccountN
 
             <main>
                 <form>
-                    <UsernameInput
-                        usernameInput={usernameInput}
-                        setUsernameInput={setUsernameInput}
-                    />
-                    {!usernameInput || isUsernameAvailable === null
-                        ? null
-                        : isUsernameAvailable
-                            ? <span className="success">Username is available</span>
-                            : <span className="error">Username is not available</span>
-                    }
-                    {isUsernameValid === null || isUsernameValid === true
-                        ? null
-                        : <span className="error">Username can only contain letters and numbers and must start with a letter.</span>
-                    }
-                    {isUsernameFamilyFriendly === null || isUsernameFamilyFriendly === true
-                        ? null
-                        : <span className="error">Please create a family-friendly username</span>
-                    }
-                    
-                    <PasswordInput
-                        passwordInput={passwordInput}
-                        setPasswordInput={setPasswordInput}
-                        passwordInputLabel={passwordInputLabel}
-                    />
-                    {isPasswordValid === null || isPasswordValid === true
-                        ? null
-                        : <span className="error">Password can not contain spaces</span>
-                    }
-
-                    <ImageInput
-                        imageUrlInput={avatarUrlInput}
-                        setImageUrlInput={setAvatarUrlInput}
-                        setIsImageUrlValid={setIsAvatarUrlValid}
-                    />
-                    {isAvatarUrlValid === null || isAvatarUrlValid === true
-                        ? null
-                        : <span className="error">Please enter a valid image URL</span>
-                    }
-
-                    <button
-                        type="button"
-                        onClick={onClickSignUpButton}
-                        disabled={
-                            !usernameInput ||
-                            !passwordInput ||
-                            !isUsernameAvailable ||
-                            !isUsernameValid ||
-                            !isPasswordValid ||
-                            !isUsernameFamilyFriendly ||
-                            !isAvatarUrlValid
+                    <div className="sign-up-input-and-error-message">
+                        <UsernameInput
+                            usernameInput={usernameInput}
+                            setUsernameInput={setUsernameInput}
+                        />
+                        {!usernameInput || isUsernameAvailable === null
+                            ? null
+                            : isUsernameAvailable
+                                ? <span className="success">Username is available</span>
+                                : <span className="error">Username is not available</span>
                         }
-                    >Sign Up</button>
+                        {isUsernameValid === null || isUsernameValid === true
+                            ? null
+                            : <span className="error">Username can only contain letters and numbers and must start with a letter.</span>
+                        }
+                        {isUsernameFamilyFriendly === null || isUsernameFamilyFriendly === true
+                            ? null
+                            : <span className="error">Please create a family-friendly username</span>
+                        }
+                    </div>
+                    
+                    <div className="sign-up-input-and-error-message">
+                        <PasswordInput
+                            passwordInput={passwordInput}
+                            setPasswordInput={setPasswordInput}
+                            passwordInputLabel={passwordInputLabel}
+                        />
+                        {isPasswordValid === null || isPasswordValid === true
+                            ? null
+                            : <span className="error">Password can not contain spaces</span>
+                        }
+                    </div>
+                    
+                    <div className="sign-up-input-and-error-message">
+                        <ImageInput
+                            imageUrlInput={avatarUrlInput}
+                            setImageUrlInput={setAvatarUrlInput}
+                            setIsImageUrlValid={setIsAvatarUrlValid}
+                        />
+                        {isAvatarUrlValid === null || isAvatarUrlValid === true
+                            ? null
+                            : <span className="error">Please enter a valid image URL</span>
+                        }
+                    </div>
+                    
+                    <div>
+                        <button
+                            type="button"
+                            onClick={onClickSignUpButton}
+                            disabled={
+                                !usernameInput ||
+                                !passwordInput ||
+                                !isUsernameAvailable ||
+                                !isUsernameValid ||
+                                !isPasswordValid ||
+                                !isUsernameFamilyFriendly ||
+                                !isAvatarUrlValid
+                            }
+                        >Sign Up</button>
+                    </div>
                 </form>
             </main>
         </div>

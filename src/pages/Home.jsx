@@ -85,18 +85,22 @@ export default function Home({numberOfItemsToDisplayAndIncrement}) {
 
     if (isLoading) {
         return (
-            <p>Page is loading...</p>
+            <main>
+                <p>Page is loading...</p>
+            </main>
         )
     }
 
     if (isFetchingPostsSuccessful === false) {
         return (
-            <p className="error">Page could not be loaded.</p>
+            <main>
+                <p className="error">Page could not be loaded.</p>
+            </main>
         )
     }
 
     return (
-        <div>
+        <div id="home">
             <Helmet>
                 <link rel="canonical" href="https://helpmechooseone.com/" />
                 <title>Let the Internet help you choose • Help Me Choose One</title>

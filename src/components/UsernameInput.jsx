@@ -4,8 +4,8 @@ export default function UsernameInput({usernameInput, setUsernameInput}) {
     }
 
     return (
-        <div>
-            <label htmlFor="username">Username:</label>
+        <div id="username-input">
+            <label htmlFor="username">Username</label>
             <input
                 type="text"
                 id="username"

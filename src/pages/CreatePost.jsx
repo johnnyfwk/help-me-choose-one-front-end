@@ -42,6 +42,8 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
 
     const [isPostCreationSuccessful, setIsPostCreationSuccessful] = useState(null);
 
+    const [isDuplicateOptionsEnteredMessageVisible, setIsDuplicateOptionsEnteredMessageVisible] = useState(false);
+
     const isSubmitDisabled = Object.values(optionInputs).filter(Boolean).length < 2;
 
     const navigate = useNavigate();
@@ -64,6 +66,8 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
 
         if (optionsContainsDuplicates) {
             setOptionsHasDuplicates(true);
+            setIsDuplicateOptionsEnteredMessageVisible(true);
+            setTimeout(() => setIsDuplicateOptionsEnteredMessageVisible(false), 3000)
         }
         else {
             setOptionsHasDuplicates(false);
@@ -95,6 +99,10 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
         }
     }
 
+    const styleDuplicateOptionsEnteredMessage = {
+        bottom: isDuplicateOptionsEnteredMessageVisible ? "0%" : "-100%"
+    }
+
     return (
         <div>
             <Helmet>
@@ -104,66 +112,68 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
             </Helmet>
 
             <header>
-                <h1>Create Post</h1>
-                <p>Enter at least two options.</p>
+                <h1>Create a Post</h1>
+                <p>Get help from the Internet to make a choice by posting your question.</p>
             </header>
 
             <main>
-                {optionsHasDuplicates === null || optionsHasDuplicates === false
-                    ? null
-                    : <div className="error">You have entered duplicate options</div>
-                }
-                <form>
-                    <TitleInput
-                        titleInput={titleInput}
-                        setTitleInput={setTitleInput}
-                    />
+                <div id="duplicate-options-entered-message" style={styleDuplicateOptionsEnteredMessage}>You have entered duplicate options</div>
 
-                    <CategoryInput
-                        categoryInput={categoryInput}
-                        setCategoryInput={setCategoryInput}
-                    />
+                <form id="create-post-form">
+                    <div id="post-inputs">
+                        <TitleInput
+                            titleInput={titleInput}
+                            setTitleInput={setTitleInput}
+                        />
 
-                    <DescriptionInput
-                        descriptionInput={descriptionInput}
-                        setDescriptionInput={setDescriptionInput}
-                    />
+                        <CategoryInput
+                            categoryInput={categoryInput}
+                            setCategoryInput={setCategoryInput}
+                        />
 
-                    <OptionsInput
-                        optionInputs={optionInputs}
-                        setOptionInputs={setOptionInputs}
-                        setOptionsHasDuplicates={setOptionsHasDuplicates}
-                        optionInputImages={optionInputImages}
-                        setOptionInputImages={setOptionInputImages}
-                        isOption1ImageInputValid={isOption1ImageInputValid}
-                        setIsOption1ImageInputValid={setIsOption1ImageInputValid}
-                        isOption2ImageInputValid={isOption2ImageInputValid}
-                        setIsOption2ImageInputValid={setIsOption2ImageInputValid}
-                        isOption3ImageInputValid={isOption3ImageInputValid}
-                        setIsOption3ImageInputValid={setIsOption3ImageInputValid}
-                        isOption4ImageInputValid={isOption4ImageInputValid}
-                        setIsOption4ImageInputValid={setIsOption4ImageInputValid}
-                        isOption5ImageInputValid={isOption5ImageInputValid}
-                        setIsOption5ImageInputValid={setIsOption5ImageInputValid}
-                    />
+                        <DescriptionInput
+                            descriptionInput={descriptionInput}
+                            setDescriptionInput={setDescriptionInput}
+                        />
+
+                        <OptionsInput
+                            optionInputs={optionInputs}
+                            setOptionInputs={setOptionInputs}
+                            setOptionsHasDuplicates={setOptionsHasDuplicates}
+                            optionInputImages={optionInputImages}
+                            setOptionInputImages={setOptionInputImages}
+                            isOption1ImageInputValid={isOption1ImageInputValid}
+                            setIsOption1ImageInputValid={setIsOption1ImageInputValid}
+                            isOption2ImageInputValid={isOption2ImageInputValid}
+                            setIsOption2ImageInputValid={setIsOption2ImageInputValid}
+                            isOption3ImageInputValid={isOption3ImageInputValid}
+                            setIsOption3ImageInputValid={setIsOption3ImageInputValid}
+                            isOption4ImageInputValid={isOption4ImageInputValid}
+                            setIsOption4ImageInputValid={setIsOption4ImageInputValid}
+                            isOption5ImageInputValid={isOption5ImageInputValid}
+                            setIsOption5ImageInputValid={setIsOption5ImageInputValid}
+                        />
+                    </div>
                     
-                    <button
-                        type="button"
-                        onClick={onClickCreatePostButton}
-                        disabled={
-                            !titleInput ||
-                            !descriptionInput ||
-                            !categoryInput ||
-                            categoryInput === "Select a Category" ||
-                            isSubmitDisabled ||
-                            isPostCreationSuccessful ||
-                            !isOption1ImageInputValid ||
-                            !isOption2ImageInputValid ||
-                            !isOption3ImageInputValid ||
-                            !isOption4ImageInputValid ||
-                            !isOption5ImageInputValid
-                        }
-                    >Create Post</button>
+                    <div>
+                        <button
+                            type="button"
+                            onClick={onClickCreatePostButton}
+                            disabled={
+                                !titleInput ||
+                                !descriptionInput ||
+                                !categoryInput ||
+                                categoryInput === "Select a Category" ||
+                                isSubmitDisabled ||
+                                isPostCreationSuccessful ||
+                                !isOption1ImageInputValid ||
+                                !isOption2ImageInputValid ||
+                                !isOption3ImageInputValid ||
+                                !isOption4ImageInputValid ||
+                                !isOption5ImageInputValid
+                            }
+                        >Create Post</button>
+                    </div>
                 </form>
             </main>
         </div>

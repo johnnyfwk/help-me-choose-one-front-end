@@ -9,8 +9,8 @@ export default function Footer() {
         <footer>
             <div id="footer-links" onClick={onClickFooterLinks}>
                 <Link to="/">Home</Link>
-                <Link to="/about">About</Link>
-                <Link to="/contact">Contact</Link>
+                {/* <Link to="/about">About</Link>
+                <Link to="/contact">Contact</Link> */}
                 <Link to="/terms-and-conditions">Terms & Conditions</Link>
                 <Link to="/privacy-policy">Privacy Policy</Link>
                 <Link to="/disclaimer">Disclaimer</Link>

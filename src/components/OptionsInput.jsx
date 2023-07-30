@@ -106,8 +106,8 @@ export default function OptionsInput({
 
     return (
         <div id="edit-post-options-and-images">
-            <div>
-                <div>
+            <div className="edit-post-option-and-image">
+                <div className="edit-post-option-label-input-and-lengths">
                     <label htmlFor="option">Option 1:</label>
                     <input
                         type="text"
@@ -117,11 +117,11 @@ export default function OptionsInput({
                         onChange={handleOptionInput}
                         maxLength={optionInputMaxLength}
                     ></input>
-                    <span>{option1Input.length} / {optionInputMaxLength}</span>
+                    <span className="edit-post-input-length">{option1Input.length} / {optionInputMaxLength}</span>
                 </div>
 
-                <div>
-                    <label htmlFor="option1ImageInput">Image 1 URL (optional):</label>
+                <div className="edit-post-option-label-input-and-error-message">
+                    <label htmlFor="option1ImageInput">Option 1 Image URL (optional):</label>
                     <input
                         type="text"
                         id="option1ImageInput"
@@ -137,8 +137,8 @@ export default function OptionsInput({
                 }
             </div>
             
-            <div>
-                <div>
+            <div className="edit-post-option-and-image">
+                <div className="edit-post-option-label-input-and-lengths">
                     <label htmlFor="option">Option 2:</label>
                     <input
                         type="text"
@@ -148,11 +148,11 @@ export default function OptionsInput({
                         onChange={handleOptionInput}
                         maxLength={optionInputMaxLength}
                     ></input>
-                    <span>{option2Input.length} / {optionInputMaxLength}</span>
+                    <span className="edit-post-input-length">{option2Input.length} / {optionInputMaxLength}</span>
                 </div>
 
-                <div>
-                    <label htmlFor="option2ImageInput">Image 2 URL (optional):</label>
+                <div className="edit-post-option-label-input-and-error-message">
+                    <label htmlFor="option2ImageInput">Option 2 Image URL (optional):</label>
                     <input
                         type="text"
                         id="option2ImageInput"
@@ -168,8 +168,8 @@ export default function OptionsInput({
                 }
             </div>
             
-            <div>
-                <div>
+            <div className="edit-post-option-and-image">
+                <div className="edit-post-option-label-input-and-lengths">
                     <label htmlFor="option">Option 3:</label>
                     <input
                         type="text"
@@ -179,11 +179,11 @@ export default function OptionsInput({
                         onChange={handleOptionInput}
                         maxLength={optionInputMaxLength}
                     ></input>
-                    <span>{option3Input.length} / {optionInputMaxLength}</span>
+                    <span className="edit-post-input-length">{option3Input.length} / {optionInputMaxLength}</span>
                 </div>
 
-                <div>
-                    <label htmlFor="option3ImageInput">Image 3 URL (optional):</label>
+                <div className="edit-post-option-label-input-and-error-message">
+                    <label htmlFor="option3ImageInput">Option 3 Image URL (optional):</label>
                     <input
                         type="text"
                         id="option3ImageInput"
@@ -199,8 +199,8 @@ export default function OptionsInput({
                 }
             </div>
 
-            <div>
-                <div>
+            <div className="edit-post-option-and-image">
+                <div className="edit-post-option-label-input-and-lengths">
                     <label htmlFor="option">Option 4:</label>
                     <input
                         type="text"
@@ -210,11 +210,11 @@ export default function OptionsInput({
                         onChange={handleOptionInput}
                         maxLength={optionInputMaxLength}
                     ></input>
-                    <span>{option4Input.length} / {optionInputMaxLength}</span>
+                    <span className="edit-post-input-length">{option4Input.length} / {optionInputMaxLength}</span>
                 </div>
 
-                <div>
-                    <label htmlFor="option4ImageInput">Image 4 URL (optional):</label>
+                <div className="edit-post-option-label-input-and-error-message">
+                    <label htmlFor="option4ImageInput">Option 4 Image URL (optional):</label>
                     <input
                         type="text"
                         id="option4ImageInput"
@@ -230,8 +230,8 @@ export default function OptionsInput({
                 }
             </div>
             
-            <div>
-                <div>
+            <div className="edit-post-option-and-image">
+                <div className="edit-post-option-label-input-and-lengths">
                     <label htmlFor="option">Option 5:</label>
                     <input
                         type="text"
@@ -241,11 +241,11 @@ export default function OptionsInput({
                         onChange={handleOptionInput}
                         maxLength={optionInputMaxLength}
                     ></input>
-                    <span>{option5Input.length} / {optionInputMaxLength}</span>
+                    <span className="edit-post-input-length">{option5Input.length} / {optionInputMaxLength}</span>
                 </div>
 
-                <div>
-                    <label htmlFor="option5ImageInput">Image 5 URL (optional):</label>
+                <div className="edit-post-option-label-input-and-error-message">
+                    <label htmlFor="option5ImageInput">Option 5 Image URL (optional):</label>
                     <input
                         type="text"
                         id="option5ImageInput"

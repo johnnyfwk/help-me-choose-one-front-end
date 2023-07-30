@@ -50,12 +50,12 @@ export default function Profile({
 
     const [currentPasswordInput, setCurrentPasswordInput] = useState("");
     const [isPasswordCorrect, setIsPasswordCorrect] = useState(null);
-    const currentPasswordInputLabel = "Current Password:";
+    const currentPasswordInputLabel = "Current Password";
     const [newPasswordInput, setNewPasswordInput] = useState("");
     const [isNewPasswordValid, setIsNewPasswordValid] = useState(null);
-    const newPasswordInputLabel = "New Password:";
+    const newPasswordInputLabel = "New Password";
     const [newPasswordCheckInput, setNewPasswordCheckInput] = useState("");
-    const newPasswordInputCheckLabel = "New Password (Check):";
+    const newPasswordInputCheckLabel = "New Password (Check)";
     const [doNewPasswordInputsMatch, setDoNewPasswordInputsMatch] = useState(null);
     const [isPasswordUpdatedSuccessfully, setIsPasswordUpdatedSuccessfully] = useState(null);
 
@@ -213,7 +213,7 @@ export default function Profile({
     }
 
     const styleDeleteAccountConfirmationMessage = {
-        display: isDeleteAccountConfirmationMessageVisible ? "initial" : "none"
+        display: isDeleteAccountConfirmationMessageVisible ? "grid" : "none"
     }
 
     function onClickEditProfileButton() {
@@ -278,6 +278,7 @@ export default function Profile({
                 setIsAccountDeletedMessageVisible(true);
                 setTimeout(() => setIsAccountDeletedMessageVisible(false), 3000);
                 navigate("/");
+                window.scrollTo(0, 0);
             })
             .catch((error) => {
                 setIsAccountNotDeletedMessageVisible(true);
@@ -285,20 +286,36 @@ export default function Profile({
             })
     }
 
+    const styleTabPosts = {
+        color: visibleTab === "posts" ? "#FF206E" : "#FFFFFF"
+    }
+
+    const styleTabComments = {
+        color: visibleTab === "comments" ? "#FF206E" : "#FFFFFF"
+    }
+
+    const styleTabAccount = {
+        color: visibleTab === "account" ? "#FF206E" : "#FFFFFF"
+    }
+
     if (isLoading) {
         return (
-            <p>Page is loading...</p>
+            <main>
+                <p>Page is loading...</p>
+            </main>
         )
     }
 
     if (isFetchingUserSuccessful === false) {
         return (
-            <p className="error">Page could not be loaded.</p>
+            <main>
+                <p className="error">Page could not be loaded.</p>
+            </main>
         )
     }
 
     return (
-        <div>
+        <div id="profile">
             <Helmet>
                 <link rel="canonical" href="https://helpmechooseone.com/" />
                 <title>User: {user.username} • Help Me Choose One</title>
@@ -306,7 +323,6 @@ export default function Profile({
             </Helmet>
 
             <header>
-                <h1>{user.username}</h1>
                 <img
                     src={user.avatar_url === "default-avatar.webp"
                             ? require(`../assets/images/avatars/${user.avatar_url}`)
@@ -315,19 +331,20 @@ export default function Profile({
                     alt="Avatar"
                     id="profile-image"
                 />
+                <h1>{user.username}</h1>
             </header>
 
             <main>
                 <div id="profile-tabs">
-                    <div id="profile-posts-tab" onClick={onClickProfilePostsTab}>Posts</div>
+                    <div id="profile-posts-tab" onClick={onClickProfilePostsTab} style={styleTabPosts}>Posts</div>
                     {userLoggedIn.user_id !== parseInt(user_id)
                         ? null
                         : <div>
-                            <div id="profile-comments-tab" onClick={onClickProfileCommentsTab}>Comments</div>
+                            <div id="profile-comments-tab" onClick={onClickProfileCommentsTab} style={styleTabComments}>Comments</div>
                         </div>
                     }
                     {userLoggedIn.user_id === parseInt(user_id)
-                        ? <div id="profile-account-tab" onClick={onClickProfileAccountTab}>Account</div>
+                        ? <div id="profile-account-tab" onClick={onClickProfileAccountTab} style={styleTabAccount}>Account</div>
                         : null
                     }
                 </div>
@@ -408,82 +425,107 @@ export default function Profile({
                 }
 
                 {visibleTab === "account"
-                    ? <div>
-                        <h3>Avatar</h3>
-                        <ImageInput
-                            imageUrlInput={editAvatarUrlInput}
-                            setImageUrlInput={setEditAvatarUrlInput}
-                            setIsImageUrlValid={setIsEditAvatarUrlValid}
-                        />
-                        {isEditAvatarUrlValid === null || isEditAvatarUrlValid === true
-                            ? null
-                            : <span className="error">Please enter a valid image URL</span>
-                        }
-                        <button
-                            type="button"
-                            onClick={onClickEditProfileButton}
-                            disabled={!isEditAvatarUrlValid}
-                        >Edit</button>
+                    ? <div id="profile-tab-account">
+                        <div id="profile-tab-account-avatar">
+                            <h2>Avatar</h2>
+                            <div id="profile-tab-account-avatar-container">
+                                <ImageInput
+                                    imageUrlInput={editAvatarUrlInput}
+                                    setImageUrlInput={setEditAvatarUrlInput}
+                                    setIsImageUrlValid={setIsEditAvatarUrlValid}
+                                />
+                                {isEditAvatarUrlValid === null || isEditAvatarUrlValid === true
+                                    ? null
+                                    : <span className="error">Please enter a valid image URL</span>
+                                }
+                                <div>
+                                    <button
+                                        type="button"
+                                        onClick={onClickEditProfileButton}
+                                        disabled={!isEditAvatarUrlValid}
+                                    >Update</button>
+                                </div>
+                            </div>
+                        </div>
                         
-                        <h3>Password</h3>
+                        <div id="profile-tab-account-password">
+                            <h2>Password</h2>
+
+                            <div id="profile-tab-account-password-inputs">
+                                <div className="profile-tab-account-password-input-and-error-message">
+                                    <PasswordInput
+                                        passwordInput={currentPasswordInput}
+                                        setPasswordInput={setCurrentPasswordInput}
+                                        passwordInputLabel={currentPasswordInputLabel}
+                                    />
+                                    {isPasswordCorrect === null
+                                        ? null
+                                        : isPasswordCorrect
+                                            ? null
+                                            : <div className="error">Password is incorrect</div>
+                                    }
+                                </div>
+                                
+                                <div className="profile-tab-account-password-input-and-error-message">
+                                    <PasswordInput
+                                        passwordInput={newPasswordInput}
+                                        setPasswordInput={setNewPasswordInput}
+                                        passwordInputLabel={newPasswordInputLabel}
+                                    />
+                                    {isNewPasswordValid === null || isNewPasswordValid === true
+                                        ? null
+                                        : <span className="error">Password can not contain spaces</span>
+                                    }
+                                </div>
+                                
+                                <div className="profile-tab-account-password-input-and-error-message">
+                                    <PasswordInput
+                                        passwordInput={newPasswordCheckInput}
+                                        setPasswordInput={setNewPasswordCheckInput}
+                                        passwordInputLabel={newPasswordInputCheckLabel}
+                                    />
+                                    {doNewPasswordInputsMatch === null || doNewPasswordInputsMatch === true
+                                        ? null
+                                        : <span className="error">New passwords do not match</span>
+                                    }
+                                </div>
+                                
+                                <div>
+                                    <button
+                                        type="button"
+                                        onClick={onClickChangePasswordButton}
+                                        disabled={
+                                            !currentPasswordInput ||
+                                            !newPasswordInput ||
+                                            !newPasswordCheckInput
+                                        }
+                                    >Change Password</button>
+                                </div>
+                            </div>                            
+                        </div>
                         
-                        <PasswordInput
-                            passwordInput={currentPasswordInput}
-                            setPasswordInput={setCurrentPasswordInput}
-                            passwordInputLabel={currentPasswordInputLabel}
-                        />
-                        {isPasswordCorrect === null
-                            ? null
-                            : isPasswordCorrect
-                                ? null
-                                : <div className="error">Password is incorrect</div>
-                        }
-                        <PasswordInput
-                            passwordInput={newPasswordInput}
-                            setPasswordInput={setNewPasswordInput}
-                            passwordInputLabel={newPasswordInputLabel}
-                        />
-                        {isNewPasswordValid === null || isNewPasswordValid === true
-                            ? null
-                            : <span className="error">Password can not contain spaces</span>
-                        }
-
-                        <PasswordInput
-                            passwordInput={newPasswordCheckInput}
-                            setPasswordInput={setNewPasswordCheckInput}
-                            passwordInputLabel={newPasswordInputCheckLabel}
-                        />
-                        {doNewPasswordInputsMatch === null || doNewPasswordInputsMatch === true
-                            ? null
-                            : <span className="error">New passwords do not match</span>
-                        }
-
-                        <button
-                            type="button"
-                            onClick={onClickChangePasswordButton}
-                            disabled={
-                                !currentPasswordInput ||
-                                !newPasswordInput ||
-                                !newPasswordCheckInput
-                            }
-                        >Change Password</button>
-
-                        <button
-                            type="button"
-                            onClick={onClickDeleteAccountButton}
-                            style={styleDeleteAccountButton}
-                        >Delete Account</button>
-
-                        <div style={styleDeleteAccountConfirmationMessage}>
-                            <div className="warning">Delete account? It can not be recovered and your posts and comments will be also be deleted.</div>
-                            <button
-                                type="button"
-                                onClick={onClickDeleteAccountCancelButton}
-                            >Cancel</button>
-                            <button
-                                type="button"
-                                onClick={onClickDeleteAccountDeleteButton}
-                            >Delete</button>
+                        <div id="profile-tab-account-delete-account">
+                            <div>
+                                <button
+                                    type="button"
+                                    onClick={onClickDeleteAccountButton}
+                                    style={styleDeleteAccountButton}
+                                >Delete Account</button>
+                            </div>
+                            
+                            <div id="profile-tab-account-delete-account-confirmation-message" style={styleDeleteAccountConfirmationMessage}>
+                                <div className="warning">Delete account? It can not be recovered and your posts and comments will be also be deleted.</div>
+                                <div id="profile-tab-account-delete-account-buttons">
+                                    <button
+                                        type="button"
+                                        onClick={onClickDeleteAccountCancelButton}
+                                    >Cancel</button>
+                                    <button
+                                        type="button"
+                                        onClick={onClickDeleteAccountDeleteButton}
+                                    >Delete</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     : null

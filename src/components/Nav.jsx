@@ -31,8 +31,8 @@ export default function Nav({isNavVisible, setIsNavVisible, onClickLogOutButton}
                 </>
             }
             
-            <Link to="/about" id="nav-link-about">About</Link>
-            <Link to="/contact" id="nav-link-contact">Contact</Link>
+            {/* <Link to="/about" id="nav-link-about">About</Link>
+            <Link to="/contact" id="nav-link-contact">Contact</Link> */}
             <Link to="/terms-and-conditions" id="nav-link-terms-and-conditions">Terms & Conditions</Link>
             <Link to="/privacy-policy" id="nav-link-privacy-policy">Privacy Policy</Link>
             <Link to="/disclaimer" id="nav-link-disclaimer">Disclaimer</Link>

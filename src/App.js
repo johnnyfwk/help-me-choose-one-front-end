@@ -23,7 +23,7 @@ import Error404 from './pages/Error404';
 function App() {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
 
-    const numberOfItemsToDisplayAndIncrement = 5;
+    const numberOfItemsToDisplayAndIncrement = 20;
 
     const [isNavVisible, setIsNavVisible] = useState(false);
     const [isVotesVisible, setIsVotesVisible] = useState(false);
