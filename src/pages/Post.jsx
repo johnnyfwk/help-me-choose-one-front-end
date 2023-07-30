@@ -79,9 +79,7 @@ export default function Post({
     const [isPostDeletedSuccessfully, setIsPostDeletedSuccessfully] = useState(null);
 
     const [isEditAndDeletePostButtonsContainerVisible, setIsEditAndDeletePostButtonsContainerVisible] = useState(false);
-    const [isEditAndDeletePostButtonsVisible, setIsEditAndDeletePostButtonsVisible] = useState(false);
     const [isDeletePostMessageContainerVisible, setIsDeletePostMessageContainerVisible] = useState();
-    // const [isDeletePostMessageVisible, setIsDeletePostMessageVisible] = useState(false);
     const [isReportPostButtonContainerVisible, setIsReportPostButtonContainerVisible] = useState(false);
 
     const [selectedImage, setSelectedImage] = useState("");
@@ -164,7 +162,6 @@ export default function Post({
 
     function onClickVoteButton() {
         setIsEditAndDeletePostButtonsContainerVisible(false);
-        // setIsDeletePostMessageVisible(false);
         setIsReportPostButtonContainerVisible(false);
         let updatedOptionsAndVotes = [];
         post.options_and_votes.forEach((option) => {
@@ -321,13 +318,11 @@ export default function Post({
 
     function onClickDeletePost() {
         setIsEditAndDeletePostButtonsContainerVisible(false);
-        // setIsDeletePostMessageVisible(true);
         setIsDeletePostMessageContainerVisible(true);
     }
 
     function onClickDeletePostNo() {
         setIsEditAndDeletePostButtonsContainerVisible(false);
-        // setIsDeletePostMessageVisible(false);
         setIsDeletePostMessageContainerVisible(false);
     }
 
@@ -351,7 +346,6 @@ export default function Post({
 
     function onClickPostCommentButton() {
         setIsEditAndDeletePostButtonsContainerVisible(false);
-        // setIsDeletePostMessageVisible(false);
         setIsReportPostButtonContainerVisible(false);
         setIsCommentPostedSuccessfully(null);
         api.postComment(new Date(), new Date(), commentInput, [], post.post_id, userLoggedIn.user_id)
@@ -401,16 +395,30 @@ export default function Post({
         bottom: isDeletePostMessageContainerVisible ? "0%" : "-100%"
     }
 
-    // const styleDeletePostMessage = {
-    //     display: isDeletePostMessageVisible ? "initial" : "none"
-    // }
-
     const styleReportButtonLinkContainer = {
         bottom: isReportPostButtonContainerVisible ? "0%" : "-100%"
     }
 
     const styleOptionImage = {
         display: isOptionImageVisible ? "grid" : "none"
+    }
+
+    const styleUpdatePostButton = {
+        opacity: !editTitleInput ||
+        !editDescriptionInput ||
+        editCategoryInput === "Select a Category" ||
+        !isOption1ImageInputValid ||
+        !isOption2ImageInputValid ||
+        !isOption3ImageInputValid ||
+        !isOption4ImageInputValid ||
+        !isOption5ImageInputValid ||
+        Object.values(editOptionInputs).filter((option) => option).length < 2
+            ? "0.3"
+            : "1"
+    }
+
+    const stylePostCommentButton = {
+        opacity: !commentInput ? "0.3" : "1"
     }
 
     if (isLoading) {
@@ -496,7 +504,8 @@ export default function Post({
                     <p>{post.description}</p>
                     
                     <div id="post-option-image" onClick={onClickCloseImage} style={styleOptionImage}>
-                        <img src={selectedImage} alt="option-image" />
+                        <img src={selectedImage} alt="option" />
+                        <div>[x]</div>
                     </div>
                     
                     <form id="post-options-form">
@@ -652,6 +661,7 @@ export default function Post({
                                     !isOption4ImageInputValid ||
                                     !isOption5ImageInputValid
                                 }
+                                style={styleUpdatePostButton}
                             >Update</button>
                         </div>
                     </div>
@@ -670,6 +680,7 @@ export default function Post({
                                         type="button"
                                         onClick={onClickPostCommentButton}
                                         disabled={!commentInput}
+                                        style={stylePostCommentButton}
                                     >Post Comment</button>
                                 </div>
                             </div>

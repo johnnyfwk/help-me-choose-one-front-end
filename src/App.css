@@ -175,13 +175,13 @@ footer {
 #show-nav-button {
     cursor: pointer;
     font-size: 2rem;
-    font-weight: bold;
     display: grid;
     align-content: center;
 }
 
 #hide-nav-button {
     cursor: pointer;
+    font-size: 1.3rem;
 }
 
 nav {
@@ -445,19 +445,20 @@ textarea {
     height: 100%;
     left: 0;
     top: 0;
-    display: grid;
-
     cursor: pointer;
     z-index: 2;
 }
 
 #post-option-image img {
-    max-height: 50%;
+    max-height: 75%;
     object-fit: contain;
+    position: fixed;
 }
 
 #post-option-image div {
-    text-align: center;
+    position: fixed;
+    top: 80%;
+    left: 50%;
 }
 
 #post-options-form {
