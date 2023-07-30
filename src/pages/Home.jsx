@@ -116,7 +116,7 @@ export default function Home({numberOfItemsToDisplayAndIncrement}) {
                     ? <div>
                         <p>If you have a choice to make but don't which one to choose, <Link to="sign-up">sign up</Link> or <Link to="/log-in">log in</Link> in and post your question so other members of the site can help you choose.</p>
                     </div>
-                    : <p>Post a question and let other members of the site help you make a choice or help others with their choices by voting and commenting on their posts.</p>
+                    : <p><Link to="/create-post">Post a question</Link> and let other members of the site help you make a choice or help others with their choices by voting and commenting on their posts.</p>
                 }
                 
             </header>

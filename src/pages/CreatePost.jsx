@@ -103,6 +103,22 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
         bottom: isDuplicateOptionsEnteredMessageVisible ? "0%" : "-100%"
     }
 
+    const styleCreatePostButton = {
+        opacity: !titleInput ||
+        !descriptionInput ||
+        !categoryInput ||
+        categoryInput === "Select a Category" ||
+        isSubmitDisabled ||
+        isPostCreationSuccessful ||
+        !isOption1ImageInputValid ||
+        !isOption2ImageInputValid ||
+        !isOption3ImageInputValid ||
+        !isOption4ImageInputValid ||
+        !isOption5ImageInputValid
+            ? "0.3"
+            : "1"
+    }
+
     return (
         <div>
             <Helmet>
@@ -172,6 +188,7 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
                                 !isOption4ImageInputValid ||
                                 !isOption5ImageInputValid
                             }
+                            style={styleCreatePostButton}
                         >Create Post</button>
                     </div>
                 </form>

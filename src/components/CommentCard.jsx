@@ -155,6 +155,10 @@ export default function CommentCard({
         display: isReportCommentButtonVisible ? "initial" : "none"
     }
 
+    const styleUpdateCommentButton = {
+        opacity: !editCommentInput ? "0.3" : "1"
+    }
+
     return (
         <div className="comment-card" loading="lazy" style={styleCommentCard}>
             {Object.keys(userLoggedIn).length === 0
@@ -223,6 +227,7 @@ export default function CommentCard({
                             type="button"
                             onClick={onClickUpdateCommentButton}
                             disabled={!editCommentInput}
+                            style={styleUpdateCommentButton}
                         >Update</button>
                     </div>
                 </div>

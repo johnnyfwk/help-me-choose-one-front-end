@@ -25,6 +25,9 @@ export function isImageUrlValid(imageUrl) {
 }
 
 export function convertUrlsToUserFriendlyHeadings(url) {
+    if (url === "tv-and-movies") {
+        return "TV & Movies";
+    }
     const arrayOfCapitalisedWords = url.split("-").map((word) => {
         if (word === "and") {
             return "&";

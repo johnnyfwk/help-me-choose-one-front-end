@@ -113,6 +113,18 @@ export default function SignUp({setIsAccountCreatedMessageVisible, setIsAccountN
         )
     }
 
+    const styleSignUpButton = {
+        opacity: !usernameInput ||
+        !passwordInput ||
+        !isUsernameAvailable ||
+        !isUsernameValid ||
+        !isPasswordValid ||
+        !isUsernameFamilyFriendly ||
+        !isAvatarUrlValid
+            ? "0.3"
+            : "1"
+    }
+
     return (
         <div id="sign-up">
             <Helmet>
@@ -187,6 +199,7 @@ export default function SignUp({setIsAccountCreatedMessageVisible, setIsAccountN
                                 !isUsernameFamilyFriendly ||
                                 !isAvatarUrlValid
                             }
+                            style={styleSignUpButton}
                         >Sign Up</button>
                     </div>
                 </form>

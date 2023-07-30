@@ -72,6 +72,10 @@ export default function LogIn({setIsLoggedInMessageVisible}) {
         }
     }
 
+    const styleLogInButton = {
+        opacity: !usernameInput || !passwordInput ? "0.3" : "1"
+    }
+
     if (isLoading) {
         return (
             <main>
@@ -134,6 +138,7 @@ export default function LogIn({setIsLoggedInMessageVisible}) {
                                 !usernameInput ||
                                 !passwordInput
                             }
+                            style={styleLogInButton}
                         >Log In</button>
                     </div>
                 </form>

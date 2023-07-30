@@ -298,6 +298,18 @@ export default function Profile({
         color: visibleTab === "account" ? "#FF206E" : "#FFFFFF"
     }
 
+    const styleUpdateAvatarButton = {
+        opacity: !isEditAvatarUrlValid ? "0.3" : "1"
+    }
+
+    const styleChangePasswordButton = {
+        opacity: !currentPasswordInput ||
+        !newPasswordInput ||
+        !newPasswordCheckInput
+            ? "0.3"
+            : "1"
+    }
+
     if (isLoading) {
         return (
             <main>
@@ -443,6 +455,7 @@ export default function Profile({
                                         type="button"
                                         onClick={onClickEditProfileButton}
                                         disabled={!isEditAvatarUrlValid}
+                                        style={styleUpdateAvatarButton}
                                     >Update</button>
                                 </div>
                             </div>
@@ -499,12 +512,13 @@ export default function Profile({
                                             !newPasswordInput ||
                                             !newPasswordCheckInput
                                         }
+                                        style={styleChangePasswordButton}
                                     >Change Password</button>
                                 </div>
                             </div>                            
                         </div>
                         
-                        <div id="profile-tab-account-delete-account">
+                        {/* <div id="profile-tab-account-delete-account">
                             <div>
                                 <button
                                     type="button"
@@ -526,7 +540,7 @@ export default function Profile({
                                     >Delete</button>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                     : null
                 }
