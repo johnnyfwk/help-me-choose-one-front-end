@@ -6,7 +6,7 @@ export default function TermsAndConditions() {
             <Helmet>
                 <link rel="canonical" href="https://helpmechooseone.com/terms-and-conditions" />
                 <title>Terms & Conditions • Help Me Choose One</title>
-                <meta name="description" content="This is the terms and conditions page meta description." />
+                <meta name="description" content="The terms and conditions for HelpMeChooseOne.com." />
             </Helmet>
 
             <header>

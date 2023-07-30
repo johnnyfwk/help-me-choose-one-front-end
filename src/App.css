@@ -43,6 +43,11 @@
     src: url("../src/assets/fonts/Quicksand-VariableFont_wght.ttf");
 }
 
+input,
+textarea {
+    font-family: Quicksand;
+}
+
 * {
     box-sizing: border-box;
     text-decoration: none;

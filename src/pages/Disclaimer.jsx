@@ -6,7 +6,7 @@ export default function Disclaimer() {
             <Helmet>
                 <link rel="canonical" href="https://helpmechooseone.com/disclaimer" />
                 <title>Disclaimer • Help Me Choose One</title>
-                <meta name="description" content="This is the Disclaimer page meta description." />
+                <meta name="description" content="The disclaimer for HelpMeChooseOne.com." />
             </Helmet>
 
             <header>

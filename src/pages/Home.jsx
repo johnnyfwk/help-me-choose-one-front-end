@@ -103,8 +103,8 @@ export default function Home({numberOfItemsToDisplayAndIncrement}) {
         <div id="home">
             <Helmet>
                 <link rel="canonical" href="https://helpmechooseone.com/" />
-                <title>Let the Internet help you choose • Help Me Choose One</title>
-                <meta name="description" content="This is the Home page meta description." />
+                <title>Let the Internet help you make a choice • Help Me Choose One</title>
+                <meta name="description" content="If you have to make a choice but don't know which one to choose, post a question and let the Internet help you choose." />
             </Helmet>
 
             <header>
@@ -142,12 +142,6 @@ export default function Home({numberOfItemsToDisplayAndIncrement}) {
                         })}
                     </div>
                 }
-
-                <div className="post-cards">
-                    {itemsToDisplay.map((post) => {
-                        return <PostCard key={post.post_id} post={post} />
-                    })}
-                </div>
                 
                 <LoadMoreButton
                     numberOfItemsToDisplayAndIncrement={numberOfItemsToDisplayAndIncrement}

@@ -6,7 +6,7 @@ export default function PrivacyPolicy() {
             <Helmet>
                 <link rel="canonical" href="https://helpmechooseone.com/privacy-policy" />
                 <title>Privacy Policy • Help Me Choose One</title>
-                <meta name="description" content="This is the privacy policy page meta description." />
+                <meta name="description" content="The privacy policy for HelpMeChooseOne.com." />
             </Helmet>
 
             <header>

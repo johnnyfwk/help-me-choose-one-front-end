@@ -108,7 +108,7 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
             <Helmet>
                 <link rel="canonical" href="https://helpmechooseone.com/create-post" />
                 <title>Create Post • Help Me Choose One</title>
-                <meta name="description" content="This is the Create Post page meta description." />
+                <meta name="description" content="If you have a choice to make, post a question so others can help you choose." />
             </Helmet>
 
             <header>
