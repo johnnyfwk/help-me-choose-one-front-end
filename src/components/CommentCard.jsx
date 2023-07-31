@@ -146,8 +146,7 @@ export default function CommentCard({
 
     function onClickReportCommentButton() {
         setIsReportCommentButtonVisible(false);
-        navigate(`/report/?report_owners_id=${userLoggedIn.user_id}&report_owners_name=${userLoggedIn.username}&post_id=${comment.comment_post_id
-        }&post_owners_id=null&post_owners_name=&comment_id=${comment.comment_id}&comment_owners_id=${comment.comment_owner_id}&comment_owners_name=${comment.username}`);
+        navigate(`/report/?report_owners_id=${userLoggedIn.user_id}&report_owners_name=${userLoggedIn.username}&post_id=${comment.comment_post_id}&post_owners_id=null&post_owners_name=&comment_id=${comment.comment_id}&comment_owners_id=${comment.comment_owner_id}&comment_owners_name=${comment.username}`);
         window.scrollTo(0, 0);
     }
 

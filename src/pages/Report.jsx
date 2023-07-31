@@ -24,11 +24,6 @@ export default function Report({setIsReportSentMessageVisible, setIsReportNotSen
     const descriptionInputMaxLength = 5000;
 
     const navigate = useNavigate();
-    useEffect(() => {
-        if (Object.keys(userLoggedIn).length === 0) {
-            navigate("/log-in");
-        }
-    }, [userLoggedIn]);
 
     function handleTitleInput(event) {
         setTitleInput(event.target.value);
@@ -61,8 +56,7 @@ export default function Report({setIsReportSentMessageVisible, setIsReportNotSen
 
             <header>
                 <h1>Report an Issue</h1>
-                <p>Send us a report of an issue and we'll do our best to fix it.</p>
-                <p>If the issue is regarding a post or comment, please find the specific one, click on the three dots and then 'Report'.</p>
+                <p>Send us a report of an issue and we'll do our best to make things better.</p>
             </header>
 
             <main>

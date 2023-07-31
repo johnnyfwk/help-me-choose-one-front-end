@@ -26,8 +26,8 @@ export default function Nav({isNavVisible, setIsNavVisible, onClickLogOutButton}
 
             {Object.keys(userLoggedIn).length === 0
                 ? <>
-                <Link to="/sign-up" id="sign-up-link">Sign Up</Link>
-                <Link to="/log-in" id="log-in-link">Log In</Link>
+                    <Link to="/sign-up" id="sign-up-link">Sign Up</Link>
+                    <Link to="/log-in" id="log-in-link">Log In</Link>
                 </>
                 : <>
                     <Link to="/create-post">Create Post</Link>

@@ -182,7 +182,7 @@ export default function SignUp({setIsAccountCreatedMessageVisible, setIsAccountN
                         />
                         {isAvatarUrlValid === null || isAvatarUrlValid === true
                             ? null
-                            : <span className="error">Please enter a valid image URL</span>
+                            : <span className="error">Image URL should include '.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', or '.svg' file extensions and not include any spaces.</span>
                         }
                     </div>
                     
