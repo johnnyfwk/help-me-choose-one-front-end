@@ -52,7 +52,7 @@ export default function Report({setIsReportSentMessageVisible, setIsReportNotSen
     }
 
     return (
-        <div>
+        <div id="report">
             <Helmet>
                 <link rel="canonical" href="https://helpmechooseone.com/report" />
                 <title>Report an Issue • Help Me Choose One</title>
@@ -67,32 +67,38 @@ export default function Report({setIsReportSentMessageVisible, setIsReportNotSen
 
             <main>
                 <form>
-                    <label htmlFor="report-title">Title:</label>
-                    <input
-                        type="text"
-                        id="report-title"
-                        name="report-title"
-                        value={titleInput}
-                        onChange={handleTitleInput}
-                        maxLength={titleMaxLength}
-                    />
-                    <div>{titleInput.length} / {titleMaxLength}</div>
-
-                    <label htmlFor="report-description">Description:</label>
-                    <textarea
-                        id="report-description"
-                        name="report-description"
-                        value={descriptionInput}
-                        onChange={handleDescriptionInput}
-                        maxLength={descriptionInputMaxLength}
-                    />
-                    <div>{descriptionInput.length} / {descriptionInputMaxLength}</div>
-
-                    <button
-                        type="button"
-                        onClick={onClickSubmitReportButton}
-                        disabled={!titleInput || !descriptionInput}
-                    >Submit</button>
+                    <div className="report-form-input">
+                        <label htmlFor="report-title">Title</label>
+                        <input
+                            type="text"
+                            id="report-title"
+                            name="report-title"
+                            value={titleInput}
+                            onChange={handleTitleInput}
+                            maxLength={titleMaxLength}
+                        />
+                        <div className="report-form-input-lengths">{titleInput.length} / {titleMaxLength}</div>
+                    </div>
+                    
+                    <div className="report-form-input">
+                        <label htmlFor="report-description">Description</label>
+                        <textarea
+                            id="report-description"
+                            name="report-description"
+                            value={descriptionInput}
+                            onChange={handleDescriptionInput}
+                            maxLength={descriptionInputMaxLength}
+                        />
+                        <div className="report-form-input-lengths">{descriptionInput.length} / {descriptionInputMaxLength}</div>
+                    </div>
+                    
+                    <div>
+                        <button
+                            type="button"
+                            onClick={onClickSubmitReportButton}
+                            disabled={!titleInput || !descriptionInput}
+                        >Submit</button>
+                    </div>
                 </form>
             </main>
         </div>

@@ -584,11 +584,8 @@ export default function Post({
                     </form>
 
                     {userLoggedIn.user_id === post.post_owner_id
-                        ? <div
-                            id="edit-and-delete-post-buttons-container"
-                            style={styleEditAndDeletePostButtonsContainer}
-                        >
-                            <div id="edit-and-delete-post-links-container">
+                        ? <>
+                            <div id="edit-and-delete-post-buttons-container" style={styleEditAndDeletePostButtonsContainer}>
                                 <div onClick={onClickCloseEditAndDeletePostLinksContainerButton}>x</div>
                                 <div onClick={onClickEditPost}>Edit</div>
                                 <div onClick={onClickDeletePost}>Delete</div>
@@ -600,7 +597,7 @@ export default function Post({
                                     <button onClick={onClickDeletePostYes}>Yes</button>
                                 </div>
                             </div>
-                        </div>
+                        </>
                         : <div
                             style={styleReportButtonLinkContainer}
                             id="report-button-link-container"

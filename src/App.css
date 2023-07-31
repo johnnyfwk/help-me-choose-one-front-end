@@ -678,6 +678,7 @@ textarea {
     transition: bottom 0.2s;
     display: grid;
     gap: 20px;
+    z-index: 1;
 }
 
 #report-button-link {
@@ -876,6 +877,21 @@ footer a:hover {
 
 #delete-comment-message {
     background: var(--orange);
+}
+
+#report form {
+    display: grid;
+    gap: 20px;
+}
+
+.report-form-input {
+    display: grid;
+    gap: 10px;
+}
+
+.report-form-input-lengths {
+    color: var(--battlship-gray);
+    font-size: 0.9rem;
 }
 
 @media only screen and (min-width: 600px) {
