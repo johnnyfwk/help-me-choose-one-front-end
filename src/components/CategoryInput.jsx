@@ -9,12 +9,12 @@ export default function CategoryInput({categoryInput, setCategoryInput}) {
             <select id="categories" value={categoryInput} onChange={handleCategoryInput}>
                 <option defaultValue>Select a Category</option>
                 <option value="Accommodation">Accommodation</option>
-                <option value="Arts & Draft">Arts & Draft</option>
+                <option value="Art & Craft">Art & Craft</option>
                 <option value="Bags & Luggage">Bags & Luggage</option>
                 <option value="Bars & Nightclubs">Bars & Nightclubs</option>
                 <option value="Beauty">Beauty</option>
                 <option value="Business">Business</option>
-                <option value="Charities">Charities</option>
+                <option value="Charity">Charity</option>
                 <option value="Clothing & Accessories">Clothing & Accessories</option>
                 <option value="Computers & Accessories">Computers & Accessories</option>
                 <option value="Dating & Relationships">Dating & Relationships</option>
