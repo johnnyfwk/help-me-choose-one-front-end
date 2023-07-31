@@ -637,6 +637,11 @@ textarea {
     padding: 20px;
 }
 
+#edit-post-inputs {
+    width: var(--max-width);
+    margin: auto;
+}
+
 #post-inputs,
 #edit-post-inputs {
     display: grid;

@@ -680,9 +680,9 @@ export default function Post({
                 </section>
 
                 <section id="edit-post" style={styleEditPost}>
-                    <h2>Edit Post</h2>
-
                     <div id="edit-post-inputs">
+                        <h2>Edit Post</h2>
+
                         <TitleInput
                             titleInput={editTitleInput}
                             setTitleInput={setEditTitleInput}
@@ -715,38 +715,38 @@ export default function Post({
                             isOption5ImageInputValid={isOption5ImageInputValid}
                             setIsOption5ImageInputValid={setIsOption5ImageInputValid}
                         />
-                    </div>
 
-                    {editOptionsHasDuplicates === null || editOptionsHasDuplicates === false
-                        ? null
-                        : <p className="error">You have entered duplicate options</p>
-                    }
+                        {editOptionsHasDuplicates === null || editOptionsHasDuplicates === false
+                            ? null
+                            : <p className="error">You have entered duplicate options</p>
+                        }
 
-                    {isNumberOfOptionsLessThanTwo
-                        ? <p className="error">Please enter at least two options</p>
-                        : null
-                    }
+                        {isNumberOfOptionsLessThanTwo
+                            ? <p className="error">Please enter at least two options</p>
+                            : null
+                        }
 
-                    <div id="edit-post-buttons">
-                        <button
-                            type="button"
-                            onClick={onClickCancelEditPostButton}
-                        >Cancel</button>
-                        <button
-                            type="button"
-                            onClick={onClickUpdatePostButton}
-                            disabled={
-                                !editTitleInput ||
-                                !editDescriptionInput ||
-                                editCategoryInput === "Select a Category" ||
-                                !isOption1ImageInputValid ||
-                                !isOption2ImageInputValid ||
-                                !isOption3ImageInputValid ||
-                                !isOption4ImageInputValid ||
-                                !isOption5ImageInputValid
-                            }
-                            style={styleUpdatePostButton}
-                        >Update</button>
+                        <div id="edit-post-buttons">
+                            <button
+                                type="button"
+                                onClick={onClickCancelEditPostButton}
+                            >Cancel</button>
+                            <button
+                                type="button"
+                                onClick={onClickUpdatePostButton}
+                                disabled={
+                                    !editTitleInput ||
+                                    !editDescriptionInput ||
+                                    editCategoryInput === "Select a Category" ||
+                                    !isOption1ImageInputValid ||
+                                    !isOption2ImageInputValid ||
+                                    !isOption3ImageInputValid ||
+                                    !isOption4ImageInputValid ||
+                                    !isOption5ImageInputValid
+                                }
+                                style={styleUpdatePostButton}
+                            >Update</button>
+                        </div>
                     </div>
                 </section>
                 
