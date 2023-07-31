@@ -53,6 +53,8 @@ function App() {
     const [isAccountNotDeletedMessageVisible, setIsAccountNotDeletedMessageVisible] = useState(false);
     const [isReportSentMessageVisible, setIsReportSentMessageVisible] = useState(false);
     const [isReportNotSentMessageVisible, setIsReportNotSentMessageVisible] = useState(false);
+    const [isVoteRemovedMessageVisible, setIsVoteRemovedMessageVisible] = useState(false);
+    const [isVoteNotRemovedMessageVisible, setIsVoteNotRemovedMessageVisible] = useState(false);
 
     function onClickLogOutButton() {
         setUserLoggedIn({});
@@ -164,6 +166,14 @@ function App() {
         bottom: isReportNotSentMessageVisible ? "0%" : "-100%"
     }
 
+    const styleVoteRemovedMessage = {
+        bottom: isVoteRemovedMessageVisible ? "0%" : "-100%"
+    }
+
+    const styleVoteNotRemovedMessage = {
+        bottom: isVoteNotRemovedMessageVisible ? "0%" : "-100%"
+    }
+
     return (
         <div className="App">
             <div id="logo-show-nav-button-and-nav">
@@ -209,6 +219,8 @@ function App() {
                             setIsCommentNotDeletedMessageVisible={setIsCommentNotDeletedMessageVisible}
                             setIsPostDeletedMessageVisible={setIsPostDeletedMessageVisible}
                             setIsPostNotDeletedMessageVisible={setIsPostNotDeletedMessageVisible}
+                            setIsVoteRemovedMessageVisible={setIsVoteRemovedMessageVisible}
+                            setIsVoteNotRemovedMessageVisible={setIsVoteNotRemovedMessageVisible}
                         />
                     } />
                 <Route
@@ -280,6 +292,8 @@ function App() {
             <div id="account-not-deleted-message" style={styleAccountNotDeletedMessage}>Your account could not be deleted</div>
             <div id="report-sent-message" style={styleReportSentMessage}>Your report was sent</div>
             <div id="report-not-sent-message" style={styleReportNotSentMessage}>Your report could not be sent</div>
+            <div id="vote-removed-message" style={styleVoteRemovedMessage}>Your vote was removed</div>
+            <div id="vote-not-removed-message" style={styleVoteNotRemovedMessage}>Your vote could not be removed</div>
         </div>
     );
 }

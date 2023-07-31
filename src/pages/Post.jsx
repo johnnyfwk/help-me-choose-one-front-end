@@ -25,7 +25,9 @@ export default function Post({
     setIsCommentDeletedMessageVisible,
     setIsCommentNotDeletedMessageVisible,
     setIsPostDeletedMessageVisible,
-    setIsPostNotDeletedMessageVisible
+    setIsPostNotDeletedMessageVisible,
+    setIsVoteRemovedMessageVisible,
+    setIsVoteNotRemovedMessageVisible
 }) {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
     const {post_id_and_title} = useParams();
@@ -91,6 +93,9 @@ export default function Post({
     const [isOption4ImageInputValid, setIsOption4ImageInputValid] = useState(true);
     const [isOption5ImageInputValid, setIsOption5ImageInputValid] = useState(true);
 
+    const [isRemoveVoteMessageAndButtonsContainerVisible, setIsRemoveVoteMessageAndButtonsContainerVisible] = useState(false);
+    const [isVoteRemovedSuccessfully, setIsVoteRemovedSuccessfully] = useState(null);
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -100,18 +105,14 @@ export default function Post({
         setIsPostEditable(false);
         api.getPostById(postId)
             .then((response) => {
-                console.log(response)
                 setIsLoading(false);
                 setIsFetchingPostSuccessful(true);
                 setPost(response);
                 const voters = [];
                 if (response.options_and_votes.length > 0) {
                     response.options_and_votes.forEach((option) => {
-                        
                         option.votesFromUserIds.forEach((voterId) => {
-                            console.log(voterId, "<------- voterId")
                             if (userLoggedIn.user_id === voterId) {
-                                console.log("Logged in voter voted for", option.option)
                                 setLoggedInUsersVote(option.option);
                             }
                             voters.push(voterId);
@@ -132,10 +133,9 @@ export default function Post({
         isCommentPostedSuccessfully,
         isCommentUpdatedSuccessfully,
         isCommentDeletedSuccessfully,
-        isPostDeletedSuccessfully
+        isPostDeletedSuccessfully,
+        isVoteRemovedSuccessfully
     ])
-
-    console.log(loggedInUsersVote, "<------ loggedInUsersVote")
 
     useEffect(() => {
         setIsCommentsLoading(true);
@@ -157,7 +157,8 @@ export default function Post({
         isCommentPostedSuccessfully,
         isCommentUpdatedSuccessfully,
         isCommentDeletedSuccessfully,
-        isPostDeletedSuccessfully
+        isPostDeletedSuccessfully,
+        isVoteRemovedSuccessfully
     ])
 
     function handleOptionInput(event) {
@@ -200,6 +201,9 @@ export default function Post({
         setIsVotesVisible((currentIsVotesVisible) => {
             return !currentIsVotesVisible;
         })
+        setIsEditAndDeletePostButtonsContainerVisible(false);
+        setIsReportPostButtonContainerVisible(false);
+        setIsRemoveVoteMessageAndButtonsContainerVisible(false);
     }
 
     function onClickPostOptionsButton() {
@@ -209,6 +213,7 @@ export default function Post({
         setIsReportPostButtonContainerVisible((currentIsReportPostButtonContainerVisible) => {
             return !currentIsReportPostButtonContainerVisible;
         })
+        setIsRemoveVoteMessageAndButtonsContainerVisible(false);
     }
 
     function onClickCloseEditAndDeletePostLinksContainerButton() {
@@ -224,6 +229,7 @@ export default function Post({
         setIsPostEditable((currentIsPostEditable) => {
             return !currentIsPostEditable;
         });
+        setIsRemoveVoteMessageAndButtonsContainerVisible(false);
         setEditTitleInput(post.title);
         setEditCategoryInput(utils.convertUrlsToUserFriendlyHeadings(post.category));
         setEditDescriptionInput(post.description);
@@ -282,7 +288,6 @@ export default function Post({
                     else {
                         votes = [];
                     }
-
                     updatedOptionsImagesAndVotes.push({
                         option: updatedOptions[optionNumber] ? updatedOptions[optionNumber].trim() : "",
                         optionImage: newImages[optionNumber] ? newImages[optionNumber].trim() : "",
@@ -379,6 +384,49 @@ export default function Post({
         navigate(`/report/?report_owners_id=${userLoggedIn.user_id}&report_owners_name=${userLoggedIn.username}&post_id=${postId}&post_owners_id=${post.post_owner_id}&post_owners_name=${post.username}&comment_id=null&comment_owners_id=null&comment_owners_name=`);
     }
 
+    function onClickRemoveVoteButton() {
+        setIsEditAndDeletePostButtonsContainerVisible(false);
+        setIsDeletePostMessageContainerVisible(false);
+        setIsReportPostButtonContainerVisible(false);
+        setIsRemoveVoteMessageAndButtonsContainerVisible((currentIsRemoveVoteMessageAndButtonsContainerVisible) => {
+            return !currentIsRemoveVoteMessageAndButtonsContainerVisible;
+        });
+    }
+
+    function onClickRemoveVoteButtonNo() {
+        setIsRemoveVoteMessageAndButtonsContainerVisible(false);
+    }
+
+    function onClickRemoveVoteButtonYes() {
+        setIsRemoveVoteMessageAndButtonsContainerVisible(false);
+        const updatedOptionsAndVotes = post.options_and_votes.map((optionAndVotes) => {
+            const newOptionAndVotes = {};
+            newOptionAndVotes.option = optionAndVotes.option;
+            newOptionAndVotes.optionImage = optionAndVotes.optionImage;
+            if (optionAndVotes.votesFromUserIds.includes(userLoggedIn.user_id)) {
+                const votesForOptionCopy = [...optionAndVotes.votesFromUserIds];
+                votesForOptionCopy.splice(votesForOptionCopy.indexOf(userLoggedIn.user_id), 1);
+                newOptionAndVotes.votesFromUserIds = votesForOptionCopy;
+            }
+            else {
+                newOptionAndVotes.votesFromUserIds = [...optionAndVotes.votesFromUserIds];
+            }
+            return newOptionAndVotes;
+        })
+
+        setIsVoteRemovedSuccessfully(null);
+        api.updatePost(new Date(), post.title, post.description, post.category, updatedOptionsAndVotes, postId)
+            .then((response) => {
+                setIsVoteRemovedSuccessfully(true);
+                setIsVoteRemovedMessageVisible(true);
+                setTimeout(() => setIsVoteRemovedMessageVisible(false), 3000);
+            })
+            .catch((error) => {
+                setIsVoteNotRemovedMessageVisible(true);
+                setTimeout(() => setIsVoteNotRemovedMessageVisible(false), 3000);
+            })
+    }
+
     const stylePostMain = {
         gap: userLoggedIn.user_id ? "40px" : "20px"
     }
@@ -423,6 +471,10 @@ export default function Post({
         Object.values(editOptionInputs).filter((option) => option).length < 2
             ? "0.3"
             : "1"
+    }
+
+    const styleRemoveVoteMessageAndButtonsContainer = {
+        bottom: isRemoveVoteMessageAndButtonsContainerVisible ? "0%" : "-100%"
     }
 
     const stylePostCommentButton = {
@@ -568,7 +620,20 @@ export default function Post({
                                     <div>
                                         <button type="button" onClick={onClickShowVotesButton}>{isVotesVisible ? "Hide Votes" : "Show Votes"}</button>
                                     </div>
-                                    <div>You have already voted. You chose '{loggedInUsersVote}'.</div>
+                                    <div id="already-voted-message">You have already voted. You chose '<b>{loggedInUsersVote}</b>'. <span id="remove-vote-text" style={{color:"#FF206E"}} onClick={onClickRemoveVoteButton}>Remove vote</span>.</div>
+                                    <div id="remove-vote-message-and-buttons-container" style={styleRemoveVoteMessageAndButtonsContainer}>
+                                        <div id="remove-vote-message">Remove your vote of '{loggedInUsersVote}'?</div>
+                                        <div id="remove-vote-buttons">
+                                            <button
+                                                type="button"
+                                                onClick={onClickRemoveVoteButtonNo}
+                                            >No</button>
+                                            <button
+                                                type="button"
+                                                onClick={onClickRemoveVoteButtonYes}
+                                            >Yes</button>
+                                        </div>
+                                    </div>
                                 </div>
                                 : <div id="display-votes-and-vote-button">
                                     <div>

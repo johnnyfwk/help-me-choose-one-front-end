@@ -71,7 +71,7 @@ p,
 ul,
 ol {
     font-size: 1.1rem;
-    line-height: 1.7rem;
+    line-height: 1.6rem;
 }
 
 p a:link,
@@ -503,6 +503,25 @@ textarea {
     gap: 20px;
 }
 
+#already-voted-message {
+    line-height: 1.7rem;
+}
+
+#remove-vote-text {
+    cursor: pointer;
+}
+
+#remove-vote-message {
+    line-height: 1.7rem;
+}
+
+#remove-vote-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: end;
+}
+
 #display-votes-and-vote-button {
     display: flex;
     gap: 20px;
@@ -664,7 +683,8 @@ textarea {
 
 #edit-and-delete-post-buttons-container,
 #report-button-link-container,
-#delete-post-message-container {
+#delete-post-message-container,
+#remove-vote-message-and-buttons-container {
     background: var(--outer-space);
     position: fixed;
     width: 100%;
@@ -828,7 +848,9 @@ footer a:hover {
 #account-deleted-message,
 #account-not-deleted-message,
 #report-sent-message,
-#report-not-sent-message {
+#report-not-sent-message,
+#vote-removed-message,
+#vote-not-removed-message {
     position: fixed;
     bottom: -100%;
     left: 0%;
@@ -855,7 +877,8 @@ footer a:hover {
 #avatar-updated-message,
 #password-updated-message,
 #account-deleted-message,
-#report-sent-message {
+#report-sent-message,
+#vote-removed-message {
     background: var(--lime);
 }
 
@@ -870,7 +893,8 @@ footer a:hover {
 #avatar-not-updated-message,
 #password-not-updated-message,
 #account-not-deleted-message,
-#report-not-sent-message {
+#report-not-sent-message,
+#vote-not-removed-message {
     background: var(--red);
     color: var(--white);
 }
