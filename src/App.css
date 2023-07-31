@@ -27,9 +27,11 @@
     
     --left-and-right-padding: 20px;
     --main-padding: 20px;
-    --main-spacing-between-elements: 20px;
+    --home-spacing-between-elements: 30px;
+    --post-spacing-between-elements: 40px;
 
-    --gap-between-cards: 30px;
+    --gap-between-posts: 30px;
+    --gap-between-comments: 20px;
 
     --gap-between-form-elements: 20px;
     --gap-between-input-elements: 10px;
@@ -99,10 +101,14 @@ main {
     padding: var(--left-and-right-padding);
 }
 
-#home main,
+#home main {
+    display: grid;
+    gap: var(--home-spacing-between-elements);
+}
+
 #post main {
     display: grid;
-    gap: var(--main-spacing-between-elements);
+    gap: var(--post-spacing-between-elements);
 }
 
 .max-width {
@@ -276,10 +282,14 @@ textarea {
     gap: var(--gap-between-input-elements);
 }
 
-.post-cards,
+.post-cards {
+    display: grid;
+    gap: var(--gap-between-posts);
+}
+
 .comments {
     display: grid;
-    gap: var(--gap-between-cards);
+    gap: var(--gap-between-comments);
 }
 
 .post-card,
@@ -339,9 +349,14 @@ textarea {
     gap: 10px;
 }
 
-.post-section-main {
+#post-section-main {
     display: grid;
-    gap: 15px;
+    gap: 20px;
+}
+
+#post-section-main-info {
+    display: grid;
+    gap: 10px;
 }
 
 .post-avatar-username-options-button {
@@ -381,6 +396,11 @@ textarea {
     color: var(--white);
 }
 
+#post-category-date-and-description {
+    display: grid;
+    gap: 10px;
+}
+
 #post-category,
 #post-date {
     color: var(--battlship-gray);
@@ -393,10 +413,8 @@ textarea {
 }
 
 #post-options {
-    background: var(--jet);
     display: grid;
     gap: 20px;
-    padding: 20px;
 }
 
 .post-option {

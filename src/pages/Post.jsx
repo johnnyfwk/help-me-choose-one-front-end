@@ -375,6 +375,10 @@ export default function Post({
         navigate(`/report/?report_owners_id=${userLoggedIn.user_id}&report_owners_name=${userLoggedIn.username}&post_id=${postId}&post_owners_id=${post.post_owner_id}&post_owners_name=${post.username}&comment_id=null&comment_owners_id=null&comment_owners_name=`);
     }
 
+    const stylePostMain = {
+        gap: userLoggedIn.user_id ? "40px" : "20px"
+    }
+
     const stylePostOption = {
         position: "relative"
     };
@@ -453,30 +457,13 @@ export default function Post({
                 <h1>{post.title}</h1>
             </header>
 
-            <main>
-                <section className="post-section-main">
-                    {Object.keys(userLoggedIn).length === 0
-                        ? <div>
-                            <div className="post-avatar-username-options-button">
-                                <div className="post-avatar-username">
-                                    <img
-                                        src={
-                                            post.avatar_url === "default-avatar.webp"
-                                                ? require(`../assets/images/avatars/${post.avatar_url}`)
-                                                : post.avatar_url
-                                        }
-                                        alt="Avatar"
-                                        className="post-avatar"
-                                    />
-                                    <div>{post.username}</div>
-                                </div>
-                                
-                            </div>
-                        </div>
-                        : <div>
-                            <div className="post-avatar-username-options-button">
-                                <div className="post-avatar-username">
-                                    <Link to={`/user/${post.post_owner_id}`}>
+            <main style={stylePostMain}>
+                <section id="post-section-main">
+                    <div id="post-section-main-info">
+                        {Object.keys(userLoggedIn).length === 0
+                            ? <div>
+                                <div className="post-avatar-username-options-button">
+                                    <div className="post-avatar-username">
                                         <img
                                             src={
                                                 post.avatar_url === "default-avatar.webp"
@@ -486,37 +473,46 @@ export default function Post({
                                             alt="Avatar"
                                             className="post-avatar"
                                         />
-                                    </Link>
-                                    <Link to={`/user/${post.post_owner_id}`} className="post-username">{post.username}</Link>
-                                </div>
-                                <div id="post-options-button" onClick={onClickPostOptionsButton}>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
+                                        <div>{post.username}</div>
+                                    </div>
+                                    
                                 </div>
                             </div>
+                            : <div>
+                                <div className="post-avatar-username-options-button">
+                                    <div className="post-avatar-username">
+                                        <Link to={`/user/${post.post_owner_id}`}>
+                                            <img
+                                                src={
+                                                    post.avatar_url === "default-avatar.webp"
+                                                        ? require(`../assets/images/avatars/${post.avatar_url}`)
+                                                        : post.avatar_url
+                                                }
+                                                alt="Avatar"
+                                                className="post-avatar"
+                                            />
+                                        </Link>
+                                        <Link to={`/user/${post.post_owner_id}`} className="post-username">{post.username}</Link>
+                                    </div>
+                                    <div id="post-options-button" onClick={onClickPostOptionsButton}>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                         <div id="post-category-date-and-description">
+                            <div id="post-category">{utils.convertUrlsToUserFriendlyHeadings(post.category)}</div>                    
+                            <div id="post-date">
+                                <div>{new Date(post.post_date).toLocaleDateString()}</div>
+                                <div>{new Date(post.post_date).toLocaleTimeString()}</div>
+                            </div>                    
+                            <p>{post.description}</p>
                         </div>
-                    }
+                    </div>
 
-                    <div id="post-category">{utils.convertUrlsToUserFriendlyHeadings(post.category)}</div>
-                    
-                    <div id="post-date">
-                        <div>{new Date(post.post_date).toLocaleDateString()}</div>
-                        <div>{new Date(post.post_date).toLocaleTimeString()}</div>
-                    </div>
-                    
-                    <p>{post.description}</p>
-                    
-                    <div id="post-option-image" onClick={onClickCloseImage} style={styleOptionImage}>
-                        <img src={selectedImage} alt="option" />
-                        <div>[x]</div>
-                    </div>
-                    
                     <form id="post-options-form">
-                        <div>
-                            <button type="button" onClick={onClickShowVotesButton}>{isVotesVisible ? "Hide Votes" : "Show Votes"}</button>
-                        </div>
-
                         <div id="post-options">
                             {post.options_and_votes.map((option) => {
                                 return (
@@ -557,12 +553,21 @@ export default function Post({
                         </div>
                         
                         {Object.keys(userLoggedIn).length === 0
-                            ? <div><Link to="/log-in" id="post-log-in-link">Log in</Link> to vote and post a comment.</div>
+                            ? <>
+                                <div>
+                                    <button type="button" onClick={onClickShowVotesButton}>{isVotesVisible ? "Hide Votes" : "Show Votes"}</button>
+                                </div>
+                                <div><Link to="/log-in" id="post-log-in-link">Log in</Link> to vote and post a comment.</div>
+                            </>
+                            
                             : hasLoggedInUserAlreadyVoted
                                 ? <div id="already-voted-message-display-votes-button">
                                     <div>You have already voted on this post.</div>
                                 </div>
                                 : <div id="display-votes-and-vote-button">
+                                    <div>
+                                        <button type="button" onClick={onClickShowVotesButton}>{isVotesVisible ? "Hide Votes" : "Show Votes"}</button>
+                                    </div>
                                     <button
                                         type="button"
                                         onClick={onClickVoteButton}
@@ -571,6 +576,11 @@ export default function Post({
                                     >Vote</button>
                                 </div>   
                         }
+
+                        <div id="post-option-image" onClick={onClickCloseImage} style={styleOptionImage}>
+                            <img src={selectedImage} alt="option" />
+                            <div>[x]</div>
+                        </div>
                     </form>
 
                     {userLoggedIn.user_id === post.post_owner_id
@@ -599,76 +609,76 @@ export default function Post({
                             <div id="report-button-link" onClick={onClickReportPostLink}>Report</div>
                         </div>
                     }
+                </section>
 
-                    <div id="edit-post" style={styleEditPost}>
-                        <h2>Edit Post</h2>
+                <section id="edit-post" style={styleEditPost}>
+                    <h2>Edit Post</h2>
 
-                        <div id="edit-post-inputs">
-                            <TitleInput
-                                titleInput={editTitleInput}
-                                setTitleInput={setEditTitleInput}
-                            />
+                    <div id="edit-post-inputs">
+                        <TitleInput
+                            titleInput={editTitleInput}
+                            setTitleInput={setEditTitleInput}
+                        />
 
-                            <CategoryInput
-                                categoryInput={editCategoryInput}
-                                setCategoryInput={setEditCategoryInput}
-                            />
+                        <CategoryInput
+                            categoryInput={editCategoryInput}
+                            setCategoryInput={setEditCategoryInput}
+                        />
 
-                            <DescriptionInput
-                                descriptionInput={editDescriptionInput}
-                                setDescriptionInput={setEditDescriptionInput}
-                            />
+                        <DescriptionInput
+                            descriptionInput={editDescriptionInput}
+                            setDescriptionInput={setEditDescriptionInput}
+                        />
 
-                            <OptionsInput
-                                optionInputs={editOptionInputs}
-                                setOptionInputs={setEditOptionInputs}
-                                setOptionsHasDuplicates={setEditOptionsHasDuplicates}
-                                optionInputImages={editOptionInputImages}
-                                setOptionInputImages={setEditOptionInputImages}
-                                isOption1ImageInputValid={isOption1ImageInputValid}
-                                setIsOption1ImageInputValid={setIsOption1ImageInputValid}
-                                isOption2ImageInputValid={isOption2ImageInputValid}
-                                setIsOption2ImageInputValid={setIsOption2ImageInputValid}
-                                isOption3ImageInputValid={isOption3ImageInputValid}
-                                setIsOption3ImageInputValid={setIsOption3ImageInputValid}
-                                isOption4ImageInputValid={isOption4ImageInputValid}
-                                setIsOption4ImageInputValid={setIsOption4ImageInputValid}
-                                isOption5ImageInputValid={isOption5ImageInputValid}
-                                setIsOption5ImageInputValid={setIsOption5ImageInputValid}
-                            />
-                        </div>
+                        <OptionsInput
+                            optionInputs={editOptionInputs}
+                            setOptionInputs={setEditOptionInputs}
+                            setOptionsHasDuplicates={setEditOptionsHasDuplicates}
+                            optionInputImages={editOptionInputImages}
+                            setOptionInputImages={setEditOptionInputImages}
+                            isOption1ImageInputValid={isOption1ImageInputValid}
+                            setIsOption1ImageInputValid={setIsOption1ImageInputValid}
+                            isOption2ImageInputValid={isOption2ImageInputValid}
+                            setIsOption2ImageInputValid={setIsOption2ImageInputValid}
+                            isOption3ImageInputValid={isOption3ImageInputValid}
+                            setIsOption3ImageInputValid={setIsOption3ImageInputValid}
+                            isOption4ImageInputValid={isOption4ImageInputValid}
+                            setIsOption4ImageInputValid={setIsOption4ImageInputValid}
+                            isOption5ImageInputValid={isOption5ImageInputValid}
+                            setIsOption5ImageInputValid={setIsOption5ImageInputValid}
+                        />
+                    </div>
 
-                        {editOptionsHasDuplicates === null || editOptionsHasDuplicates === false
-                            ? null
-                            : <p className="error">You have entered duplicate options</p>
-                        }
+                    {editOptionsHasDuplicates === null || editOptionsHasDuplicates === false
+                        ? null
+                        : <p className="error">You have entered duplicate options</p>
+                    }
 
-                        {isNumberOfOptionsLessThanTwo
-                            ? <p className="error">Please enter at least two options</p>
-                            : null
-                        }
+                    {isNumberOfOptionsLessThanTwo
+                        ? <p className="error">Please enter at least two options</p>
+                        : null
+                    }
 
-                        <div id="edit-post-buttons">
-                            <button
-                                type="button"
-                                onClick={onClickCancelEditPostButton}
-                            >Cancel</button>
-                            <button
-                                type="button"
-                                onClick={onClickUpdatePostButton}
-                                disabled={
-                                    !editTitleInput ||
-                                    !editDescriptionInput ||
-                                    editCategoryInput === "Select a Category" ||
-                                    !isOption1ImageInputValid ||
-                                    !isOption2ImageInputValid ||
-                                    !isOption3ImageInputValid ||
-                                    !isOption4ImageInputValid ||
-                                    !isOption5ImageInputValid
-                                }
-                                style={styleUpdatePostButton}
-                            >Update</button>
-                        </div>
+                    <div id="edit-post-buttons">
+                        <button
+                            type="button"
+                            onClick={onClickCancelEditPostButton}
+                        >Cancel</button>
+                        <button
+                            type="button"
+                            onClick={onClickUpdatePostButton}
+                            disabled={
+                                !editTitleInput ||
+                                !editDescriptionInput ||
+                                editCategoryInput === "Select a Category" ||
+                                !isOption1ImageInputValid ||
+                                !isOption2ImageInputValid ||
+                                !isOption3ImageInputValid ||
+                                !isOption4ImageInputValid ||
+                                !isOption5ImageInputValid
+                            }
+                            style={styleUpdatePostButton}
+                        >Update</button>
                     </div>
                 </section>
                 
