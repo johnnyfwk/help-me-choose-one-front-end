@@ -39,7 +39,7 @@ export default function Post({
     const [optionInput, setOptionInput] = useState("");
 
     const [voterIds, setVoterIds] = useState([]);
-    const [hasLoggedInUserAlreadyVoted, setHasLoggedInUserAlreadyVoted] = useState(null);
+    const [loggedInUsersVote, setLoggedInUsersVote] = useState("");
     const [isVoteAddedSuccessfully, setIsVoteAddedSuccessfully] = useState(null);
 
     const [comments, setComments] = useState([]);
@@ -96,32 +96,34 @@ export default function Post({
     useEffect(() => {
         setIsLoading(true);
         setIsFetchingPostSuccessful(null);
-        setHasLoggedInUserAlreadyVoted(null);
+        setLoggedInUsersVote("");
         setIsPostEditable(false);
         api.getPostById(postId)
             .then((response) => {
+                console.log(response)
                 setIsLoading(false);
                 setIsFetchingPostSuccessful(true);
                 setPost(response);
                 const voters = [];
                 if (response.options_and_votes.length > 0) {
                     response.options_and_votes.forEach((option) => {
+                        
                         option.votesFromUserIds.forEach((voterId) => {
+                            console.log(voterId, "<------- voterId")
+                            if (userLoggedIn.user_id === voterId) {
+                                console.log("Logged in voter voted for", option.option)
+                                setLoggedInUsersVote(option.option);
+                            }
                             voters.push(voterId);
                         })
                     })
                     setVoterIds(voters);
-                }
-                if (voters.includes(userLoggedIn.user_id)) {
-                    setHasLoggedInUserAlreadyVoted(true);
-                } else {
-                    setHasLoggedInUserAlreadyVoted(false);
-                }
+                }                
             })
             .catch((error) => {
                 setIsLoading(false);
                 setIsFetchingPostSuccessful(false);
-                setHasLoggedInUserAlreadyVoted(null);
+                setLoggedInUsersVote("");
             })
     }, [
         post_id_and_title,
@@ -132,6 +134,8 @@ export default function Post({
         isCommentDeletedSuccessfully,
         isPostDeletedSuccessfully
     ])
+
+    console.log(loggedInUsersVote, "<------ loggedInUsersVote")
 
     useEffect(() => {
         setIsCommentsLoading(true);
@@ -519,7 +523,7 @@ export default function Post({
                                     <div key={option.option} className="post-option" style={stylePostOption}>
                                         <div className="post-option-radio-input-label-view-image">
                                             <div className="post-option-radio-input-label">
-                                                {Object.keys(userLoggedIn).length === 0 || hasLoggedInUserAlreadyVoted
+                                                {Object.keys(userLoggedIn).length === 0 || loggedInUsersVote
                                                     ? null
                                                     : <input type="radio" id={option.option} name="option" value={option.option} onChange={handleOptionInput} />
                                                 }
@@ -557,12 +561,14 @@ export default function Post({
                                 <div>
                                     <button type="button" onClick={onClickShowVotesButton}>{isVotesVisible ? "Hide Votes" : "Show Votes"}</button>
                                 </div>
-                                <div><Link to="/log-in" id="post-log-in-link">Log in</Link> to vote and post a comment.</div>
+                                <div><Link to="/log-in" id="post-log-in-link">Log in</Link> to vote or post a comment.</div>
                             </>
-                            
-                            : hasLoggedInUserAlreadyVoted
+                            : loggedInUsersVote
                                 ? <div id="already-voted-message-display-votes-button">
-                                    <div>You have already voted on this post.</div>
+                                    <div>
+                                        <button type="button" onClick={onClickShowVotesButton}>{isVotesVisible ? "Hide Votes" : "Show Votes"}</button>
+                                    </div>
+                                    <div>You have already voted. You chose '{loggedInUsersVote}'.</div>
                                 </div>
                                 : <div id="display-votes-and-vote-button">
                                     <div>

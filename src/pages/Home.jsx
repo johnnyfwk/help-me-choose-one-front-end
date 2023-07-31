@@ -37,7 +37,7 @@ export default function Home({numberOfItemsToDisplayAndIncrement}) {
                 const postCategories = response.map((post) => utils.convertUrlsToUserFriendlyHeadings(post.category));
                 const uniqueCategoriesSet = new Set(postCategories);
                 const uniqueCategories = Array.from(uniqueCategoriesSet);
-                setCategories(["All", ...uniqueCategories]);
+                setCategories(["All", ...uniqueCategories.sort()]);
 
                 let allPostsInCategory;
                 if (categoryInput === "all" || categoryInput === "All" || categoryInput === "") {
@@ -114,7 +114,7 @@ export default function Home({numberOfItemsToDisplayAndIncrement}) {
                 }
                 {Object.keys(userLoggedIn).length === 0
                     ? <div>
-                        <p>If you have a choice to make but don't which one to choose, <Link to="sign-up">sign up</Link> or <Link to="/log-in">log in</Link> in and post your question so other members of the site can help you choose.</p>
+                        <p>If you have a choice to make but don't know which one to choose, <Link to="sign-up">sign up</Link> or <Link to="/log-in">log in</Link> in and post your question so other members of the site can help you with your decision.</p>
                     </div>
                     : <p><Link to="/create-post">Post a question</Link> and let other members of the site help you make a choice or help others with their choices by voting and commenting on their posts.</p>
                 }
