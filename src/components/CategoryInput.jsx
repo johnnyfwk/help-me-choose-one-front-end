@@ -15,6 +15,7 @@ export default function CategoryInput({categoryInput, setCategoryInput}) {
                 <option value="Beauty">Beauty</option>
                 <option value="Business">Business</option>
                 <option value="Charities">Charities</option>
+                <option value="Clothing & Accessories">Clothing & Accessories</option>
                 <option value="Computers & Accessories">Computers & Accessories</option>
                 <option value="Dating & Relationships">Dating & Relationships</option>
                 <option value="DIY & Tools">DIY & Tools</option>
@@ -23,7 +24,6 @@ export default function CategoryInput({categoryInput, setCategoryInput}) {
                 <option value="Entertainment">Entertainment</option>
                 <option value="Environment">Environment</option>
                 <option value="Family & Friends">Family & Friends</option>
-                <option value="Fashion & Accessories">Fashion & Accessories</option>
                 <option value="Financial Services">Financial Services</option>
                 <option value="Fitness">Fitness</option>
                 <option value="Food & Drink">Food & Drink</option>
