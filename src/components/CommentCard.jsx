@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import CommentInput from "./CommentInput";
 import * as api from "../api";
@@ -14,6 +14,10 @@ export default function CommentCard({
     setIsCommentDeletedMessageVisible,
     setIsCommentNotDeletedMessageVisible
 }) {
+    const commentDisplayMaxLength = 300;
+    const [commentToDisplay, setCommentToDisplay] = useState("");
+    const [isFullCommentVisible, setIsFullCommentVisible] = useState(null);
+
     const [editCommentInput, setEditCommentInput] = useState(comment.comment);
 
     const [userIdsOfCommentLikes, setUserIdsOfCommentLikes] = useState(comment.comment_likes_from_user_ids);
@@ -26,6 +30,18 @@ export default function CommentCard({
     const [isReportCommentButtonVisible, setIsReportCommentButtonVisible] = useState(false);
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        setIsFullCommentVisible(null);
+        if (comment.comment.length > commentDisplayMaxLength) {
+            setCommentToDisplay(comment.comment.slice(0, commentDisplayMaxLength) + "...");
+            setIsFullCommentVisible(false);
+        }
+        else {
+            setCommentToDisplay(comment.comment);
+            setIsFullCommentVisible(null);
+        }
+    }, [])
 
     function onClickLikeComment() {
         let localLikes = [...userIdsOfCommentLikes];
@@ -50,7 +66,7 @@ export default function CommentCard({
                         updatedLikes.push(userLoggedIn.user_id);
                     }
                 }
-                return api.updateComment(new Date(), comment.comment, updatedLikes, comment.comment_id)
+                return api.updateComment(new Date(), comment.comment, updatedLikes, comment.comment_id);
             })
             .then((response) => {
                 
@@ -135,6 +151,21 @@ export default function CommentCard({
         window.scrollTo(0, 0);
     }
 
+    function onClickShowMoreCommentButton() {
+        setCommentToDisplay(comment.comment);
+        setIsFullCommentVisible(true);
+    }
+
+    function onClickShowLessCommentButton() {
+        setCommentToDisplay(comment.comment.slice(0, commentDisplayMaxLength) + "...");
+        setIsFullCommentVisible(false);
+    }
+
+    const styleComment = {
+        display: "inline-block",
+        verticalAlign: "end"
+    }
+
     const styleCommentOptionsButton = {
         display: isCommentOptionsButtonVisible ? "grid" : "none"
     }
@@ -153,6 +184,11 @@ export default function CommentCard({
 
     const styleUpdateCommentButton = {
         opacity: !editCommentInput ? "0.3" : "1"
+    }
+
+    const styleShowLessOrMoreText = {
+        color: "#868785",
+        cursor: "pointer"
     }
 
     return (
@@ -227,7 +263,14 @@ export default function CommentCard({
                         >Update</button>
                     </div>
                 </div>
-                : <p>{comment.comment}</p>
+                : <p style={styleComment}>{commentToDisplay} {isFullCommentVisible === null
+                    ? null
+                    : isFullCommentVisible === false
+                        ? <span style={styleShowLessOrMoreText} onClick={onClickShowMoreCommentButton}>(show more)</span>
+                        : <span style={styleShowLessOrMoreText} onClick={onClickShowLessCommentButton}>(show less)</span>
+                    }
+                </p>
+                
             }
             
             <div className="comment-card-like-button-likes-date">

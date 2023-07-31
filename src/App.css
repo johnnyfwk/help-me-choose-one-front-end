@@ -79,8 +79,8 @@ p a:visited {
 }
 
 button {
-    background: var(--battlship-gray);
-    color: var(--white);
+    background: var(--white);
+    color: var(--night);
     border: 0;
     padding: 10px 20px;
     border-radius: 20px;
@@ -156,7 +156,7 @@ footer {
 
 #logo {
     font-size: 1.5rem;
-    font-weight: bold;
+    /* font-weight: bold; */
     display: grid;
     align-content: center;
     padding: 10px 0px 10px 0px;
@@ -329,7 +329,7 @@ textarea {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    color: var(--silver);
+    color: var(--battlship-gray);
     font-size: 0.9rem;
 }
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 
 export default function CommentInput({commentInput, setCommentInput}) {
-    const commentMaxLength = 1000;
+    const commentMaxLength = 2000;
     const textareaRef = useRef(null);
 
     function handleCommentInput(event) {
