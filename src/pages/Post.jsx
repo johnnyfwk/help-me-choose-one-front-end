@@ -680,6 +680,8 @@ export default function Post({
                 </section>
 
                 <section id="edit-post" style={styleEditPost}>
+                    
+
                     <div id="edit-post-inputs">
                         <h2>Edit Post</h2>
 
@@ -748,6 +750,8 @@ export default function Post({
                             >Update</button>
                         </div>
                     </div>
+
+                    
                 </section>
                 
                 <section>
