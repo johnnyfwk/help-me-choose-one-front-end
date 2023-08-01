@@ -10,6 +10,7 @@ import OptionsInput from "../components/OptionsInput";
 import CategoryInput from "../components/CategoryInput";
 import CommentInput from "../components/CommentInput";
 import * as utils from "../utils";
+import Loading from "../components/Loading";
 
 export default function Post({
     isVotesVisible,
@@ -487,9 +488,7 @@ export default function Post({
 
     if (isLoading) {
         return (
-            <main>
-                <p>Page is loading...</p>
-            </main>
+            <Loading />
         )
     }
 
@@ -680,8 +679,6 @@ export default function Post({
                 </section>
 
                 <section id="edit-post" style={styleEditPost}>
-                    
-
                     <div id="edit-post-inputs">
                         <h2>Edit Post</h2>
 
@@ -750,8 +747,6 @@ export default function Post({
                             >Update</button>
                         </div>
                     </div>
-
-                    
                 </section>
                 
                 <section>
@@ -794,14 +789,13 @@ export default function Post({
                                             key={comment.comment_id}
                                             comment={comment}
                                             userLoggedIn={userLoggedIn}
-
                                             setIsCommentUpdatedSuccessfully={setIsCommentUpdatedSuccessfully}
                                             setIsCommentUpdatedMessageVisible={setIsCommentUpdatedMessageVisible}
                                             setIsCommentNotUpdatedMessageVisible={setIsCommentNotUpdatedMessageVisible}
-
                                             setIsCommentDeletedSuccessfully={setIsCommentDeletedSuccessfully}
                                             setIsCommentDeletedMessageVisible={setIsCommentDeletedMessageVisible}
                                             setIsCommentNotDeletedMessageVisible={setIsCommentNotDeletedMessageVisible}
+                                            setIsEditAndDeletePostButtonsContainerVisible={setIsEditAndDeletePostButtonsContainerVisible}
                                         />
                                     })}
                                 </div>

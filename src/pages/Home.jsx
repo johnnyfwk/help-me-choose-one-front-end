@@ -6,6 +6,7 @@ import * as api from "../api";
 import * as utils from "../utils";
 import PostCard from "../components/PostCard";
 import LoadMoreButton from "../components/LoadMoreButton";
+import Loading from "../components/Loading";
 
 export default function Home({numberOfItemsToDisplayAndIncrement}) {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
@@ -85,9 +86,7 @@ export default function Home({numberOfItemsToDisplayAndIncrement}) {
 
     if (isLoading) {
         return (
-            <main>
-                <p>Page is loading...</p>
-            </main>
+            <Loading />
         )
     }
 

@@ -7,6 +7,7 @@ import PasswordInput from "../components/PasswordInput";
 import ImageInput from "../components/ImageInput";
 import * as api from "../api";
 import * as utils from "../utils";
+import Loading from "../components/Loading";
 
 export default function SignUp({setIsAccountCreatedMessageVisible, setIsAccountNotCreatedMessageVisible}) {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
@@ -99,9 +100,7 @@ export default function SignUp({setIsAccountCreatedMessageVisible, setIsAccountN
 
     if (isLoading) {
         return (
-            <main>
-                <p>Page is loading...</p>
-            </main>
+            <Loading />
         )
     }
 

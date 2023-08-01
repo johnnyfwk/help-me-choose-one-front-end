@@ -5,6 +5,7 @@ import { Helmet } from "react-helmet";
 import UsernameInput from "../components/UsernameInput";
 import PasswordInput from "../components/PasswordInput";
 import * as api from "../api";
+import Loading from "../components/Loading";
 
 export default function LogIn({setIsLoggedInMessageVisible}) {
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
@@ -14,6 +15,7 @@ export default function LogIn({setIsLoggedInMessageVisible}) {
 
     const [usernameInput, setUsernameInput] = useState("");
     const [passwordInput, setPasswordInput] = useState("");
+    const passwordInputLabel = "Password";
 
     const [users, setUsers] = useState([]);
 
@@ -78,9 +80,7 @@ export default function LogIn({setIsLoggedInMessageVisible}) {
 
     if (isLoading) {
         return (
-            <main>
-                <p>Page is loading...</p>
-            </main>
+            <Loading />
         )
     }
 
@@ -123,6 +123,7 @@ export default function LogIn({setIsLoggedInMessageVisible}) {
                         <PasswordInput
                             passwordInput={passwordInput}
                             setPasswordInput={setPasswordInput}
+                            passwordInputLabel={passwordInputLabel}
                         />
                         {isPasswordCorrect === null || isPasswordCorrect === true
                             ? null

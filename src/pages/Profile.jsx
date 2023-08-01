@@ -9,6 +9,7 @@ import CommentCard from "../components/CommentCard";
 import ImageInput from "../components/ImageInput";
 import PasswordInput from "../components/PasswordInput";
 import LoadMoreButton from "../components/LoadMoreButton";
+import Loading from "../components/Loading";
 
 export default function Profile({
     numberOfItemsToDisplayAndIncrement,
@@ -312,9 +313,7 @@ export default function Profile({
 
     if (isLoading) {
         return (
-            <main>
-                <p>Page is loading...</p>
-            </main>
+            <Loading />
         )
     }
 

@@ -101,6 +101,10 @@ main {
     padding: var(--left-and-right-padding);
 }
 
+#loading-joke {
+    font-weight: bold;
+}
+
 #home main {
     display: grid;
     gap: var(--home-spacing-between-elements);
@@ -256,6 +260,12 @@ textarea {
 #image-input {
     display: grid;
     gap: 10px;
+}
+
+#username-input label,
+#password-input label,
+#image-input label {
+    font-weight: bold;
 }
 
 #create-post-form {
@@ -630,25 +640,17 @@ textarea {
 
 #edit-post {
     background: var(--jet);
-    position: fixed;
+    z-index: 1;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    z-index: 1;
-    overflow: auto;
     padding: 30px;
 }
 
 #edit-post > * {
     max-width: var(--max-width);
-
-
 }
-
-
-
-
 
 #title-input > label,
 #categories-input > label,

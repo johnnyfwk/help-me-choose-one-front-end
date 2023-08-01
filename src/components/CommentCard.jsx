@@ -12,7 +12,8 @@ export default function CommentCard({
     setIsCommentNotUpdatedMessageVisible,
     setIsCommentDeletedSuccessfully,
     setIsCommentDeletedMessageVisible,
-    setIsCommentNotDeletedMessageVisible
+    setIsCommentNotDeletedMessageVisible,
+    setIsEditAndDeletePostButtonsContainerVisible
 }) {
     const commentDisplayMaxLength = 300;
     const [commentToDisplay, setCommentToDisplay] = useState("");
@@ -83,6 +84,7 @@ export default function CommentCard({
         setIsReportCommentButtonVisible((currentIsReportCommentButtonVisible) => {
             return !currentIsReportCommentButtonVisible;
         });
+        setIsEditAndDeletePostButtonsContainerVisible(false);
     }
 
     function onClickEditCommentButton() {
