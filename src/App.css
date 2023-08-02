@@ -96,6 +96,11 @@ header {
     gap: 10px;
 }
 
+#loading {
+    display: grid;
+    gap: 20px;
+}
+
 main {
     background: var(--night);
     padding: var(--left-and-right-padding);
