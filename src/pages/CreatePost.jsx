@@ -129,7 +129,8 @@ export default function CreatePost({setIsPostCreatedMessageVisible, setIsPostNot
 
             <header>
                 <h1>Create a Post</h1>
-                <p>Get help from the Internet to make a choice by posting your question.</p>
+                <p>Get help from the Internet to make a choice by posting your question and at least two options.</p>
+                <p>You can also add images for each option to help others users make an informed choice.</p>
             </header>
 
             <main>
