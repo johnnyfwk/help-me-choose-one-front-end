@@ -22,7 +22,7 @@ export default function Loading() {
 
     return (
         <main id="loading">
-            <p>Page is loading...</p>
+            <p>Posts are loading...</p>
             <p>While you're waiting, here are some dad jokes to keep you entertained.</p>
             <p id="loading-joke">{joke}</p>
             <div>

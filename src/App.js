@@ -270,7 +270,7 @@ function App() {
             <div id="account-not-created-message" style={styleAccountNotCreatedMessage}>Account could not be created</div>
             <div id="logged-in-message" style={styleLoggedInMessage}>You have logged in</div>
             <div id="logged-out-message" style={styleLoggedOutMessage}>You have logged out</div>
-            <div id="vote-added-message" style={styleVoteAddedMessage}>Your vote bas been added</div>
+            <div id="vote-added-message" style={styleVoteAddedMessage}>Your vote has been added</div>
             <div id="vote-not-added-message" style={styleVoteNotAddedMessage}>Your vote could not be added</div>
             <div id="post-created-message" style={stylePostCreatedMessage}>Your post has been created</div>
             <div id="post-not-created-message" style={stylePostNotCreatedMessage}>Your post could not be created</div>

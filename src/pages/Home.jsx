@@ -22,24 +22,23 @@ export default function Home({numberOfItemsToDisplayAndIncrement}) {
     const [categoryInput, setCategoryInput] = useState(filterByCategory || "");
 
     const [numberOfItemsToDisplay, setNumberOfItemsToDisplay] = useState(numberOfItemsToDisplayAndIncrement);
-    const [itemsToDisplay, setItemsToDisplay] = useState([]);
+    const [itemsToDisplay, setItemsToDisplay] = useState(null);
 
     const navigate = useNavigate();
 
     useEffect(() => {
         setIsLoading(true);
+        setItemsToDisplay(null);
         setIsFetchingPostsSuccessful(null);
         setNumberOfItemsToDisplay(numberOfItemsToDisplayAndIncrement);
         api.getPosts()
             .then((response) => {
                 setIsLoading(false);
                 setIsFetchingPostsSuccessful(true);
-
                 const postCategories = response.map((post) => utils.convertUrlsToUserFriendlyHeadings(post.category));
                 const uniqueCategoriesSet = new Set(postCategories);
                 const uniqueCategories = Array.from(uniqueCategoriesSet);
                 setCategories(["All", ...uniqueCategories.sort()]);
-
                 let allPostsInCategory;
                 if (categoryInput === "all" || categoryInput === "All" || categoryInput === "") {
                     allPostsInCategory = response;
@@ -50,7 +49,6 @@ export default function Home({numberOfItemsToDisplayAndIncrement}) {
                     })
                 }
                 setPosts(allPostsInCategory);
-
                 let postsToDisplay;
                 setNumberOfItemsToDisplay((currentNumberOfItemsToDisplay) => {
                     if (allPostsInCategory.length > currentNumberOfItemsToDisplay) {
@@ -70,32 +68,20 @@ export default function Home({numberOfItemsToDisplayAndIncrement}) {
     }, [categoryInput])
 
     useEffect(() => {
-        if (posts.length <= numberOfItemsToDisplay) {
-            setItemsToDisplay(posts);
-        }
-        else {
-            const itemsToDisplay = posts.slice(0, numberOfItemsToDisplay);
-            setItemsToDisplay(itemsToDisplay);
+        if (isFetchingPostsSuccessful) {
+            if (posts.length <= numberOfItemsToDisplay) {
+                setItemsToDisplay(posts);
+            }
+            else {
+                const itemsToDisplay = posts.slice(0, numberOfItemsToDisplay);
+                setItemsToDisplay(itemsToDisplay);
+            }
         }
     }, [numberOfItemsToDisplay])
 
     function handleCategoryInput(event) {
         setCategoryInput(event.target.value);
         navigate(`?category=${utils.convertTitleToUrl(event.target.value)}`);
-    }
-
-    if (isLoading) {
-        return (
-            <Loading />
-        )
-    }
-
-    if (isFetchingPostsSuccessful === false) {
-        return (
-            <main>
-                <p className="error">Page could not be loaded.</p>
-            </main>
-        )
     }
 
     return (
@@ -117,38 +103,51 @@ export default function Home({numberOfItemsToDisplayAndIncrement}) {
                     </div>
                     : <p><Link to="/create-post">Post a question</Link> and let other members of the site help you make a choice or help others with their choices by voting and commenting on their posts.</p>
                 }
-                
             </header>
 
-            <main>
-                {itemsToDisplay.length === 0
-                    ? null
-                    : <select id="categories" value={categoryInput} onChange={handleCategoryInput}>
-                        {categories.map((category) => {
-                            return <option
-                                key={category}
-                                value={category}
-                            >{category}</option>
-                        })}
-                    </select>
-                }
+            {isLoading
+                ? <Loading />
+                : null
+            }
 
-                {itemsToDisplay.length === 0
-                    ? <p>No posts to display.</p>
-                    : <div className="post-cards">
-                        {itemsToDisplay.map((post) => {
-                            return <PostCard key={post.post_id} post={post} />
-                        })}
-                    </div>
-                }
-                
-                <LoadMoreButton
-                    numberOfItemsToDisplayAndIncrement={numberOfItemsToDisplayAndIncrement}
-                    numberOfItemsToDisplay={numberOfItemsToDisplay}
-                    setNumberOfItemsToDisplay={setNumberOfItemsToDisplay}
-                    items={posts}
-                />
-            </main>
+            {isFetchingPostsSuccessful === false
+                ? <main>
+                    <p className="error">Posts could not be loaded.</p>
+                </main>
+                : <main>
+                    {itemsToDisplay === null
+                        ? null
+                        : itemsToDisplay.length === 0
+                            ? null
+                            : <select id="categories" value={categoryInput} onChange={handleCategoryInput}>
+                                {categories.map((category) => {
+                                    return <option
+                                        key={category}
+                                        value={category}
+                                    >{category}</option>
+                                })}
+                            </select>
+                    }
+
+                    {itemsToDisplay === null
+                        ? null
+                        : itemsToDisplay.length === 0
+                            ? <p>No posts to display.</p>
+                            : <div className="post-cards">
+                                {itemsToDisplay.map((post) => {
+                                    return <PostCard key={post.post_id} post={post} />
+                                })}
+                            </div>
+                    }
+                    
+                    <LoadMoreButton
+                        numberOfItemsToDisplayAndIncrement={numberOfItemsToDisplayAndIncrement}
+                        numberOfItemsToDisplay={numberOfItemsToDisplay}
+                        setNumberOfItemsToDisplay={setNumberOfItemsToDisplay}
+                        items={posts}
+                    />
+                </main>
+            }
         </div>
     )
 }
