@@ -102,7 +102,7 @@ export default function LogIn({setIsLoggedInMessageVisible}) {
 
             <header>
                 <h1>Log In</h1>
-                <p>This is the header copy for the Log In page.</p>
+                <p>Log in to your account to post a question or help others make a choice.</p>
                 <p>Don't have an account? <Link to="/sign-up">Sign up</Link>.</p>
             </header>
 
